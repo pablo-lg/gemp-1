@@ -1,21 +1,25 @@
 entity TipoEmp {
-  Id  String required,
+  Id  Long required,
   descripcion  String
+  valor String
 }
 
 entity TipoObra {
-  Id  String required,
-  descripcion  String
+  Id  Long required,
+  descripcion  String,
+  valor String
 }
 
 entity TipoDesp {
-  Id  String required,
-  descripcion  String
+  Id  Long required,
+  descripcion  String,
+  valor String
 }
 
 entity Segmento {
-   Id  String required,
-  descripcion  String
+  Id  Long required,
+  descripcion  String,
+  valor String
 }
 
 

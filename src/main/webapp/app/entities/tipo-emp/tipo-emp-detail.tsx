@@ -29,6 +29,10 @@ export const TipoEmpDetail = (props: ITipoEmpDetailProps) => {
             <span id="descripcion">Descripcion</span>
           </dt>
           <dd>{tipoEmpEntity.descripcion}</dd>
+          <dt>
+            <span id="valor">Valor</span>
+          </dt>
+          <dd>{tipoEmpEntity.valor}</dd>
         </dl>
         <Button tag={Link} to="/tipo-emp" replace color="info">
           <FontAwesomeIcon icon="arrow-left" /> <span className="d-none d-md-inline">Back</span>

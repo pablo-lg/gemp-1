@@ -73,6 +73,7 @@ class TipoDespGatlingTest extends Simulation {
             .body(StringBody("""{
                 "id":null
                 , "descripcion":"SAMPLE_TEXT"
+                , "valor":"SAMPLE_TEXT"
                 }""")).asJson
             .check(status.is(201))
             .check(headerRegex("Location", "(.*)").saveAs("new_tipoDesp_url"))).exitHereIfFailed

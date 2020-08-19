@@ -88,6 +88,9 @@ public class TipoObraQueryService extends QueryService<TipoObra> {
             if (criteria.getDescripcion() != null) {
                 specification = specification.and(buildStringSpecification(criteria.getDescripcion(), TipoObra_.descripcion));
             }
+            if (criteria.getValor() != null) {
+                specification = specification.and(buildStringSpecification(criteria.getValor(), TipoObra_.valor));
+            }
         }
         return specification;
     }

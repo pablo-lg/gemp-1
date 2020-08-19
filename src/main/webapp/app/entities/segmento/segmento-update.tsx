@@ -77,6 +77,12 @@ export const SegmentoUpdate = (props: ISegmentoUpdateProps) => {
                 </Label>
                 <AvField id="segmento-descripcion" type="text" name="descripcion" />
               </AvGroup>
+              <AvGroup>
+                <Label id="valorLabel" for="segmento-valor">
+                  Valor
+                </Label>
+                <AvField id="segmento-valor" type="text" name="valor" />
+              </AvGroup>
               <Button tag={Link} id="cancel-save" to="/segmento" replace color="info">
                 <FontAwesomeIcon icon="arrow-left" />
                 &nbsp;

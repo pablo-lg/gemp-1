@@ -8,6 +8,7 @@ export default class SegmentoUpdatePage {
   saveButton: ElementFinder = element(by.id('save-entity'));
   cancelButton: ElementFinder = element(by.id('cancel-save'));
   descripcionInput: ElementFinder = element(by.css('input#segmento-descripcion'));
+  valorInput: ElementFinder = element(by.css('input#segmento-valor'));
 
   getPageTitle() {
     return this.pageTitle;
@@ -19,6 +20,14 @@ export default class SegmentoUpdatePage {
 
   async getDescripcionInput() {
     return this.descripcionInput.getAttribute('value');
+  }
+
+  async setValorInput(valor) {
+    await this.valorInput.sendKeys(valor);
+  }
+
+  async getValorInput() {
+    return this.valorInput.getAttribute('value');
   }
 
   async save() {
@@ -37,6 +46,9 @@ export default class SegmentoUpdatePage {
     await waitUntilDisplayed(this.saveButton);
     await this.setDescripcionInput('descripcion');
     expect(await this.getDescripcionInput()).to.match(/descripcion/);
+    await waitUntilDisplayed(this.saveButton);
+    await this.setValorInput('valor');
+    expect(await this.getValorInput()).to.match(/valor/);
     await this.save();
     await waitUntilHidden(this.saveButton);
     expect(await isVisible(this.saveButton)).to.be.false;

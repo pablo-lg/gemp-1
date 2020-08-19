@@ -85,6 +85,9 @@ export const TipoObra = (props: ITipoObraProps) => {
                 <th className="hand" onClick={sort('descripcion')}>
                   Descripcion <FontAwesomeIcon icon="sort" />
                 </th>
+                <th className="hand" onClick={sort('valor')}>
+                  Valor <FontAwesomeIcon icon="sort" />
+                </th>
                 <th />
               </tr>
             </thead>
@@ -97,6 +100,7 @@ export const TipoObra = (props: ITipoObraProps) => {
                     </Button>
                   </td>
                   <td>{tipoObra.descripcion}</td>
+                  <td>{tipoObra.valor}</td>
                   <td className="text-right">
                     <div className="btn-group flex-btn-group-container">
                       <Button tag={Link} to={`${match.url}/${tipoObra.id}`} color="info" size="sm">

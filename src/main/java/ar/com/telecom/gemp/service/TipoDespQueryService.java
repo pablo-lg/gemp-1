@@ -88,6 +88,9 @@ public class TipoDespQueryService extends QueryService<TipoDesp> {
             if (criteria.getDescripcion() != null) {
                 specification = specification.and(buildStringSpecification(criteria.getDescripcion(), TipoDesp_.descripcion));
             }
+            if (criteria.getValor() != null) {
+                specification = specification.and(buildStringSpecification(criteria.getValor(), TipoDesp_.valor));
+            }
         }
         return specification;
     }
