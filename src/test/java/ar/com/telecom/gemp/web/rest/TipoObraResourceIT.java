@@ -35,6 +35,9 @@ public class TipoObraResourceIT {
     private static final String DEFAULT_DESCRIPCION = "AAAAAAAAAA";
     private static final String UPDATED_DESCRIPCION = "BBBBBBBBBB";
 
+    private static final String DEFAULT_VALOR = "AAAAAAAAAA";
+    private static final String UPDATED_VALOR = "BBBBBBBBBB";
+
     @Autowired
     private TipoObraRepository tipoObraRepository;
 
@@ -60,7 +63,8 @@ public class TipoObraResourceIT {
      */
     public static TipoObra createEntity(EntityManager em) {
         TipoObra tipoObra = new TipoObra()
-            .descripcion(DEFAULT_DESCRIPCION);
+            .descripcion(DEFAULT_DESCRIPCION)
+            .valor(DEFAULT_VALOR);
         return tipoObra;
     }
     /**
@@ -71,7 +75,8 @@ public class TipoObraResourceIT {
      */
     public static TipoObra createUpdatedEntity(EntityManager em) {
         TipoObra tipoObra = new TipoObra()
-            .descripcion(UPDATED_DESCRIPCION);
+            .descripcion(UPDATED_DESCRIPCION)
+            .valor(UPDATED_VALOR);
         return tipoObra;
     }
 
@@ -95,6 +100,7 @@ public class TipoObraResourceIT {
         assertThat(tipoObraList).hasSize(databaseSizeBeforeCreate + 1);
         TipoObra testTipoObra = tipoObraList.get(tipoObraList.size() - 1);
         assertThat(testTipoObra.getDescripcion()).isEqualTo(DEFAULT_DESCRIPCION);
+        assertThat(testTipoObra.getValor()).isEqualTo(DEFAULT_VALOR);
     }
 
     @Test
@@ -128,7 +134,8 @@ public class TipoObraResourceIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(tipoObra.getId().intValue())))
-            .andExpect(jsonPath("$.[*].descripcion").value(hasItem(DEFAULT_DESCRIPCION)));
+            .andExpect(jsonPath("$.[*].descripcion").value(hasItem(DEFAULT_DESCRIPCION)))
+            .andExpect(jsonPath("$.[*].valor").value(hasItem(DEFAULT_VALOR)));
     }
     
     @Test
@@ -142,7 +149,8 @@ public class TipoObraResourceIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.id").value(tipoObra.getId().intValue()))
-            .andExpect(jsonPath("$.descripcion").value(DEFAULT_DESCRIPCION));
+            .andExpect(jsonPath("$.descripcion").value(DEFAULT_DESCRIPCION))
+            .andExpect(jsonPath("$.valor").value(DEFAULT_VALOR));
     }
 
 
@@ -242,6 +250,84 @@ public class TipoObraResourceIT {
         defaultTipoObraShouldBeFound("descripcion.doesNotContain=" + UPDATED_DESCRIPCION);
     }
 
+
+    @Test
+    @Transactional
+    public void getAllTipoObrasByValorIsEqualToSomething() throws Exception {
+        // Initialize the database
+        tipoObraRepository.saveAndFlush(tipoObra);
+
+        // Get all the tipoObraList where valor equals to DEFAULT_VALOR
+        defaultTipoObraShouldBeFound("valor.equals=" + DEFAULT_VALOR);
+
+        // Get all the tipoObraList where valor equals to UPDATED_VALOR
+        defaultTipoObraShouldNotBeFound("valor.equals=" + UPDATED_VALOR);
+    }
+
+    @Test
+    @Transactional
+    public void getAllTipoObrasByValorIsNotEqualToSomething() throws Exception {
+        // Initialize the database
+        tipoObraRepository.saveAndFlush(tipoObra);
+
+        // Get all the tipoObraList where valor not equals to DEFAULT_VALOR
+        defaultTipoObraShouldNotBeFound("valor.notEquals=" + DEFAULT_VALOR);
+
+        // Get all the tipoObraList where valor not equals to UPDATED_VALOR
+        defaultTipoObraShouldBeFound("valor.notEquals=" + UPDATED_VALOR);
+    }
+
+    @Test
+    @Transactional
+    public void getAllTipoObrasByValorIsInShouldWork() throws Exception {
+        // Initialize the database
+        tipoObraRepository.saveAndFlush(tipoObra);
+
+        // Get all the tipoObraList where valor in DEFAULT_VALOR or UPDATED_VALOR
+        defaultTipoObraShouldBeFound("valor.in=" + DEFAULT_VALOR + "," + UPDATED_VALOR);
+
+        // Get all the tipoObraList where valor equals to UPDATED_VALOR
+        defaultTipoObraShouldNotBeFound("valor.in=" + UPDATED_VALOR);
+    }
+
+    @Test
+    @Transactional
+    public void getAllTipoObrasByValorIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        tipoObraRepository.saveAndFlush(tipoObra);
+
+        // Get all the tipoObraList where valor is not null
+        defaultTipoObraShouldBeFound("valor.specified=true");
+
+        // Get all the tipoObraList where valor is null
+        defaultTipoObraShouldNotBeFound("valor.specified=false");
+    }
+                @Test
+    @Transactional
+    public void getAllTipoObrasByValorContainsSomething() throws Exception {
+        // Initialize the database
+        tipoObraRepository.saveAndFlush(tipoObra);
+
+        // Get all the tipoObraList where valor contains DEFAULT_VALOR
+        defaultTipoObraShouldBeFound("valor.contains=" + DEFAULT_VALOR);
+
+        // Get all the tipoObraList where valor contains UPDATED_VALOR
+        defaultTipoObraShouldNotBeFound("valor.contains=" + UPDATED_VALOR);
+    }
+
+    @Test
+    @Transactional
+    public void getAllTipoObrasByValorNotContainsSomething() throws Exception {
+        // Initialize the database
+        tipoObraRepository.saveAndFlush(tipoObra);
+
+        // Get all the tipoObraList where valor does not contain DEFAULT_VALOR
+        defaultTipoObraShouldNotBeFound("valor.doesNotContain=" + DEFAULT_VALOR);
+
+        // Get all the tipoObraList where valor does not contain UPDATED_VALOR
+        defaultTipoObraShouldBeFound("valor.doesNotContain=" + UPDATED_VALOR);
+    }
+
     /**
      * Executes the search, and checks that the default entity is returned.
      */
@@ -250,7 +336,8 @@ public class TipoObraResourceIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(tipoObra.getId().intValue())))
-            .andExpect(jsonPath("$.[*].descripcion").value(hasItem(DEFAULT_DESCRIPCION)));
+            .andExpect(jsonPath("$.[*].descripcion").value(hasItem(DEFAULT_DESCRIPCION)))
+            .andExpect(jsonPath("$.[*].valor").value(hasItem(DEFAULT_VALOR)));
 
         // Check, that the count call also returns 1
         restTipoObraMockMvc.perform(get("/api/tipo-obras/count?sort=id,desc&" + filter))
@@ -297,7 +384,8 @@ public class TipoObraResourceIT {
         // Disconnect from session so that the updates on updatedTipoObra are not directly saved in db
         em.detach(updatedTipoObra);
         updatedTipoObra
-            .descripcion(UPDATED_DESCRIPCION);
+            .descripcion(UPDATED_DESCRIPCION)
+            .valor(UPDATED_VALOR);
 
         restTipoObraMockMvc.perform(put("/api/tipo-obras")
             .contentType(MediaType.APPLICATION_JSON)
@@ -309,6 +397,7 @@ public class TipoObraResourceIT {
         assertThat(tipoObraList).hasSize(databaseSizeBeforeUpdate);
         TipoObra testTipoObra = tipoObraList.get(tipoObraList.size() - 1);
         assertThat(testTipoObra.getDescripcion()).isEqualTo(UPDATED_DESCRIPCION);
+        assertThat(testTipoObra.getValor()).isEqualTo(UPDATED_VALOR);
     }
 
     @Test

@@ -88,6 +88,9 @@ public class SegmentoQueryService extends QueryService<Segmento> {
             if (criteria.getDescripcion() != null) {
                 specification = specification.and(buildStringSpecification(criteria.getDescripcion(), Segmento_.descripcion));
             }
+            if (criteria.getValor() != null) {
+                specification = specification.and(buildStringSpecification(criteria.getValor(), Segmento_.valor));
+            }
         }
         return specification;
     }

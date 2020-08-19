@@ -77,6 +77,12 @@ export const TipoDespUpdate = (props: ITipoDespUpdateProps) => {
                 </Label>
                 <AvField id="tipo-desp-descripcion" type="text" name="descripcion" />
               </AvGroup>
+              <AvGroup>
+                <Label id="valorLabel" for="tipo-desp-valor">
+                  Valor
+                </Label>
+                <AvField id="tipo-desp-valor" type="text" name="valor" />
+              </AvGroup>
               <Button tag={Link} id="cancel-save" to="/tipo-desp" replace color="info">
                 <FontAwesomeIcon icon="arrow-left" />
                 &nbsp;

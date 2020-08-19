@@ -85,6 +85,9 @@ export const Segmento = (props: ISegmentoProps) => {
                 <th className="hand" onClick={sort('descripcion')}>
                   Descripcion <FontAwesomeIcon icon="sort" />
                 </th>
+                <th className="hand" onClick={sort('valor')}>
+                  Valor <FontAwesomeIcon icon="sort" />
+                </th>
                 <th />
               </tr>
             </thead>
@@ -97,6 +100,7 @@ export const Segmento = (props: ISegmentoProps) => {
                     </Button>
                   </td>
                   <td>{segmento.descripcion}</td>
+                  <td>{segmento.valor}</td>
                   <td className="text-right">
                     <div className="btn-group flex-btn-group-container">
                       <Button tag={Link} to={`${match.url}/${segmento.id}`} color="info" size="sm">

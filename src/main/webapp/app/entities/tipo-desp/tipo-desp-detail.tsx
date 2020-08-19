@@ -29,6 +29,10 @@ export const TipoDespDetail = (props: ITipoDespDetailProps) => {
             <span id="descripcion">Descripcion</span>
           </dt>
           <dd>{tipoDespEntity.descripcion}</dd>
+          <dt>
+            <span id="valor">Valor</span>
+          </dt>
+          <dd>{tipoDespEntity.valor}</dd>
         </dl>
         <Button tag={Link} to="/tipo-desp" replace color="info">
           <FontAwesomeIcon icon="arrow-left" /> <span className="d-none d-md-inline">Back</span>

@@ -28,12 +28,15 @@ public class SegmentoCriteria implements Serializable, Criteria {
 
     private StringFilter descripcion;
 
+    private StringFilter valor;
+
     public SegmentoCriteria() {
     }
 
     public SegmentoCriteria(SegmentoCriteria other) {
         this.id = other.id == null ? null : other.id.copy();
         this.descripcion = other.descripcion == null ? null : other.descripcion.copy();
+        this.valor = other.valor == null ? null : other.valor.copy();
     }
 
     @Override
@@ -57,6 +60,14 @@ public class SegmentoCriteria implements Serializable, Criteria {
         this.descripcion = descripcion;
     }
 
+    public StringFilter getValor() {
+        return valor;
+    }
+
+    public void setValor(StringFilter valor) {
+        this.valor = valor;
+    }
+
 
     @Override
     public boolean equals(Object o) {
@@ -69,14 +80,16 @@ public class SegmentoCriteria implements Serializable, Criteria {
         final SegmentoCriteria that = (SegmentoCriteria) o;
         return
             Objects.equals(id, that.id) &&
-            Objects.equals(descripcion, that.descripcion);
+            Objects.equals(descripcion, that.descripcion) &&
+            Objects.equals(valor, that.valor);
     }
 
     @Override
     public int hashCode() {
         return Objects.hash(
         id,
-        descripcion
+        descripcion,
+        valor
         );
     }
 
@@ -86,6 +99,7 @@ public class SegmentoCriteria implements Serializable, Criteria {
         return "SegmentoCriteria{" +
                 (id != null ? "id=" + id + ", " : "") +
                 (descripcion != null ? "descripcion=" + descripcion + ", " : "") +
+                (valor != null ? "valor=" + valor + ", " : "") +
             "}";
     }
 

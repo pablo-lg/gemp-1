@@ -28,12 +28,15 @@ public class TipoDespCriteria implements Serializable, Criteria {
 
     private StringFilter descripcion;
 
+    private StringFilter valor;
+
     public TipoDespCriteria() {
     }
 
     public TipoDespCriteria(TipoDespCriteria other) {
         this.id = other.id == null ? null : other.id.copy();
         this.descripcion = other.descripcion == null ? null : other.descripcion.copy();
+        this.valor = other.valor == null ? null : other.valor.copy();
     }
 
     @Override
@@ -57,6 +60,14 @@ public class TipoDespCriteria implements Serializable, Criteria {
         this.descripcion = descripcion;
     }
 
+    public StringFilter getValor() {
+        return valor;
+    }
+
+    public void setValor(StringFilter valor) {
+        this.valor = valor;
+    }
+
 
     @Override
     public boolean equals(Object o) {
@@ -69,14 +80,16 @@ public class TipoDespCriteria implements Serializable, Criteria {
         final TipoDespCriteria that = (TipoDespCriteria) o;
         return
             Objects.equals(id, that.id) &&
-            Objects.equals(descripcion, that.descripcion);
+            Objects.equals(descripcion, that.descripcion) &&
+            Objects.equals(valor, that.valor);
     }
 
     @Override
     public int hashCode() {
         return Objects.hash(
         id,
-        descripcion
+        descripcion,
+        valor
         );
     }
 
@@ -86,6 +99,7 @@ public class TipoDespCriteria implements Serializable, Criteria {
         return "TipoDespCriteria{" +
                 (id != null ? "id=" + id + ", " : "") +
                 (descripcion != null ? "descripcion=" + descripcion + ", " : "") +
+                (valor != null ? "valor=" + valor + ", " : "") +
             "}";
     }
 

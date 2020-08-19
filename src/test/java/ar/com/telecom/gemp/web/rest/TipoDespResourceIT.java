@@ -35,6 +35,9 @@ public class TipoDespResourceIT {
     private static final String DEFAULT_DESCRIPCION = "AAAAAAAAAA";
     private static final String UPDATED_DESCRIPCION = "BBBBBBBBBB";
 
+    private static final String DEFAULT_VALOR = "AAAAAAAAAA";
+    private static final String UPDATED_VALOR = "BBBBBBBBBB";
+
     @Autowired
     private TipoDespRepository tipoDespRepository;
 
@@ -60,7 +63,8 @@ public class TipoDespResourceIT {
      */
     public static TipoDesp createEntity(EntityManager em) {
         TipoDesp tipoDesp = new TipoDesp()
-            .descripcion(DEFAULT_DESCRIPCION);
+            .descripcion(DEFAULT_DESCRIPCION)
+            .valor(DEFAULT_VALOR);
         return tipoDesp;
     }
     /**
@@ -71,7 +75,8 @@ public class TipoDespResourceIT {
      */
     public static TipoDesp createUpdatedEntity(EntityManager em) {
         TipoDesp tipoDesp = new TipoDesp()
-            .descripcion(UPDATED_DESCRIPCION);
+            .descripcion(UPDATED_DESCRIPCION)
+            .valor(UPDATED_VALOR);
         return tipoDesp;
     }
 
@@ -95,6 +100,7 @@ public class TipoDespResourceIT {
         assertThat(tipoDespList).hasSize(databaseSizeBeforeCreate + 1);
         TipoDesp testTipoDesp = tipoDespList.get(tipoDespList.size() - 1);
         assertThat(testTipoDesp.getDescripcion()).isEqualTo(DEFAULT_DESCRIPCION);
+        assertThat(testTipoDesp.getValor()).isEqualTo(DEFAULT_VALOR);
     }
 
     @Test
@@ -128,7 +134,8 @@ public class TipoDespResourceIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(tipoDesp.getId().intValue())))
-            .andExpect(jsonPath("$.[*].descripcion").value(hasItem(DEFAULT_DESCRIPCION)));
+            .andExpect(jsonPath("$.[*].descripcion").value(hasItem(DEFAULT_DESCRIPCION)))
+            .andExpect(jsonPath("$.[*].valor").value(hasItem(DEFAULT_VALOR)));
     }
     
     @Test
@@ -142,7 +149,8 @@ public class TipoDespResourceIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.id").value(tipoDesp.getId().intValue()))
-            .andExpect(jsonPath("$.descripcion").value(DEFAULT_DESCRIPCION));
+            .andExpect(jsonPath("$.descripcion").value(DEFAULT_DESCRIPCION))
+            .andExpect(jsonPath("$.valor").value(DEFAULT_VALOR));
     }
 
 
@@ -242,6 +250,84 @@ public class TipoDespResourceIT {
         defaultTipoDespShouldBeFound("descripcion.doesNotContain=" + UPDATED_DESCRIPCION);
     }
 
+
+    @Test
+    @Transactional
+    public void getAllTipoDespsByValorIsEqualToSomething() throws Exception {
+        // Initialize the database
+        tipoDespRepository.saveAndFlush(tipoDesp);
+
+        // Get all the tipoDespList where valor equals to DEFAULT_VALOR
+        defaultTipoDespShouldBeFound("valor.equals=" + DEFAULT_VALOR);
+
+        // Get all the tipoDespList where valor equals to UPDATED_VALOR
+        defaultTipoDespShouldNotBeFound("valor.equals=" + UPDATED_VALOR);
+    }
+
+    @Test
+    @Transactional
+    public void getAllTipoDespsByValorIsNotEqualToSomething() throws Exception {
+        // Initialize the database
+        tipoDespRepository.saveAndFlush(tipoDesp);
+
+        // Get all the tipoDespList where valor not equals to DEFAULT_VALOR
+        defaultTipoDespShouldNotBeFound("valor.notEquals=" + DEFAULT_VALOR);
+
+        // Get all the tipoDespList where valor not equals to UPDATED_VALOR
+        defaultTipoDespShouldBeFound("valor.notEquals=" + UPDATED_VALOR);
+    }
+
+    @Test
+    @Transactional
+    public void getAllTipoDespsByValorIsInShouldWork() throws Exception {
+        // Initialize the database
+        tipoDespRepository.saveAndFlush(tipoDesp);
+
+        // Get all the tipoDespList where valor in DEFAULT_VALOR or UPDATED_VALOR
+        defaultTipoDespShouldBeFound("valor.in=" + DEFAULT_VALOR + "," + UPDATED_VALOR);
+
+        // Get all the tipoDespList where valor equals to UPDATED_VALOR
+        defaultTipoDespShouldNotBeFound("valor.in=" + UPDATED_VALOR);
+    }
+
+    @Test
+    @Transactional
+    public void getAllTipoDespsByValorIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        tipoDespRepository.saveAndFlush(tipoDesp);
+
+        // Get all the tipoDespList where valor is not null
+        defaultTipoDespShouldBeFound("valor.specified=true");
+
+        // Get all the tipoDespList where valor is null
+        defaultTipoDespShouldNotBeFound("valor.specified=false");
+    }
+                @Test
+    @Transactional
+    public void getAllTipoDespsByValorContainsSomething() throws Exception {
+        // Initialize the database
+        tipoDespRepository.saveAndFlush(tipoDesp);
+
+        // Get all the tipoDespList where valor contains DEFAULT_VALOR
+        defaultTipoDespShouldBeFound("valor.contains=" + DEFAULT_VALOR);
+
+        // Get all the tipoDespList where valor contains UPDATED_VALOR
+        defaultTipoDespShouldNotBeFound("valor.contains=" + UPDATED_VALOR);
+    }
+
+    @Test
+    @Transactional
+    public void getAllTipoDespsByValorNotContainsSomething() throws Exception {
+        // Initialize the database
+        tipoDespRepository.saveAndFlush(tipoDesp);
+
+        // Get all the tipoDespList where valor does not contain DEFAULT_VALOR
+        defaultTipoDespShouldNotBeFound("valor.doesNotContain=" + DEFAULT_VALOR);
+
+        // Get all the tipoDespList where valor does not contain UPDATED_VALOR
+        defaultTipoDespShouldBeFound("valor.doesNotContain=" + UPDATED_VALOR);
+    }
+
     /**
      * Executes the search, and checks that the default entity is returned.
      */
@@ -250,7 +336,8 @@ public class TipoDespResourceIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(tipoDesp.getId().intValue())))
-            .andExpect(jsonPath("$.[*].descripcion").value(hasItem(DEFAULT_DESCRIPCION)));
+            .andExpect(jsonPath("$.[*].descripcion").value(hasItem(DEFAULT_DESCRIPCION)))
+            .andExpect(jsonPath("$.[*].valor").value(hasItem(DEFAULT_VALOR)));
 
         // Check, that the count call also returns 1
         restTipoDespMockMvc.perform(get("/api/tipo-desps/count?sort=id,desc&" + filter))
@@ -297,7 +384,8 @@ public class TipoDespResourceIT {
         // Disconnect from session so that the updates on updatedTipoDesp are not directly saved in db
         em.detach(updatedTipoDesp);
         updatedTipoDesp
-            .descripcion(UPDATED_DESCRIPCION);
+            .descripcion(UPDATED_DESCRIPCION)
+            .valor(UPDATED_VALOR);
 
         restTipoDespMockMvc.perform(put("/api/tipo-desps")
             .contentType(MediaType.APPLICATION_JSON)
@@ -309,6 +397,7 @@ public class TipoDespResourceIT {
         assertThat(tipoDespList).hasSize(databaseSizeBeforeUpdate);
         TipoDesp testTipoDesp = tipoDespList.get(tipoDespList.size() - 1);
         assertThat(testTipoDesp.getDescripcion()).isEqualTo(UPDATED_DESCRIPCION);
+        assertThat(testTipoDesp.getValor()).isEqualTo(UPDATED_VALOR);
     }
 
     @Test

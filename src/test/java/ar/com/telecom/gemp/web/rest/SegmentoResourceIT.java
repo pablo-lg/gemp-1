@@ -35,6 +35,9 @@ public class SegmentoResourceIT {
     private static final String DEFAULT_DESCRIPCION = "AAAAAAAAAA";
     private static final String UPDATED_DESCRIPCION = "BBBBBBBBBB";
 
+    private static final String DEFAULT_VALOR = "AAAAAAAAAA";
+    private static final String UPDATED_VALOR = "BBBBBBBBBB";
+
     @Autowired
     private SegmentoRepository segmentoRepository;
 
@@ -60,7 +63,8 @@ public class SegmentoResourceIT {
      */
     public static Segmento createEntity(EntityManager em) {
         Segmento segmento = new Segmento()
-            .descripcion(DEFAULT_DESCRIPCION);
+            .descripcion(DEFAULT_DESCRIPCION)
+            .valor(DEFAULT_VALOR);
         return segmento;
     }
     /**
@@ -71,7 +75,8 @@ public class SegmentoResourceIT {
      */
     public static Segmento createUpdatedEntity(EntityManager em) {
         Segmento segmento = new Segmento()
-            .descripcion(UPDATED_DESCRIPCION);
+            .descripcion(UPDATED_DESCRIPCION)
+            .valor(UPDATED_VALOR);
         return segmento;
     }
 
@@ -95,6 +100,7 @@ public class SegmentoResourceIT {
         assertThat(segmentoList).hasSize(databaseSizeBeforeCreate + 1);
         Segmento testSegmento = segmentoList.get(segmentoList.size() - 1);
         assertThat(testSegmento.getDescripcion()).isEqualTo(DEFAULT_DESCRIPCION);
+        assertThat(testSegmento.getValor()).isEqualTo(DEFAULT_VALOR);
     }
 
     @Test
@@ -128,7 +134,8 @@ public class SegmentoResourceIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(segmento.getId().intValue())))
-            .andExpect(jsonPath("$.[*].descripcion").value(hasItem(DEFAULT_DESCRIPCION)));
+            .andExpect(jsonPath("$.[*].descripcion").value(hasItem(DEFAULT_DESCRIPCION)))
+            .andExpect(jsonPath("$.[*].valor").value(hasItem(DEFAULT_VALOR)));
     }
     
     @Test
@@ -142,7 +149,8 @@ public class SegmentoResourceIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.id").value(segmento.getId().intValue()))
-            .andExpect(jsonPath("$.descripcion").value(DEFAULT_DESCRIPCION));
+            .andExpect(jsonPath("$.descripcion").value(DEFAULT_DESCRIPCION))
+            .andExpect(jsonPath("$.valor").value(DEFAULT_VALOR));
     }
 
 
@@ -242,6 +250,84 @@ public class SegmentoResourceIT {
         defaultSegmentoShouldBeFound("descripcion.doesNotContain=" + UPDATED_DESCRIPCION);
     }
 
+
+    @Test
+    @Transactional
+    public void getAllSegmentosByValorIsEqualToSomething() throws Exception {
+        // Initialize the database
+        segmentoRepository.saveAndFlush(segmento);
+
+        // Get all the segmentoList where valor equals to DEFAULT_VALOR
+        defaultSegmentoShouldBeFound("valor.equals=" + DEFAULT_VALOR);
+
+        // Get all the segmentoList where valor equals to UPDATED_VALOR
+        defaultSegmentoShouldNotBeFound("valor.equals=" + UPDATED_VALOR);
+    }
+
+    @Test
+    @Transactional
+    public void getAllSegmentosByValorIsNotEqualToSomething() throws Exception {
+        // Initialize the database
+        segmentoRepository.saveAndFlush(segmento);
+
+        // Get all the segmentoList where valor not equals to DEFAULT_VALOR
+        defaultSegmentoShouldNotBeFound("valor.notEquals=" + DEFAULT_VALOR);
+
+        // Get all the segmentoList where valor not equals to UPDATED_VALOR
+        defaultSegmentoShouldBeFound("valor.notEquals=" + UPDATED_VALOR);
+    }
+
+    @Test
+    @Transactional
+    public void getAllSegmentosByValorIsInShouldWork() throws Exception {
+        // Initialize the database
+        segmentoRepository.saveAndFlush(segmento);
+
+        // Get all the segmentoList where valor in DEFAULT_VALOR or UPDATED_VALOR
+        defaultSegmentoShouldBeFound("valor.in=" + DEFAULT_VALOR + "," + UPDATED_VALOR);
+
+        // Get all the segmentoList where valor equals to UPDATED_VALOR
+        defaultSegmentoShouldNotBeFound("valor.in=" + UPDATED_VALOR);
+    }
+
+    @Test
+    @Transactional
+    public void getAllSegmentosByValorIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        segmentoRepository.saveAndFlush(segmento);
+
+        // Get all the segmentoList where valor is not null
+        defaultSegmentoShouldBeFound("valor.specified=true");
+
+        // Get all the segmentoList where valor is null
+        defaultSegmentoShouldNotBeFound("valor.specified=false");
+    }
+                @Test
+    @Transactional
+    public void getAllSegmentosByValorContainsSomething() throws Exception {
+        // Initialize the database
+        segmentoRepository.saveAndFlush(segmento);
+
+        // Get all the segmentoList where valor contains DEFAULT_VALOR
+        defaultSegmentoShouldBeFound("valor.contains=" + DEFAULT_VALOR);
+
+        // Get all the segmentoList where valor contains UPDATED_VALOR
+        defaultSegmentoShouldNotBeFound("valor.contains=" + UPDATED_VALOR);
+    }
+
+    @Test
+    @Transactional
+    public void getAllSegmentosByValorNotContainsSomething() throws Exception {
+        // Initialize the database
+        segmentoRepository.saveAndFlush(segmento);
+
+        // Get all the segmentoList where valor does not contain DEFAULT_VALOR
+        defaultSegmentoShouldNotBeFound("valor.doesNotContain=" + DEFAULT_VALOR);
+
+        // Get all the segmentoList where valor does not contain UPDATED_VALOR
+        defaultSegmentoShouldBeFound("valor.doesNotContain=" + UPDATED_VALOR);
+    }
+
     /**
      * Executes the search, and checks that the default entity is returned.
      */
@@ -250,7 +336,8 @@ public class SegmentoResourceIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(segmento.getId().intValue())))
-            .andExpect(jsonPath("$.[*].descripcion").value(hasItem(DEFAULT_DESCRIPCION)));
+            .andExpect(jsonPath("$.[*].descripcion").value(hasItem(DEFAULT_DESCRIPCION)))
+            .andExpect(jsonPath("$.[*].valor").value(hasItem(DEFAULT_VALOR)));
 
         // Check, that the count call also returns 1
         restSegmentoMockMvc.perform(get("/api/segmentos/count?sort=id,desc&" + filter))
@@ -297,7 +384,8 @@ public class SegmentoResourceIT {
         // Disconnect from session so that the updates on updatedSegmento are not directly saved in db
         em.detach(updatedSegmento);
         updatedSegmento
-            .descripcion(UPDATED_DESCRIPCION);
+            .descripcion(UPDATED_DESCRIPCION)
+            .valor(UPDATED_VALOR);
 
         restSegmentoMockMvc.perform(put("/api/segmentos")
             .contentType(MediaType.APPLICATION_JSON)
@@ -309,6 +397,7 @@ public class SegmentoResourceIT {
         assertThat(segmentoList).hasSize(databaseSizeBeforeUpdate);
         Segmento testSegmento = segmentoList.get(segmentoList.size() - 1);
         assertThat(testSegmento.getDescripcion()).isEqualTo(UPDATED_DESCRIPCION);
+        assertThat(testSegmento.getValor()).isEqualTo(UPDATED_VALOR);
     }
 
     @Test
