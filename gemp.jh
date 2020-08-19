@@ -1,0 +1,36 @@
+entity TipoEmp {
+  Id  String required,
+  descripcion  String
+}
+
+entity TipoObra {
+  Id  String required,
+  descripcion  String
+}
+
+entity TipoDesp {
+  Id  String required,
+  descripcion  String
+}
+
+entity Segmento {
+   Id  String required,
+  descripcion  String
+}
+
+
+
+
+
+
+// Set pagination options
+paginate  Segmento, TipoEmp, TipoObra, TipoDesp with pagination
+
+filter  Segmento, TipoEmp, TipoObra, TipoDesp 
+
+
+service all with serviceImpl
+ 
+
+
+// angularSuffix * with mySuffi
