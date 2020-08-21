@@ -3,6 +3,7 @@ package ar.com.telecom.gemp.web.rest;
 import ar.com.telecom.gemp.GempApp;
 import ar.com.telecom.gemp.domain.TipoEmp;
 import ar.com.telecom.gemp.repository.TipoEmpRepository;
+import ar.com.telecom.gemp.service.TipoEmpService;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -37,6 +38,9 @@ public class TipoEmpResourceIT {
 
     @Autowired
     private TipoEmpRepository tipoEmpRepository;
+
+    @Autowired
+    private TipoEmpService tipoEmpService;
 
     @Autowired
     private EntityManager em;
@@ -155,7 +159,7 @@ public class TipoEmpResourceIT {
     @Transactional
     public void updateTipoEmp() throws Exception {
         // Initialize the database
-        tipoEmpRepository.saveAndFlush(tipoEmp);
+        tipoEmpService.save(tipoEmp);
 
         int databaseSizeBeforeUpdate = tipoEmpRepository.findAll().size();
 
@@ -200,7 +204,7 @@ public class TipoEmpResourceIT {
     @Transactional
     public void deleteTipoEmp() throws Exception {
         // Initialize the database
-        tipoEmpRepository.saveAndFlush(tipoEmp);
+        tipoEmpService.save(tipoEmp);
 
         int databaseSizeBeforeDelete = tipoEmpRepository.findAll().size();
 

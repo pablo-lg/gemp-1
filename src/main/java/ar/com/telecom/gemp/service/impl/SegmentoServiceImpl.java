@@ -6,11 +6,10 @@ import ar.com.telecom.gemp.repository.SegmentoRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -36,9 +35,9 @@ public class SegmentoServiceImpl implements SegmentoService {
 
     @Override
     @Transactional(readOnly = true)
-    public Page<Segmento> findAll(Pageable pageable) {
+    public List<Segmento> findAll() {
         log.debug("Request to get all Segmentos");
-        return segmentoRepository.findAll(pageable);
+        return segmentoRepository.findAll();
     }
 
 

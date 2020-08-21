@@ -2,9 +2,7 @@ package ar.com.telecom.gemp.service;
 
 import ar.com.telecom.gemp.domain.TipoEmp;
 
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -23,10 +21,9 @@ public interface TipoEmpService {
     /**
      * Get all the tipoEmps.
      *
-     * @param pageable the pagination information.
      * @return the list of entities.
      */
-    Page<TipoEmp> findAll(Pageable pageable);
+    List<TipoEmp> findAll();
 
 
     /**

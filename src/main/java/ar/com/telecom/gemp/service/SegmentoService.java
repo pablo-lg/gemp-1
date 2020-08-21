@@ -2,9 +2,7 @@ package ar.com.telecom.gemp.service;
 
 import ar.com.telecom.gemp.domain.Segmento;
 
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -23,10 +21,9 @@ public interface SegmentoService {
     /**
      * Get all the segmentos.
      *
-     * @param pageable the pagination information.
      * @return the list of entities.
      */
-    Page<Segmento> findAll(Pageable pageable);
+    List<Segmento> findAll();
 
 
     /**
