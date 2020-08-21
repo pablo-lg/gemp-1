@@ -20,7 +20,7 @@ export const SegmentoUpdate = (props: ISegmentoUpdateProps) => {
   const { segmentoEntity, loading, updating } = props;
 
   const handleClose = () => {
-    props.history.push('/segmento' + props.location.search);
+    props.history.push('/segmento');
   };
 
   useEffect(() => {

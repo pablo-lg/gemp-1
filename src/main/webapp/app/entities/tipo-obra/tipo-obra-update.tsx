@@ -20,7 +20,7 @@ export const TipoObraUpdate = (props: ITipoObraUpdateProps) => {
   const { tipoObraEntity, loading, updating } = props;
 
   const handleClose = () => {
-    props.history.push('/tipo-obra' + props.location.search);
+    props.history.push('/tipo-obra');
   };
 
   useEffect(() => {

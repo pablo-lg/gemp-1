@@ -2,69 +2,22 @@ import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { Link, RouteComponentProps } from 'react-router-dom';
 import { Button, Col, Row, Table } from 'reactstrap';
-import { ICrudGetAllAction, getSortState, IPaginationBaseState, JhiPagination, JhiItemCount } from 'react-jhipster';
+import { ICrudGetAllAction } from 'react-jhipster';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import { IRootState } from 'app/shared/reducers';
 import { getEntities } from './tipo-desp.reducer';
 import { ITipoDesp } from 'app/shared/model/tipo-desp.model';
 import { APP_DATE_FORMAT, APP_LOCAL_DATE_FORMAT } from 'app/config/constants';
-import { ITEMS_PER_PAGE } from 'app/shared/util/pagination.constants';
-import { overridePaginationStateWithQueryParams } from 'app/shared/util/entity-utils';
 
 export interface ITipoDespProps extends StateProps, DispatchProps, RouteComponentProps<{ url: string }> {}
 
 export const TipoDesp = (props: ITipoDespProps) => {
-  const [paginationState, setPaginationState] = useState(
-    overridePaginationStateWithQueryParams(getSortState(props.location, ITEMS_PER_PAGE), props.location.search)
-  );
-
-  const getAllEntities = () => {
-    props.getEntities(paginationState.activePage - 1, paginationState.itemsPerPage, `${paginationState.sort},${paginationState.order}`);
-  };
-
-  const sortEntities = () => {
-    getAllEntities();
-    const endURL = `?page=${paginationState.activePage}&sort=${paginationState.sort},${paginationState.order}`;
-    if (props.location.search !== endURL) {
-      props.history.push(`${props.location.pathname}${endURL}`);
-    }
-  };
-
   useEffect(() => {
-    sortEntities();
-  }, [paginationState.activePage, paginationState.order, paginationState.sort]);
+    props.getEntities();
+  }, []);
 
-  useEffect(() => {
-    const params = new URLSearchParams(props.location.search);
-    const page = params.get('page');
-    const sort = params.get('sort');
-    if (page && sort) {
-      const sortSplit = sort.split(',');
-      setPaginationState({
-        ...paginationState,
-        activePage: +page,
-        sort: sortSplit[0],
-        order: sortSplit[1],
-      });
-    }
-  }, [props.location.search]);
-
-  const sort = p => () => {
-    setPaginationState({
-      ...paginationState,
-      order: paginationState.order === 'asc' ? 'desc' : 'asc',
-      sort: p,
-    });
-  };
-
-  const handlePagination = currentPage =>
-    setPaginationState({
-      ...paginationState,
-      activePage: currentPage,
-    });
-
-  const { tipoDespList, match, loading, totalItems } = props;
+  const { tipoDespList, match, loading } = props;
   return (
     <div>
       <h2 id="tipo-desp-heading">
@@ -79,15 +32,9 @@ export const TipoDesp = (props: ITipoDespProps) => {
           <Table responsive>
             <thead>
               <tr>
-                <th className="hand" onClick={sort('id')}>
-                  ID <FontAwesomeIcon icon="sort" />
-                </th>
-                <th className="hand" onClick={sort('descripcion')}>
-                  Descripcion <FontAwesomeIcon icon="sort" />
-                </th>
-                <th className="hand" onClick={sort('valor')}>
-                  Valor <FontAwesomeIcon icon="sort" />
-                </th>
+                <th>ID</th>
+                <th>Descripcion</th>
+                <th>Valor</th>
                 <th />
               </tr>
             </thead>
@@ -106,20 +53,10 @@ export const TipoDesp = (props: ITipoDespProps) => {
                       <Button tag={Link} to={`${match.url}/${tipoDesp.id}`} color="info" size="sm">
                         <FontAwesomeIcon icon="eye" /> <span className="d-none d-md-inline">View</span>
                       </Button>
-                      <Button
-                        tag={Link}
-                        to={`${match.url}/${tipoDesp.id}/edit?page=${paginationState.activePage}&sort=${paginationState.sort},${paginationState.order}`}
-                        color="primary"
-                        size="sm"
-                      >
+                      <Button tag={Link} to={`${match.url}/${tipoDesp.id}/edit`} color="primary" size="sm">
                         <FontAwesomeIcon icon="pencil-alt" /> <span className="d-none d-md-inline">Edit</span>
                       </Button>
-                      <Button
-                        tag={Link}
-                        to={`${match.url}/${tipoDesp.id}/delete?page=${paginationState.activePage}&sort=${paginationState.sort},${paginationState.order}`}
-                        color="danger"
-                        size="sm"
-                      >
+                      <Button tag={Link} to={`${match.url}/${tipoDesp.id}/delete`} color="danger" size="sm">
                         <FontAwesomeIcon icon="trash" /> <span className="d-none d-md-inline">Delete</span>
                       </Button>
                     </div>
@@ -132,24 +69,6 @@ export const TipoDesp = (props: ITipoDespProps) => {
           !loading && <div className="alert alert-warning">No Tipo Desps found</div>
         )}
       </div>
-      {props.totalItems ? (
-        <div className={tipoDespList && tipoDespList.length > 0 ? '' : 'd-none'}>
-          <Row className="justify-content-center">
-            <JhiItemCount page={paginationState.activePage} total={totalItems} itemsPerPage={paginationState.itemsPerPage} />
-          </Row>
-          <Row className="justify-content-center">
-            <JhiPagination
-              activePage={paginationState.activePage}
-              onSelect={handlePagination}
-              maxButtons={5}
-              itemsPerPage={paginationState.itemsPerPage}
-              totalItems={props.totalItems}
-            />
-          </Row>
-        </div>
-      ) : (
-        ''
-      )}
     </div>
   );
 };
@@ -157,7 +76,6 @@ export const TipoDesp = (props: ITipoDespProps) => {
 const mapStateToProps = ({ tipoDesp }: IRootState) => ({
   tipoDespList: tipoDesp.entities,
   loading: tipoDesp.loading,
-  totalItems: tipoDesp.totalItems,
 });
 
 const mapDispatchToProps = {

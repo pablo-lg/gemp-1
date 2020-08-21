@@ -3,9 +3,6 @@ package ar.com.telecom.gemp.web.rest;
 import ar.com.telecom.gemp.GempApp;
 import ar.com.telecom.gemp.domain.Segmento;
 import ar.com.telecom.gemp.repository.SegmentoRepository;
-import ar.com.telecom.gemp.service.SegmentoService;
-import ar.com.telecom.gemp.service.dto.SegmentoCriteria;
-import ar.com.telecom.gemp.service.SegmentoQueryService;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -40,12 +37,6 @@ public class SegmentoResourceIT {
 
     @Autowired
     private SegmentoRepository segmentoRepository;
-
-    @Autowired
-    private SegmentoService segmentoService;
-
-    @Autowired
-    private SegmentoQueryService segmentoQueryService;
 
     @Autowired
     private EntityManager em;
@@ -152,217 +143,6 @@ public class SegmentoResourceIT {
             .andExpect(jsonPath("$.descripcion").value(DEFAULT_DESCRIPCION))
             .andExpect(jsonPath("$.valor").value(DEFAULT_VALOR));
     }
-
-
-    @Test
-    @Transactional
-    public void getSegmentosByIdFiltering() throws Exception {
-        // Initialize the database
-        segmentoRepository.saveAndFlush(segmento);
-
-        Long id = segmento.getId();
-
-        defaultSegmentoShouldBeFound("id.equals=" + id);
-        defaultSegmentoShouldNotBeFound("id.notEquals=" + id);
-
-        defaultSegmentoShouldBeFound("id.greaterThanOrEqual=" + id);
-        defaultSegmentoShouldNotBeFound("id.greaterThan=" + id);
-
-        defaultSegmentoShouldBeFound("id.lessThanOrEqual=" + id);
-        defaultSegmentoShouldNotBeFound("id.lessThan=" + id);
-    }
-
-
-    @Test
-    @Transactional
-    public void getAllSegmentosByDescripcionIsEqualToSomething() throws Exception {
-        // Initialize the database
-        segmentoRepository.saveAndFlush(segmento);
-
-        // Get all the segmentoList where descripcion equals to DEFAULT_DESCRIPCION
-        defaultSegmentoShouldBeFound("descripcion.equals=" + DEFAULT_DESCRIPCION);
-
-        // Get all the segmentoList where descripcion equals to UPDATED_DESCRIPCION
-        defaultSegmentoShouldNotBeFound("descripcion.equals=" + UPDATED_DESCRIPCION);
-    }
-
-    @Test
-    @Transactional
-    public void getAllSegmentosByDescripcionIsNotEqualToSomething() throws Exception {
-        // Initialize the database
-        segmentoRepository.saveAndFlush(segmento);
-
-        // Get all the segmentoList where descripcion not equals to DEFAULT_DESCRIPCION
-        defaultSegmentoShouldNotBeFound("descripcion.notEquals=" + DEFAULT_DESCRIPCION);
-
-        // Get all the segmentoList where descripcion not equals to UPDATED_DESCRIPCION
-        defaultSegmentoShouldBeFound("descripcion.notEquals=" + UPDATED_DESCRIPCION);
-    }
-
-    @Test
-    @Transactional
-    public void getAllSegmentosByDescripcionIsInShouldWork() throws Exception {
-        // Initialize the database
-        segmentoRepository.saveAndFlush(segmento);
-
-        // Get all the segmentoList where descripcion in DEFAULT_DESCRIPCION or UPDATED_DESCRIPCION
-        defaultSegmentoShouldBeFound("descripcion.in=" + DEFAULT_DESCRIPCION + "," + UPDATED_DESCRIPCION);
-
-        // Get all the segmentoList where descripcion equals to UPDATED_DESCRIPCION
-        defaultSegmentoShouldNotBeFound("descripcion.in=" + UPDATED_DESCRIPCION);
-    }
-
-    @Test
-    @Transactional
-    public void getAllSegmentosByDescripcionIsNullOrNotNull() throws Exception {
-        // Initialize the database
-        segmentoRepository.saveAndFlush(segmento);
-
-        // Get all the segmentoList where descripcion is not null
-        defaultSegmentoShouldBeFound("descripcion.specified=true");
-
-        // Get all the segmentoList where descripcion is null
-        defaultSegmentoShouldNotBeFound("descripcion.specified=false");
-    }
-                @Test
-    @Transactional
-    public void getAllSegmentosByDescripcionContainsSomething() throws Exception {
-        // Initialize the database
-        segmentoRepository.saveAndFlush(segmento);
-
-        // Get all the segmentoList where descripcion contains DEFAULT_DESCRIPCION
-        defaultSegmentoShouldBeFound("descripcion.contains=" + DEFAULT_DESCRIPCION);
-
-        // Get all the segmentoList where descripcion contains UPDATED_DESCRIPCION
-        defaultSegmentoShouldNotBeFound("descripcion.contains=" + UPDATED_DESCRIPCION);
-    }
-
-    @Test
-    @Transactional
-    public void getAllSegmentosByDescripcionNotContainsSomething() throws Exception {
-        // Initialize the database
-        segmentoRepository.saveAndFlush(segmento);
-
-        // Get all the segmentoList where descripcion does not contain DEFAULT_DESCRIPCION
-        defaultSegmentoShouldNotBeFound("descripcion.doesNotContain=" + DEFAULT_DESCRIPCION);
-
-        // Get all the segmentoList where descripcion does not contain UPDATED_DESCRIPCION
-        defaultSegmentoShouldBeFound("descripcion.doesNotContain=" + UPDATED_DESCRIPCION);
-    }
-
-
-    @Test
-    @Transactional
-    public void getAllSegmentosByValorIsEqualToSomething() throws Exception {
-        // Initialize the database
-        segmentoRepository.saveAndFlush(segmento);
-
-        // Get all the segmentoList where valor equals to DEFAULT_VALOR
-        defaultSegmentoShouldBeFound("valor.equals=" + DEFAULT_VALOR);
-
-        // Get all the segmentoList where valor equals to UPDATED_VALOR
-        defaultSegmentoShouldNotBeFound("valor.equals=" + UPDATED_VALOR);
-    }
-
-    @Test
-    @Transactional
-    public void getAllSegmentosByValorIsNotEqualToSomething() throws Exception {
-        // Initialize the database
-        segmentoRepository.saveAndFlush(segmento);
-
-        // Get all the segmentoList where valor not equals to DEFAULT_VALOR
-        defaultSegmentoShouldNotBeFound("valor.notEquals=" + DEFAULT_VALOR);
-
-        // Get all the segmentoList where valor not equals to UPDATED_VALOR
-        defaultSegmentoShouldBeFound("valor.notEquals=" + UPDATED_VALOR);
-    }
-
-    @Test
-    @Transactional
-    public void getAllSegmentosByValorIsInShouldWork() throws Exception {
-        // Initialize the database
-        segmentoRepository.saveAndFlush(segmento);
-
-        // Get all the segmentoList where valor in DEFAULT_VALOR or UPDATED_VALOR
-        defaultSegmentoShouldBeFound("valor.in=" + DEFAULT_VALOR + "," + UPDATED_VALOR);
-
-        // Get all the segmentoList where valor equals to UPDATED_VALOR
-        defaultSegmentoShouldNotBeFound("valor.in=" + UPDATED_VALOR);
-    }
-
-    @Test
-    @Transactional
-    public void getAllSegmentosByValorIsNullOrNotNull() throws Exception {
-        // Initialize the database
-        segmentoRepository.saveAndFlush(segmento);
-
-        // Get all the segmentoList where valor is not null
-        defaultSegmentoShouldBeFound("valor.specified=true");
-
-        // Get all the segmentoList where valor is null
-        defaultSegmentoShouldNotBeFound("valor.specified=false");
-    }
-                @Test
-    @Transactional
-    public void getAllSegmentosByValorContainsSomething() throws Exception {
-        // Initialize the database
-        segmentoRepository.saveAndFlush(segmento);
-
-        // Get all the segmentoList where valor contains DEFAULT_VALOR
-        defaultSegmentoShouldBeFound("valor.contains=" + DEFAULT_VALOR);
-
-        // Get all the segmentoList where valor contains UPDATED_VALOR
-        defaultSegmentoShouldNotBeFound("valor.contains=" + UPDATED_VALOR);
-    }
-
-    @Test
-    @Transactional
-    public void getAllSegmentosByValorNotContainsSomething() throws Exception {
-        // Initialize the database
-        segmentoRepository.saveAndFlush(segmento);
-
-        // Get all the segmentoList where valor does not contain DEFAULT_VALOR
-        defaultSegmentoShouldNotBeFound("valor.doesNotContain=" + DEFAULT_VALOR);
-
-        // Get all the segmentoList where valor does not contain UPDATED_VALOR
-        defaultSegmentoShouldBeFound("valor.doesNotContain=" + UPDATED_VALOR);
-    }
-
-    /**
-     * Executes the search, and checks that the default entity is returned.
-     */
-    private void defaultSegmentoShouldBeFound(String filter) throws Exception {
-        restSegmentoMockMvc.perform(get("/api/segmentos?sort=id,desc&" + filter))
-            .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
-            .andExpect(jsonPath("$.[*].id").value(hasItem(segmento.getId().intValue())))
-            .andExpect(jsonPath("$.[*].descripcion").value(hasItem(DEFAULT_DESCRIPCION)))
-            .andExpect(jsonPath("$.[*].valor").value(hasItem(DEFAULT_VALOR)));
-
-        // Check, that the count call also returns 1
-        restSegmentoMockMvc.perform(get("/api/segmentos/count?sort=id,desc&" + filter))
-            .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
-            .andExpect(content().string("1"));
-    }
-
-    /**
-     * Executes the search, and checks that the default entity is not returned.
-     */
-    private void defaultSegmentoShouldNotBeFound(String filter) throws Exception {
-        restSegmentoMockMvc.perform(get("/api/segmentos?sort=id,desc&" + filter))
-            .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
-            .andExpect(jsonPath("$").isArray())
-            .andExpect(jsonPath("$").isEmpty());
-
-        // Check, that the count call also returns 0
-        restSegmentoMockMvc.perform(get("/api/segmentos/count?sort=id,desc&" + filter))
-            .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
-            .andExpect(content().string("0"));
-    }
-
     @Test
     @Transactional
     public void getNonExistingSegmento() throws Exception {
@@ -375,7 +155,7 @@ public class SegmentoResourceIT {
     @Transactional
     public void updateSegmento() throws Exception {
         // Initialize the database
-        segmentoService.save(segmento);
+        segmentoRepository.saveAndFlush(segmento);
 
         int databaseSizeBeforeUpdate = segmentoRepository.findAll().size();
 
@@ -420,7 +200,7 @@ public class SegmentoResourceIT {
     @Transactional
     public void deleteSegmento() throws Exception {
         // Initialize the database
-        segmentoService.save(segmento);
+        segmentoRepository.saveAndFlush(segmento);
 
         int databaseSizeBeforeDelete = segmentoRepository.findAll().size();
 

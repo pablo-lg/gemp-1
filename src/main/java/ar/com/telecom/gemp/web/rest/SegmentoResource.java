@@ -1,23 +1,16 @@
 package ar.com.telecom.gemp.web.rest;
 
 import ar.com.telecom.gemp.domain.Segmento;
-import ar.com.telecom.gemp.service.SegmentoService;
+import ar.com.telecom.gemp.repository.SegmentoRepository;
 import ar.com.telecom.gemp.web.rest.errors.BadRequestAlertException;
-import ar.com.telecom.gemp.service.dto.SegmentoCriteria;
-import ar.com.telecom.gemp.service.SegmentoQueryService;
 
 import io.github.jhipster.web.util.HeaderUtil;
-import io.github.jhipster.web.util.PaginationUtil;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
@@ -30,6 +23,7 @@ import java.util.Optional;
  */
 @RestController
 @RequestMapping("/api")
+@Transactional
 public class SegmentoResource {
 
     private final Logger log = LoggerFactory.getLogger(SegmentoResource.class);
@@ -39,13 +33,10 @@ public class SegmentoResource {
     @Value("${jhipster.clientApp.name}")
     private String applicationName;
 
-    private final SegmentoService segmentoService;
+    private final SegmentoRepository segmentoRepository;
 
-    private final SegmentoQueryService segmentoQueryService;
-
-    public SegmentoResource(SegmentoService segmentoService, SegmentoQueryService segmentoQueryService) {
-        this.segmentoService = segmentoService;
-        this.segmentoQueryService = segmentoQueryService;
+    public SegmentoResource(SegmentoRepository segmentoRepository) {
+        this.segmentoRepository = segmentoRepository;
     }
 
     /**
@@ -61,7 +52,7 @@ public class SegmentoResource {
         if (segmento.getId() != null) {
             throw new BadRequestAlertException("A new segmento cannot already have an ID", ENTITY_NAME, "idexists");
         }
-        Segmento result = segmentoService.save(segmento);
+        Segmento result = segmentoRepository.save(segmento);
         return ResponseEntity.created(new URI("/api/segmentos/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, false, ENTITY_NAME, result.getId().toString()))
             .body(result);
@@ -82,7 +73,7 @@ public class SegmentoResource {
         if (segmento.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
-        Segmento result = segmentoService.save(segmento);
+        Segmento result = segmentoRepository.save(segmento);
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(applicationName, false, ENTITY_NAME, segmento.getId().toString()))
             .body(result);
@@ -91,28 +82,12 @@ public class SegmentoResource {
     /**
      * {@code GET  /segmentos} : get all the segmentos.
      *
-     * @param pageable the pagination information.
-     * @param criteria the criteria which the requested entities should match.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of segmentos in body.
      */
     @GetMapping("/segmentos")
-    public ResponseEntity<List<Segmento>> getAllSegmentos(SegmentoCriteria criteria, Pageable pageable) {
-        log.debug("REST request to get Segmentos by criteria: {}", criteria);
-        Page<Segmento> page = segmentoQueryService.findByCriteria(criteria, pageable);
-        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
-        return ResponseEntity.ok().headers(headers).body(page.getContent());
-    }
-
-    /**
-     * {@code GET  /segmentos/count} : count all the segmentos.
-     *
-     * @param criteria the criteria which the requested entities should match.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the count in body.
-     */
-    @GetMapping("/segmentos/count")
-    public ResponseEntity<Long> countSegmentos(SegmentoCriteria criteria) {
-        log.debug("REST request to count Segmentos by criteria: {}", criteria);
-        return ResponseEntity.ok().body(segmentoQueryService.countByCriteria(criteria));
+    public List<Segmento> getAllSegmentos() {
+        log.debug("REST request to get all Segmentos");
+        return segmentoRepository.findAll();
     }
 
     /**
@@ -124,7 +99,7 @@ public class SegmentoResource {
     @GetMapping("/segmentos/{id}")
     public ResponseEntity<Segmento> getSegmento(@PathVariable Long id) {
         log.debug("REST request to get Segmento : {}", id);
-        Optional<Segmento> segmento = segmentoService.findOne(id);
+        Optional<Segmento> segmento = segmentoRepository.findById(id);
         return ResponseUtil.wrapOrNotFound(segmento);
     }
 
@@ -137,7 +112,7 @@ public class SegmentoResource {
     @DeleteMapping("/segmentos/{id}")
     public ResponseEntity<Void> deleteSegmento(@PathVariable Long id) {
         log.debug("REST request to delete Segmento : {}", id);
-        segmentoService.delete(id);
+        segmentoRepository.deleteById(id);
         return ResponseEntity.noContent().headers(HeaderUtil.createEntityDeletionAlert(applicationName, false, ENTITY_NAME, id.toString())).build();
     }
 }

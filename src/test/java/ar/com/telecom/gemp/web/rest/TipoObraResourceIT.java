@@ -3,9 +3,6 @@ package ar.com.telecom.gemp.web.rest;
 import ar.com.telecom.gemp.GempApp;
 import ar.com.telecom.gemp.domain.TipoObra;
 import ar.com.telecom.gemp.repository.TipoObraRepository;
-import ar.com.telecom.gemp.service.TipoObraService;
-import ar.com.telecom.gemp.service.dto.TipoObraCriteria;
-import ar.com.telecom.gemp.service.TipoObraQueryService;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -40,12 +37,6 @@ public class TipoObraResourceIT {
 
     @Autowired
     private TipoObraRepository tipoObraRepository;
-
-    @Autowired
-    private TipoObraService tipoObraService;
-
-    @Autowired
-    private TipoObraQueryService tipoObraQueryService;
 
     @Autowired
     private EntityManager em;
@@ -152,217 +143,6 @@ public class TipoObraResourceIT {
             .andExpect(jsonPath("$.descripcion").value(DEFAULT_DESCRIPCION))
             .andExpect(jsonPath("$.valor").value(DEFAULT_VALOR));
     }
-
-
-    @Test
-    @Transactional
-    public void getTipoObrasByIdFiltering() throws Exception {
-        // Initialize the database
-        tipoObraRepository.saveAndFlush(tipoObra);
-
-        Long id = tipoObra.getId();
-
-        defaultTipoObraShouldBeFound("id.equals=" + id);
-        defaultTipoObraShouldNotBeFound("id.notEquals=" + id);
-
-        defaultTipoObraShouldBeFound("id.greaterThanOrEqual=" + id);
-        defaultTipoObraShouldNotBeFound("id.greaterThan=" + id);
-
-        defaultTipoObraShouldBeFound("id.lessThanOrEqual=" + id);
-        defaultTipoObraShouldNotBeFound("id.lessThan=" + id);
-    }
-
-
-    @Test
-    @Transactional
-    public void getAllTipoObrasByDescripcionIsEqualToSomething() throws Exception {
-        // Initialize the database
-        tipoObraRepository.saveAndFlush(tipoObra);
-
-        // Get all the tipoObraList where descripcion equals to DEFAULT_DESCRIPCION
-        defaultTipoObraShouldBeFound("descripcion.equals=" + DEFAULT_DESCRIPCION);
-
-        // Get all the tipoObraList where descripcion equals to UPDATED_DESCRIPCION
-        defaultTipoObraShouldNotBeFound("descripcion.equals=" + UPDATED_DESCRIPCION);
-    }
-
-    @Test
-    @Transactional
-    public void getAllTipoObrasByDescripcionIsNotEqualToSomething() throws Exception {
-        // Initialize the database
-        tipoObraRepository.saveAndFlush(tipoObra);
-
-        // Get all the tipoObraList where descripcion not equals to DEFAULT_DESCRIPCION
-        defaultTipoObraShouldNotBeFound("descripcion.notEquals=" + DEFAULT_DESCRIPCION);
-
-        // Get all the tipoObraList where descripcion not equals to UPDATED_DESCRIPCION
-        defaultTipoObraShouldBeFound("descripcion.notEquals=" + UPDATED_DESCRIPCION);
-    }
-
-    @Test
-    @Transactional
-    public void getAllTipoObrasByDescripcionIsInShouldWork() throws Exception {
-        // Initialize the database
-        tipoObraRepository.saveAndFlush(tipoObra);
-
-        // Get all the tipoObraList where descripcion in DEFAULT_DESCRIPCION or UPDATED_DESCRIPCION
-        defaultTipoObraShouldBeFound("descripcion.in=" + DEFAULT_DESCRIPCION + "," + UPDATED_DESCRIPCION);
-
-        // Get all the tipoObraList where descripcion equals to UPDATED_DESCRIPCION
-        defaultTipoObraShouldNotBeFound("descripcion.in=" + UPDATED_DESCRIPCION);
-    }
-
-    @Test
-    @Transactional
-    public void getAllTipoObrasByDescripcionIsNullOrNotNull() throws Exception {
-        // Initialize the database
-        tipoObraRepository.saveAndFlush(tipoObra);
-
-        // Get all the tipoObraList where descripcion is not null
-        defaultTipoObraShouldBeFound("descripcion.specified=true");
-
-        // Get all the tipoObraList where descripcion is null
-        defaultTipoObraShouldNotBeFound("descripcion.specified=false");
-    }
-                @Test
-    @Transactional
-    public void getAllTipoObrasByDescripcionContainsSomething() throws Exception {
-        // Initialize the database
-        tipoObraRepository.saveAndFlush(tipoObra);
-
-        // Get all the tipoObraList where descripcion contains DEFAULT_DESCRIPCION
-        defaultTipoObraShouldBeFound("descripcion.contains=" + DEFAULT_DESCRIPCION);
-
-        // Get all the tipoObraList where descripcion contains UPDATED_DESCRIPCION
-        defaultTipoObraShouldNotBeFound("descripcion.contains=" + UPDATED_DESCRIPCION);
-    }
-
-    @Test
-    @Transactional
-    public void getAllTipoObrasByDescripcionNotContainsSomething() throws Exception {
-        // Initialize the database
-        tipoObraRepository.saveAndFlush(tipoObra);
-
-        // Get all the tipoObraList where descripcion does not contain DEFAULT_DESCRIPCION
-        defaultTipoObraShouldNotBeFound("descripcion.doesNotContain=" + DEFAULT_DESCRIPCION);
-
-        // Get all the tipoObraList where descripcion does not contain UPDATED_DESCRIPCION
-        defaultTipoObraShouldBeFound("descripcion.doesNotContain=" + UPDATED_DESCRIPCION);
-    }
-
-
-    @Test
-    @Transactional
-    public void getAllTipoObrasByValorIsEqualToSomething() throws Exception {
-        // Initialize the database
-        tipoObraRepository.saveAndFlush(tipoObra);
-
-        // Get all the tipoObraList where valor equals to DEFAULT_VALOR
-        defaultTipoObraShouldBeFound("valor.equals=" + DEFAULT_VALOR);
-
-        // Get all the tipoObraList where valor equals to UPDATED_VALOR
-        defaultTipoObraShouldNotBeFound("valor.equals=" + UPDATED_VALOR);
-    }
-
-    @Test
-    @Transactional
-    public void getAllTipoObrasByValorIsNotEqualToSomething() throws Exception {
-        // Initialize the database
-        tipoObraRepository.saveAndFlush(tipoObra);
-
-        // Get all the tipoObraList where valor not equals to DEFAULT_VALOR
-        defaultTipoObraShouldNotBeFound("valor.notEquals=" + DEFAULT_VALOR);
-
-        // Get all the tipoObraList where valor not equals to UPDATED_VALOR
-        defaultTipoObraShouldBeFound("valor.notEquals=" + UPDATED_VALOR);
-    }
-
-    @Test
-    @Transactional
-    public void getAllTipoObrasByValorIsInShouldWork() throws Exception {
-        // Initialize the database
-        tipoObraRepository.saveAndFlush(tipoObra);
-
-        // Get all the tipoObraList where valor in DEFAULT_VALOR or UPDATED_VALOR
-        defaultTipoObraShouldBeFound("valor.in=" + DEFAULT_VALOR + "," + UPDATED_VALOR);
-
-        // Get all the tipoObraList where valor equals to UPDATED_VALOR
-        defaultTipoObraShouldNotBeFound("valor.in=" + UPDATED_VALOR);
-    }
-
-    @Test
-    @Transactional
-    public void getAllTipoObrasByValorIsNullOrNotNull() throws Exception {
-        // Initialize the database
-        tipoObraRepository.saveAndFlush(tipoObra);
-
-        // Get all the tipoObraList where valor is not null
-        defaultTipoObraShouldBeFound("valor.specified=true");
-
-        // Get all the tipoObraList where valor is null
-        defaultTipoObraShouldNotBeFound("valor.specified=false");
-    }
-                @Test
-    @Transactional
-    public void getAllTipoObrasByValorContainsSomething() throws Exception {
-        // Initialize the database
-        tipoObraRepository.saveAndFlush(tipoObra);
-
-        // Get all the tipoObraList where valor contains DEFAULT_VALOR
-        defaultTipoObraShouldBeFound("valor.contains=" + DEFAULT_VALOR);
-
-        // Get all the tipoObraList where valor contains UPDATED_VALOR
-        defaultTipoObraShouldNotBeFound("valor.contains=" + UPDATED_VALOR);
-    }
-
-    @Test
-    @Transactional
-    public void getAllTipoObrasByValorNotContainsSomething() throws Exception {
-        // Initialize the database
-        tipoObraRepository.saveAndFlush(tipoObra);
-
-        // Get all the tipoObraList where valor does not contain DEFAULT_VALOR
-        defaultTipoObraShouldNotBeFound("valor.doesNotContain=" + DEFAULT_VALOR);
-
-        // Get all the tipoObraList where valor does not contain UPDATED_VALOR
-        defaultTipoObraShouldBeFound("valor.doesNotContain=" + UPDATED_VALOR);
-    }
-
-    /**
-     * Executes the search, and checks that the default entity is returned.
-     */
-    private void defaultTipoObraShouldBeFound(String filter) throws Exception {
-        restTipoObraMockMvc.perform(get("/api/tipo-obras?sort=id,desc&" + filter))
-            .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
-            .andExpect(jsonPath("$.[*].id").value(hasItem(tipoObra.getId().intValue())))
-            .andExpect(jsonPath("$.[*].descripcion").value(hasItem(DEFAULT_DESCRIPCION)))
-            .andExpect(jsonPath("$.[*].valor").value(hasItem(DEFAULT_VALOR)));
-
-        // Check, that the count call also returns 1
-        restTipoObraMockMvc.perform(get("/api/tipo-obras/count?sort=id,desc&" + filter))
-            .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
-            .andExpect(content().string("1"));
-    }
-
-    /**
-     * Executes the search, and checks that the default entity is not returned.
-     */
-    private void defaultTipoObraShouldNotBeFound(String filter) throws Exception {
-        restTipoObraMockMvc.perform(get("/api/tipo-obras?sort=id,desc&" + filter))
-            .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
-            .andExpect(jsonPath("$").isArray())
-            .andExpect(jsonPath("$").isEmpty());
-
-        // Check, that the count call also returns 0
-        restTipoObraMockMvc.perform(get("/api/tipo-obras/count?sort=id,desc&" + filter))
-            .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
-            .andExpect(content().string("0"));
-    }
-
     @Test
     @Transactional
     public void getNonExistingTipoObra() throws Exception {
@@ -375,7 +155,7 @@ public class TipoObraResourceIT {
     @Transactional
     public void updateTipoObra() throws Exception {
         // Initialize the database
-        tipoObraService.save(tipoObra);
+        tipoObraRepository.saveAndFlush(tipoObra);
 
         int databaseSizeBeforeUpdate = tipoObraRepository.findAll().size();
 
@@ -420,7 +200,7 @@ public class TipoObraResourceIT {
     @Transactional
     public void deleteTipoObra() throws Exception {
         // Initialize the database
-        tipoObraService.save(tipoObra);
+        tipoObraRepository.saveAndFlush(tipoObra);
 
         int databaseSizeBeforeDelete = tipoObraRepository.findAll().size();
 
