@@ -21,7 +21,6 @@ const initialState = {
   entities: [] as ReadonlyArray<ITipoDesp>,
   entity: defaultValue,
   updating: false,
-  totalItems: 0,
   updateSuccess: false,
 };
 
@@ -65,7 +64,6 @@ export default (state: TipoDespState = initialState, action): TipoDespState => {
         ...state,
         loading: false,
         entities: action.payload.data,
-        totalItems: parseInt(action.payload.headers['x-total-count'], 10),
       };
     case SUCCESS(ACTION_TYPES.FETCH_TIPODESP):
       return {
@@ -101,13 +99,10 @@ const apiUrl = 'api/tipo-desps';
 
 // Actions
 
-export const getEntities: ICrudGetAllAction<ITipoDesp> = (page, size, sort) => {
-  const requestUrl = `${apiUrl}${sort ? `?page=${page}&size=${size}&sort=${sort}` : ''}`;
-  return {
-    type: ACTION_TYPES.FETCH_TIPODESP_LIST,
-    payload: axios.get<ITipoDesp>(`${requestUrl}${sort ? '&' : '?'}cacheBuster=${new Date().getTime()}`),
-  };
-};
+export const getEntities: ICrudGetAllAction<ITipoDesp> = (page, size, sort) => ({
+  type: ACTION_TYPES.FETCH_TIPODESP_LIST,
+  payload: axios.get<ITipoDesp>(`${apiUrl}?cacheBuster=${new Date().getTime()}`),
+});
 
 export const getEntity: ICrudGetAction<ITipoDesp> = id => {
   const requestUrl = `${apiUrl}/${id}`;

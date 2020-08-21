@@ -21,7 +21,6 @@ const initialState = {
   entities: [] as ReadonlyArray<ITipoEmp>,
   entity: defaultValue,
   updating: false,
-  totalItems: 0,
   updateSuccess: false,
 };
 
@@ -65,7 +64,6 @@ export default (state: TipoEmpState = initialState, action): TipoEmpState => {
         ...state,
         loading: false,
         entities: action.payload.data,
-        totalItems: parseInt(action.payload.headers['x-total-count'], 10),
       };
     case SUCCESS(ACTION_TYPES.FETCH_TIPOEMP):
       return {
@@ -101,13 +99,10 @@ const apiUrl = 'api/tipo-emps';
 
 // Actions
 
-export const getEntities: ICrudGetAllAction<ITipoEmp> = (page, size, sort) => {
-  const requestUrl = `${apiUrl}${sort ? `?page=${page}&size=${size}&sort=${sort}` : ''}`;
-  return {
-    type: ACTION_TYPES.FETCH_TIPOEMP_LIST,
-    payload: axios.get<ITipoEmp>(`${requestUrl}${sort ? '&' : '?'}cacheBuster=${new Date().getTime()}`),
-  };
-};
+export const getEntities: ICrudGetAllAction<ITipoEmp> = (page, size, sort) => ({
+  type: ACTION_TYPES.FETCH_TIPOEMP_LIST,
+  payload: axios.get<ITipoEmp>(`${apiUrl}?cacheBuster=${new Date().getTime()}`),
+});
 
 export const getEntity: ICrudGetAction<ITipoEmp> = id => {
   const requestUrl = `${apiUrl}/${id}`;

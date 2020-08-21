@@ -3,9 +3,6 @@ package ar.com.telecom.gemp.web.rest;
 import ar.com.telecom.gemp.GempApp;
 import ar.com.telecom.gemp.domain.TipoDesp;
 import ar.com.telecom.gemp.repository.TipoDespRepository;
-import ar.com.telecom.gemp.service.TipoDespService;
-import ar.com.telecom.gemp.service.dto.TipoDespCriteria;
-import ar.com.telecom.gemp.service.TipoDespQueryService;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -40,12 +37,6 @@ public class TipoDespResourceIT {
 
     @Autowired
     private TipoDespRepository tipoDespRepository;
-
-    @Autowired
-    private TipoDespService tipoDespService;
-
-    @Autowired
-    private TipoDespQueryService tipoDespQueryService;
 
     @Autowired
     private EntityManager em;
@@ -152,217 +143,6 @@ public class TipoDespResourceIT {
             .andExpect(jsonPath("$.descripcion").value(DEFAULT_DESCRIPCION))
             .andExpect(jsonPath("$.valor").value(DEFAULT_VALOR));
     }
-
-
-    @Test
-    @Transactional
-    public void getTipoDespsByIdFiltering() throws Exception {
-        // Initialize the database
-        tipoDespRepository.saveAndFlush(tipoDesp);
-
-        Long id = tipoDesp.getId();
-
-        defaultTipoDespShouldBeFound("id.equals=" + id);
-        defaultTipoDespShouldNotBeFound("id.notEquals=" + id);
-
-        defaultTipoDespShouldBeFound("id.greaterThanOrEqual=" + id);
-        defaultTipoDespShouldNotBeFound("id.greaterThan=" + id);
-
-        defaultTipoDespShouldBeFound("id.lessThanOrEqual=" + id);
-        defaultTipoDespShouldNotBeFound("id.lessThan=" + id);
-    }
-
-
-    @Test
-    @Transactional
-    public void getAllTipoDespsByDescripcionIsEqualToSomething() throws Exception {
-        // Initialize the database
-        tipoDespRepository.saveAndFlush(tipoDesp);
-
-        // Get all the tipoDespList where descripcion equals to DEFAULT_DESCRIPCION
-        defaultTipoDespShouldBeFound("descripcion.equals=" + DEFAULT_DESCRIPCION);
-
-        // Get all the tipoDespList where descripcion equals to UPDATED_DESCRIPCION
-        defaultTipoDespShouldNotBeFound("descripcion.equals=" + UPDATED_DESCRIPCION);
-    }
-
-    @Test
-    @Transactional
-    public void getAllTipoDespsByDescripcionIsNotEqualToSomething() throws Exception {
-        // Initialize the database
-        tipoDespRepository.saveAndFlush(tipoDesp);
-
-        // Get all the tipoDespList where descripcion not equals to DEFAULT_DESCRIPCION
-        defaultTipoDespShouldNotBeFound("descripcion.notEquals=" + DEFAULT_DESCRIPCION);
-
-        // Get all the tipoDespList where descripcion not equals to UPDATED_DESCRIPCION
-        defaultTipoDespShouldBeFound("descripcion.notEquals=" + UPDATED_DESCRIPCION);
-    }
-
-    @Test
-    @Transactional
-    public void getAllTipoDespsByDescripcionIsInShouldWork() throws Exception {
-        // Initialize the database
-        tipoDespRepository.saveAndFlush(tipoDesp);
-
-        // Get all the tipoDespList where descripcion in DEFAULT_DESCRIPCION or UPDATED_DESCRIPCION
-        defaultTipoDespShouldBeFound("descripcion.in=" + DEFAULT_DESCRIPCION + "," + UPDATED_DESCRIPCION);
-
-        // Get all the tipoDespList where descripcion equals to UPDATED_DESCRIPCION
-        defaultTipoDespShouldNotBeFound("descripcion.in=" + UPDATED_DESCRIPCION);
-    }
-
-    @Test
-    @Transactional
-    public void getAllTipoDespsByDescripcionIsNullOrNotNull() throws Exception {
-        // Initialize the database
-        tipoDespRepository.saveAndFlush(tipoDesp);
-
-        // Get all the tipoDespList where descripcion is not null
-        defaultTipoDespShouldBeFound("descripcion.specified=true");
-
-        // Get all the tipoDespList where descripcion is null
-        defaultTipoDespShouldNotBeFound("descripcion.specified=false");
-    }
-                @Test
-    @Transactional
-    public void getAllTipoDespsByDescripcionContainsSomething() throws Exception {
-        // Initialize the database
-        tipoDespRepository.saveAndFlush(tipoDesp);
-
-        // Get all the tipoDespList where descripcion contains DEFAULT_DESCRIPCION
-        defaultTipoDespShouldBeFound("descripcion.contains=" + DEFAULT_DESCRIPCION);
-
-        // Get all the tipoDespList where descripcion contains UPDATED_DESCRIPCION
-        defaultTipoDespShouldNotBeFound("descripcion.contains=" + UPDATED_DESCRIPCION);
-    }
-
-    @Test
-    @Transactional
-    public void getAllTipoDespsByDescripcionNotContainsSomething() throws Exception {
-        // Initialize the database
-        tipoDespRepository.saveAndFlush(tipoDesp);
-
-        // Get all the tipoDespList where descripcion does not contain DEFAULT_DESCRIPCION
-        defaultTipoDespShouldNotBeFound("descripcion.doesNotContain=" + DEFAULT_DESCRIPCION);
-
-        // Get all the tipoDespList where descripcion does not contain UPDATED_DESCRIPCION
-        defaultTipoDespShouldBeFound("descripcion.doesNotContain=" + UPDATED_DESCRIPCION);
-    }
-
-
-    @Test
-    @Transactional
-    public void getAllTipoDespsByValorIsEqualToSomething() throws Exception {
-        // Initialize the database
-        tipoDespRepository.saveAndFlush(tipoDesp);
-
-        // Get all the tipoDespList where valor equals to DEFAULT_VALOR
-        defaultTipoDespShouldBeFound("valor.equals=" + DEFAULT_VALOR);
-
-        // Get all the tipoDespList where valor equals to UPDATED_VALOR
-        defaultTipoDespShouldNotBeFound("valor.equals=" + UPDATED_VALOR);
-    }
-
-    @Test
-    @Transactional
-    public void getAllTipoDespsByValorIsNotEqualToSomething() throws Exception {
-        // Initialize the database
-        tipoDespRepository.saveAndFlush(tipoDesp);
-
-        // Get all the tipoDespList where valor not equals to DEFAULT_VALOR
-        defaultTipoDespShouldNotBeFound("valor.notEquals=" + DEFAULT_VALOR);
-
-        // Get all the tipoDespList where valor not equals to UPDATED_VALOR
-        defaultTipoDespShouldBeFound("valor.notEquals=" + UPDATED_VALOR);
-    }
-
-    @Test
-    @Transactional
-    public void getAllTipoDespsByValorIsInShouldWork() throws Exception {
-        // Initialize the database
-        tipoDespRepository.saveAndFlush(tipoDesp);
-
-        // Get all the tipoDespList where valor in DEFAULT_VALOR or UPDATED_VALOR
-        defaultTipoDespShouldBeFound("valor.in=" + DEFAULT_VALOR + "," + UPDATED_VALOR);
-
-        // Get all the tipoDespList where valor equals to UPDATED_VALOR
-        defaultTipoDespShouldNotBeFound("valor.in=" + UPDATED_VALOR);
-    }
-
-    @Test
-    @Transactional
-    public void getAllTipoDespsByValorIsNullOrNotNull() throws Exception {
-        // Initialize the database
-        tipoDespRepository.saveAndFlush(tipoDesp);
-
-        // Get all the tipoDespList where valor is not null
-        defaultTipoDespShouldBeFound("valor.specified=true");
-
-        // Get all the tipoDespList where valor is null
-        defaultTipoDespShouldNotBeFound("valor.specified=false");
-    }
-                @Test
-    @Transactional
-    public void getAllTipoDespsByValorContainsSomething() throws Exception {
-        // Initialize the database
-        tipoDespRepository.saveAndFlush(tipoDesp);
-
-        // Get all the tipoDespList where valor contains DEFAULT_VALOR
-        defaultTipoDespShouldBeFound("valor.contains=" + DEFAULT_VALOR);
-
-        // Get all the tipoDespList where valor contains UPDATED_VALOR
-        defaultTipoDespShouldNotBeFound("valor.contains=" + UPDATED_VALOR);
-    }
-
-    @Test
-    @Transactional
-    public void getAllTipoDespsByValorNotContainsSomething() throws Exception {
-        // Initialize the database
-        tipoDespRepository.saveAndFlush(tipoDesp);
-
-        // Get all the tipoDespList where valor does not contain DEFAULT_VALOR
-        defaultTipoDespShouldNotBeFound("valor.doesNotContain=" + DEFAULT_VALOR);
-
-        // Get all the tipoDespList where valor does not contain UPDATED_VALOR
-        defaultTipoDespShouldBeFound("valor.doesNotContain=" + UPDATED_VALOR);
-    }
-
-    /**
-     * Executes the search, and checks that the default entity is returned.
-     */
-    private void defaultTipoDespShouldBeFound(String filter) throws Exception {
-        restTipoDespMockMvc.perform(get("/api/tipo-desps?sort=id,desc&" + filter))
-            .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
-            .andExpect(jsonPath("$.[*].id").value(hasItem(tipoDesp.getId().intValue())))
-            .andExpect(jsonPath("$.[*].descripcion").value(hasItem(DEFAULT_DESCRIPCION)))
-            .andExpect(jsonPath("$.[*].valor").value(hasItem(DEFAULT_VALOR)));
-
-        // Check, that the count call also returns 1
-        restTipoDespMockMvc.perform(get("/api/tipo-desps/count?sort=id,desc&" + filter))
-            .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
-            .andExpect(content().string("1"));
-    }
-
-    /**
-     * Executes the search, and checks that the default entity is not returned.
-     */
-    private void defaultTipoDespShouldNotBeFound(String filter) throws Exception {
-        restTipoDespMockMvc.perform(get("/api/tipo-desps?sort=id,desc&" + filter))
-            .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
-            .andExpect(jsonPath("$").isArray())
-            .andExpect(jsonPath("$").isEmpty());
-
-        // Check, that the count call also returns 0
-        restTipoDespMockMvc.perform(get("/api/tipo-desps/count?sort=id,desc&" + filter))
-            .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
-            .andExpect(content().string("0"));
-    }
-
     @Test
     @Transactional
     public void getNonExistingTipoDesp() throws Exception {
@@ -375,7 +155,7 @@ public class TipoDespResourceIT {
     @Transactional
     public void updateTipoDesp() throws Exception {
         // Initialize the database
-        tipoDespService.save(tipoDesp);
+        tipoDespRepository.saveAndFlush(tipoDesp);
 
         int databaseSizeBeforeUpdate = tipoDespRepository.findAll().size();
 
@@ -420,7 +200,7 @@ public class TipoDespResourceIT {
     @Transactional
     public void deleteTipoDesp() throws Exception {
         // Initialize the database
-        tipoDespService.save(tipoDesp);
+        tipoDespRepository.saveAndFlush(tipoDesp);
 
         int databaseSizeBeforeDelete = tipoDespRepository.findAll().size();
 

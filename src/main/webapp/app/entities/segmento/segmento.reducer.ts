@@ -21,7 +21,6 @@ const initialState = {
   entities: [] as ReadonlyArray<ISegmento>,
   entity: defaultValue,
   updating: false,
-  totalItems: 0,
   updateSuccess: false,
 };
 
@@ -65,7 +64,6 @@ export default (state: SegmentoState = initialState, action): SegmentoState => {
         ...state,
         loading: false,
         entities: action.payload.data,
-        totalItems: parseInt(action.payload.headers['x-total-count'], 10),
       };
     case SUCCESS(ACTION_TYPES.FETCH_SEGMENTO):
       return {
@@ -101,13 +99,10 @@ const apiUrl = 'api/segmentos';
 
 // Actions
 
-export const getEntities: ICrudGetAllAction<ISegmento> = (page, size, sort) => {
-  const requestUrl = `${apiUrl}${sort ? `?page=${page}&size=${size}&sort=${sort}` : ''}`;
-  return {
-    type: ACTION_TYPES.FETCH_SEGMENTO_LIST,
-    payload: axios.get<ISegmento>(`${requestUrl}${sort ? '&' : '?'}cacheBuster=${new Date().getTime()}`),
-  };
-};
+export const getEntities: ICrudGetAllAction<ISegmento> = (page, size, sort) => ({
+  type: ACTION_TYPES.FETCH_SEGMENTO_LIST,
+  payload: axios.get<ISegmento>(`${apiUrl}?cacheBuster=${new Date().getTime()}`),
+});
 
 export const getEntity: ICrudGetAction<ISegmento> = id => {
   const requestUrl = `${apiUrl}/${id}`;

@@ -17,7 +17,7 @@ export const TipoObraDeleteDialog = (props: ITipoObraDeleteDialogProps) => {
   }, []);
 
   const handleClose = () => {
-    props.history.push('/tipo-obra' + props.location.search);
+    props.history.push('/tipo-obra');
   };
 
   useEffect(() => {

@@ -21,7 +21,6 @@ const initialState = {
   entities: [] as ReadonlyArray<ITipoObra>,
   entity: defaultValue,
   updating: false,
-  totalItems: 0,
   updateSuccess: false,
 };
 
@@ -65,7 +64,6 @@ export default (state: TipoObraState = initialState, action): TipoObraState => {
         ...state,
         loading: false,
         entities: action.payload.data,
-        totalItems: parseInt(action.payload.headers['x-total-count'], 10),
       };
     case SUCCESS(ACTION_TYPES.FETCH_TIPOOBRA):
       return {
@@ -101,13 +99,10 @@ const apiUrl = 'api/tipo-obras';
 
 // Actions
 
-export const getEntities: ICrudGetAllAction<ITipoObra> = (page, size, sort) => {
-  const requestUrl = `${apiUrl}${sort ? `?page=${page}&size=${size}&sort=${sort}` : ''}`;
-  return {
-    type: ACTION_TYPES.FETCH_TIPOOBRA_LIST,
-    payload: axios.get<ITipoObra>(`${requestUrl}${sort ? '&' : '?'}cacheBuster=${new Date().getTime()}`),
-  };
-};
+export const getEntities: ICrudGetAllAction<ITipoObra> = (page, size, sort) => ({
+  type: ACTION_TYPES.FETCH_TIPOOBRA_LIST,
+  payload: axios.get<ITipoObra>(`${apiUrl}?cacheBuster=${new Date().getTime()}`),
+});
 
 export const getEntity: ICrudGetAction<ITipoObra> = id => {
   const requestUrl = `${apiUrl}/${id}`;

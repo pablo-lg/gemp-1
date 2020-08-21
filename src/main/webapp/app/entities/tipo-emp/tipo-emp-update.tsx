@@ -20,7 +20,7 @@ export const TipoEmpUpdate = (props: ITipoEmpUpdateProps) => {
   const { tipoEmpEntity, loading, updating } = props;
 
   const handleClose = () => {
-    props.history.push('/tipo-emp' + props.location.search);
+    props.history.push('/tipo-emp');
   };
 
   useEffect(() => {

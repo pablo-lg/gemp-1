@@ -3,9 +3,6 @@ package ar.com.telecom.gemp.web.rest;
 import ar.com.telecom.gemp.GempApp;
 import ar.com.telecom.gemp.domain.TipoEmp;
 import ar.com.telecom.gemp.repository.TipoEmpRepository;
-import ar.com.telecom.gemp.service.TipoEmpService;
-import ar.com.telecom.gemp.service.dto.TipoEmpCriteria;
-import ar.com.telecom.gemp.service.TipoEmpQueryService;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -40,12 +37,6 @@ public class TipoEmpResourceIT {
 
     @Autowired
     private TipoEmpRepository tipoEmpRepository;
-
-    @Autowired
-    private TipoEmpService tipoEmpService;
-
-    @Autowired
-    private TipoEmpQueryService tipoEmpQueryService;
 
     @Autowired
     private EntityManager em;
@@ -152,217 +143,6 @@ public class TipoEmpResourceIT {
             .andExpect(jsonPath("$.descripcion").value(DEFAULT_DESCRIPCION))
             .andExpect(jsonPath("$.valor").value(DEFAULT_VALOR));
     }
-
-
-    @Test
-    @Transactional
-    public void getTipoEmpsByIdFiltering() throws Exception {
-        // Initialize the database
-        tipoEmpRepository.saveAndFlush(tipoEmp);
-
-        Long id = tipoEmp.getId();
-
-        defaultTipoEmpShouldBeFound("id.equals=" + id);
-        defaultTipoEmpShouldNotBeFound("id.notEquals=" + id);
-
-        defaultTipoEmpShouldBeFound("id.greaterThanOrEqual=" + id);
-        defaultTipoEmpShouldNotBeFound("id.greaterThan=" + id);
-
-        defaultTipoEmpShouldBeFound("id.lessThanOrEqual=" + id);
-        defaultTipoEmpShouldNotBeFound("id.lessThan=" + id);
-    }
-
-
-    @Test
-    @Transactional
-    public void getAllTipoEmpsByDescripcionIsEqualToSomething() throws Exception {
-        // Initialize the database
-        tipoEmpRepository.saveAndFlush(tipoEmp);
-
-        // Get all the tipoEmpList where descripcion equals to DEFAULT_DESCRIPCION
-        defaultTipoEmpShouldBeFound("descripcion.equals=" + DEFAULT_DESCRIPCION);
-
-        // Get all the tipoEmpList where descripcion equals to UPDATED_DESCRIPCION
-        defaultTipoEmpShouldNotBeFound("descripcion.equals=" + UPDATED_DESCRIPCION);
-    }
-
-    @Test
-    @Transactional
-    public void getAllTipoEmpsByDescripcionIsNotEqualToSomething() throws Exception {
-        // Initialize the database
-        tipoEmpRepository.saveAndFlush(tipoEmp);
-
-        // Get all the tipoEmpList where descripcion not equals to DEFAULT_DESCRIPCION
-        defaultTipoEmpShouldNotBeFound("descripcion.notEquals=" + DEFAULT_DESCRIPCION);
-
-        // Get all the tipoEmpList where descripcion not equals to UPDATED_DESCRIPCION
-        defaultTipoEmpShouldBeFound("descripcion.notEquals=" + UPDATED_DESCRIPCION);
-    }
-
-    @Test
-    @Transactional
-    public void getAllTipoEmpsByDescripcionIsInShouldWork() throws Exception {
-        // Initialize the database
-        tipoEmpRepository.saveAndFlush(tipoEmp);
-
-        // Get all the tipoEmpList where descripcion in DEFAULT_DESCRIPCION or UPDATED_DESCRIPCION
-        defaultTipoEmpShouldBeFound("descripcion.in=" + DEFAULT_DESCRIPCION + "," + UPDATED_DESCRIPCION);
-
-        // Get all the tipoEmpList where descripcion equals to UPDATED_DESCRIPCION
-        defaultTipoEmpShouldNotBeFound("descripcion.in=" + UPDATED_DESCRIPCION);
-    }
-
-    @Test
-    @Transactional
-    public void getAllTipoEmpsByDescripcionIsNullOrNotNull() throws Exception {
-        // Initialize the database
-        tipoEmpRepository.saveAndFlush(tipoEmp);
-
-        // Get all the tipoEmpList where descripcion is not null
-        defaultTipoEmpShouldBeFound("descripcion.specified=true");
-
-        // Get all the tipoEmpList where descripcion is null
-        defaultTipoEmpShouldNotBeFound("descripcion.specified=false");
-    }
-                @Test
-    @Transactional
-    public void getAllTipoEmpsByDescripcionContainsSomething() throws Exception {
-        // Initialize the database
-        tipoEmpRepository.saveAndFlush(tipoEmp);
-
-        // Get all the tipoEmpList where descripcion contains DEFAULT_DESCRIPCION
-        defaultTipoEmpShouldBeFound("descripcion.contains=" + DEFAULT_DESCRIPCION);
-
-        // Get all the tipoEmpList where descripcion contains UPDATED_DESCRIPCION
-        defaultTipoEmpShouldNotBeFound("descripcion.contains=" + UPDATED_DESCRIPCION);
-    }
-
-    @Test
-    @Transactional
-    public void getAllTipoEmpsByDescripcionNotContainsSomething() throws Exception {
-        // Initialize the database
-        tipoEmpRepository.saveAndFlush(tipoEmp);
-
-        // Get all the tipoEmpList where descripcion does not contain DEFAULT_DESCRIPCION
-        defaultTipoEmpShouldNotBeFound("descripcion.doesNotContain=" + DEFAULT_DESCRIPCION);
-
-        // Get all the tipoEmpList where descripcion does not contain UPDATED_DESCRIPCION
-        defaultTipoEmpShouldBeFound("descripcion.doesNotContain=" + UPDATED_DESCRIPCION);
-    }
-
-
-    @Test
-    @Transactional
-    public void getAllTipoEmpsByValorIsEqualToSomething() throws Exception {
-        // Initialize the database
-        tipoEmpRepository.saveAndFlush(tipoEmp);
-
-        // Get all the tipoEmpList where valor equals to DEFAULT_VALOR
-        defaultTipoEmpShouldBeFound("valor.equals=" + DEFAULT_VALOR);
-
-        // Get all the tipoEmpList where valor equals to UPDATED_VALOR
-        defaultTipoEmpShouldNotBeFound("valor.equals=" + UPDATED_VALOR);
-    }
-
-    @Test
-    @Transactional
-    public void getAllTipoEmpsByValorIsNotEqualToSomething() throws Exception {
-        // Initialize the database
-        tipoEmpRepository.saveAndFlush(tipoEmp);
-
-        // Get all the tipoEmpList where valor not equals to DEFAULT_VALOR
-        defaultTipoEmpShouldNotBeFound("valor.notEquals=" + DEFAULT_VALOR);
-
-        // Get all the tipoEmpList where valor not equals to UPDATED_VALOR
-        defaultTipoEmpShouldBeFound("valor.notEquals=" + UPDATED_VALOR);
-    }
-
-    @Test
-    @Transactional
-    public void getAllTipoEmpsByValorIsInShouldWork() throws Exception {
-        // Initialize the database
-        tipoEmpRepository.saveAndFlush(tipoEmp);
-
-        // Get all the tipoEmpList where valor in DEFAULT_VALOR or UPDATED_VALOR
-        defaultTipoEmpShouldBeFound("valor.in=" + DEFAULT_VALOR + "," + UPDATED_VALOR);
-
-        // Get all the tipoEmpList where valor equals to UPDATED_VALOR
-        defaultTipoEmpShouldNotBeFound("valor.in=" + UPDATED_VALOR);
-    }
-
-    @Test
-    @Transactional
-    public void getAllTipoEmpsByValorIsNullOrNotNull() throws Exception {
-        // Initialize the database
-        tipoEmpRepository.saveAndFlush(tipoEmp);
-
-        // Get all the tipoEmpList where valor is not null
-        defaultTipoEmpShouldBeFound("valor.specified=true");
-
-        // Get all the tipoEmpList where valor is null
-        defaultTipoEmpShouldNotBeFound("valor.specified=false");
-    }
-                @Test
-    @Transactional
-    public void getAllTipoEmpsByValorContainsSomething() throws Exception {
-        // Initialize the database
-        tipoEmpRepository.saveAndFlush(tipoEmp);
-
-        // Get all the tipoEmpList where valor contains DEFAULT_VALOR
-        defaultTipoEmpShouldBeFound("valor.contains=" + DEFAULT_VALOR);
-
-        // Get all the tipoEmpList where valor contains UPDATED_VALOR
-        defaultTipoEmpShouldNotBeFound("valor.contains=" + UPDATED_VALOR);
-    }
-
-    @Test
-    @Transactional
-    public void getAllTipoEmpsByValorNotContainsSomething() throws Exception {
-        // Initialize the database
-        tipoEmpRepository.saveAndFlush(tipoEmp);
-
-        // Get all the tipoEmpList where valor does not contain DEFAULT_VALOR
-        defaultTipoEmpShouldNotBeFound("valor.doesNotContain=" + DEFAULT_VALOR);
-
-        // Get all the tipoEmpList where valor does not contain UPDATED_VALOR
-        defaultTipoEmpShouldBeFound("valor.doesNotContain=" + UPDATED_VALOR);
-    }
-
-    /**
-     * Executes the search, and checks that the default entity is returned.
-     */
-    private void defaultTipoEmpShouldBeFound(String filter) throws Exception {
-        restTipoEmpMockMvc.perform(get("/api/tipo-emps?sort=id,desc&" + filter))
-            .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
-            .andExpect(jsonPath("$.[*].id").value(hasItem(tipoEmp.getId().intValue())))
-            .andExpect(jsonPath("$.[*].descripcion").value(hasItem(DEFAULT_DESCRIPCION)))
-            .andExpect(jsonPath("$.[*].valor").value(hasItem(DEFAULT_VALOR)));
-
-        // Check, that the count call also returns 1
-        restTipoEmpMockMvc.perform(get("/api/tipo-emps/count?sort=id,desc&" + filter))
-            .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
-            .andExpect(content().string("1"));
-    }
-
-    /**
-     * Executes the search, and checks that the default entity is not returned.
-     */
-    private void defaultTipoEmpShouldNotBeFound(String filter) throws Exception {
-        restTipoEmpMockMvc.perform(get("/api/tipo-emps?sort=id,desc&" + filter))
-            .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
-            .andExpect(jsonPath("$").isArray())
-            .andExpect(jsonPath("$").isEmpty());
-
-        // Check, that the count call also returns 0
-        restTipoEmpMockMvc.perform(get("/api/tipo-emps/count?sort=id,desc&" + filter))
-            .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
-            .andExpect(content().string("0"));
-    }
-
     @Test
     @Transactional
     public void getNonExistingTipoEmp() throws Exception {
@@ -375,7 +155,7 @@ public class TipoEmpResourceIT {
     @Transactional
     public void updateTipoEmp() throws Exception {
         // Initialize the database
-        tipoEmpService.save(tipoEmp);
+        tipoEmpRepository.saveAndFlush(tipoEmp);
 
         int databaseSizeBeforeUpdate = tipoEmpRepository.findAll().size();
 
@@ -420,7 +200,7 @@ public class TipoEmpResourceIT {
     @Transactional
     public void deleteTipoEmp() throws Exception {
         // Initialize the database
-        tipoEmpService.save(tipoEmp);
+        tipoEmpRepository.saveAndFlush(tipoEmp);
 
         int databaseSizeBeforeDelete = tipoEmpRepository.findAll().size();
 

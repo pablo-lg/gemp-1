@@ -17,7 +17,7 @@ export const TipoEmpDeleteDialog = (props: ITipoEmpDeleteDialogProps) => {
   }, []);
 
   const handleClose = () => {
-    props.history.push('/tipo-emp' + props.location.search);
+    props.history.push('/tipo-emp');
   };
 
   useEffect(() => {

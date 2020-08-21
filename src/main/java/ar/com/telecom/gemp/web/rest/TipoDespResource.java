@@ -1,23 +1,16 @@
 package ar.com.telecom.gemp.web.rest;
 
 import ar.com.telecom.gemp.domain.TipoDesp;
-import ar.com.telecom.gemp.service.TipoDespService;
+import ar.com.telecom.gemp.repository.TipoDespRepository;
 import ar.com.telecom.gemp.web.rest.errors.BadRequestAlertException;
-import ar.com.telecom.gemp.service.dto.TipoDespCriteria;
-import ar.com.telecom.gemp.service.TipoDespQueryService;
 
 import io.github.jhipster.web.util.HeaderUtil;
-import io.github.jhipster.web.util.PaginationUtil;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
@@ -30,6 +23,7 @@ import java.util.Optional;
  */
 @RestController
 @RequestMapping("/api")
+@Transactional
 public class TipoDespResource {
 
     private final Logger log = LoggerFactory.getLogger(TipoDespResource.class);
@@ -39,13 +33,10 @@ public class TipoDespResource {
     @Value("${jhipster.clientApp.name}")
     private String applicationName;
 
-    private final TipoDespService tipoDespService;
+    private final TipoDespRepository tipoDespRepository;
 
-    private final TipoDespQueryService tipoDespQueryService;
-
-    public TipoDespResource(TipoDespService tipoDespService, TipoDespQueryService tipoDespQueryService) {
-        this.tipoDespService = tipoDespService;
-        this.tipoDespQueryService = tipoDespQueryService;
+    public TipoDespResource(TipoDespRepository tipoDespRepository) {
+        this.tipoDespRepository = tipoDespRepository;
     }
 
     /**
@@ -61,7 +52,7 @@ public class TipoDespResource {
         if (tipoDesp.getId() != null) {
             throw new BadRequestAlertException("A new tipoDesp cannot already have an ID", ENTITY_NAME, "idexists");
         }
-        TipoDesp result = tipoDespService.save(tipoDesp);
+        TipoDesp result = tipoDespRepository.save(tipoDesp);
         return ResponseEntity.created(new URI("/api/tipo-desps/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, false, ENTITY_NAME, result.getId().toString()))
             .body(result);
@@ -82,7 +73,7 @@ public class TipoDespResource {
         if (tipoDesp.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
-        TipoDesp result = tipoDespService.save(tipoDesp);
+        TipoDesp result = tipoDespRepository.save(tipoDesp);
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(applicationName, false, ENTITY_NAME, tipoDesp.getId().toString()))
             .body(result);
@@ -91,28 +82,12 @@ public class TipoDespResource {
     /**
      * {@code GET  /tipo-desps} : get all the tipoDesps.
      *
-     * @param pageable the pagination information.
-     * @param criteria the criteria which the requested entities should match.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of tipoDesps in body.
      */
     @GetMapping("/tipo-desps")
-    public ResponseEntity<List<TipoDesp>> getAllTipoDesps(TipoDespCriteria criteria, Pageable pageable) {
-        log.debug("REST request to get TipoDesps by criteria: {}", criteria);
-        Page<TipoDesp> page = tipoDespQueryService.findByCriteria(criteria, pageable);
-        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
-        return ResponseEntity.ok().headers(headers).body(page.getContent());
-    }
-
-    /**
-     * {@code GET  /tipo-desps/count} : count all the tipoDesps.
-     *
-     * @param criteria the criteria which the requested entities should match.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the count in body.
-     */
-    @GetMapping("/tipo-desps/count")
-    public ResponseEntity<Long> countTipoDesps(TipoDespCriteria criteria) {
-        log.debug("REST request to count TipoDesps by criteria: {}", criteria);
-        return ResponseEntity.ok().body(tipoDespQueryService.countByCriteria(criteria));
+    public List<TipoDesp> getAllTipoDesps() {
+        log.debug("REST request to get all TipoDesps");
+        return tipoDespRepository.findAll();
     }
 
     /**
@@ -124,7 +99,7 @@ public class TipoDespResource {
     @GetMapping("/tipo-desps/{id}")
     public ResponseEntity<TipoDesp> getTipoDesp(@PathVariable Long id) {
         log.debug("REST request to get TipoDesp : {}", id);
-        Optional<TipoDesp> tipoDesp = tipoDespService.findOne(id);
+        Optional<TipoDesp> tipoDesp = tipoDespRepository.findById(id);
         return ResponseUtil.wrapOrNotFound(tipoDesp);
     }
 
@@ -137,7 +112,7 @@ public class TipoDespResource {
     @DeleteMapping("/tipo-desps/{id}")
     public ResponseEntity<Void> deleteTipoDesp(@PathVariable Long id) {
         log.debug("REST request to delete TipoDesp : {}", id);
-        tipoDespService.delete(id);
+        tipoDespRepository.deleteById(id);
         return ResponseEntity.noContent().headers(HeaderUtil.createEntityDeletionAlert(applicationName, false, ENTITY_NAME, id.toString())).build();
     }
 }

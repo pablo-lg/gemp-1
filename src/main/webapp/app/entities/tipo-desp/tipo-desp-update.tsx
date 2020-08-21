@@ -20,7 +20,7 @@ export const TipoDespUpdate = (props: ITipoDespUpdateProps) => {
   const { tipoDespEntity, loading, updating } = props;
 
   const handleClose = () => {
-    props.history.push('/tipo-desp' + props.location.search);
+    props.history.push('/tipo-desp');
   };
 
   useEffect(() => {

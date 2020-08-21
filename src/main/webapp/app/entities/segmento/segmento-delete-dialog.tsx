@@ -17,7 +17,7 @@ export const SegmentoDeleteDialog = (props: ISegmentoDeleteDialogProps) => {
   }, []);
 
   const handleClose = () => {
-    props.history.push('/segmento' + props.location.search);
+    props.history.push('/segmento');
   };
 
   useEffect(() => {
