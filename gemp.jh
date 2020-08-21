@@ -28,12 +28,7 @@ entity Segmento {
 
 
 // Set pagination options
-paginate  Segmento, TipoEmp, TipoObra, TipoDesp with pagination
 
-filter  Segmento, TipoEmp, TipoObra, TipoDesp 
-
-
-service all with serviceImpl
  
 
 
