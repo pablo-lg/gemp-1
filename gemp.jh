@@ -24,7 +24,7 @@ entity Segmento {
 
 
 
-
+service all with serviceImpl 
 
 
 // Set pagination options

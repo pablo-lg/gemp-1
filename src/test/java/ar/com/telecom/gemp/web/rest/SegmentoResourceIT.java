@@ -3,6 +3,7 @@ package ar.com.telecom.gemp.web.rest;
 import ar.com.telecom.gemp.GempApp;
 import ar.com.telecom.gemp.domain.Segmento;
 import ar.com.telecom.gemp.repository.SegmentoRepository;
+import ar.com.telecom.gemp.service.SegmentoService;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -37,6 +38,9 @@ public class SegmentoResourceIT {
 
     @Autowired
     private SegmentoRepository segmentoRepository;
+
+    @Autowired
+    private SegmentoService segmentoService;
 
     @Autowired
     private EntityManager em;
@@ -155,7 +159,7 @@ public class SegmentoResourceIT {
     @Transactional
     public void updateSegmento() throws Exception {
         // Initialize the database
-        segmentoRepository.saveAndFlush(segmento);
+        segmentoService.save(segmento);
 
         int databaseSizeBeforeUpdate = segmentoRepository.findAll().size();
 
@@ -200,7 +204,7 @@ public class SegmentoResourceIT {
     @Transactional
     public void deleteSegmento() throws Exception {
         // Initialize the database
-        segmentoRepository.saveAndFlush(segmento);
+        segmentoService.save(segmento);
 
         int databaseSizeBeforeDelete = segmentoRepository.findAll().size();
 
