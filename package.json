@@ -8,16 +8,22 @@
     "node_modules"
   ],
   "dependencies": {
+    "@ant-design/icons": "^4.2.2",
     "@fortawesome/fontawesome-svg-core": "1.2.28",
     "@fortawesome/free-solid-svg-icons": "5.13.0",
     "@fortawesome/react-fontawesome": "0.1.9",
+    "antd": "^4.6.1",
     "availity-reactstrap-validation": "2.6.1",
     "axios": "0.19.2",
     "bootstrap": "4.4.1",
+    "formik": "^2.1.5",
     "loaders.css": "0.1.2",
     "lodash": "4.17.15",
     "moment": "2.24.0",
+    "primeicons": "^4.0.0",
+    "primereact": "^5.0.0-rc.1",
     "react": "16.13.1",
+    "react-bootstrap-typeahead": "^5.1.1",
     "react-dom": "16.13.1",
     "react-hot-loader": "4.12.20",
     "react-jhipster": "0.11.0",
@@ -34,8 +40,11 @@
     "redux-devtools-log-monitor": "1.4.0",
     "redux-promise-middleware": "6.1.2",
     "redux-thunk": "2.3.0",
+    "styled-components": "^5.1.1",
+    "styled-theme": "^0.3.3",
     "tslib": "1.11.1",
-    "uuid": "7.0.3"
+    "uuid": "7.0.3",
+    "yup": "^0.29.3"
   },
   "devDependencies": {
     "@openapitools/openapi-generator-cli": "1.0.13-4.3.1",

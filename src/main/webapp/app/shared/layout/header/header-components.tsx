@@ -28,3 +28,12 @@ export const Home = props => (
     </NavLink>
   </NavItem>
 );
+
+export const Dir = props => (
+  <NavItem>
+    <NavLink tag={Link} to="/direcciones" className="d-flex align-items-center">
+      <FontAwesomeIcon icon="home" />
+      <span>Direcciones</span>
+    </NavLink>
+  </NavItem>
+);

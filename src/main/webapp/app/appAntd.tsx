@@ -1,8 +1,5 @@
 import 'react-toastify/dist/ReactToastify.css';
-import './app.scss';
-import 'primereact/resources/themes/nova/theme.css';
-import 'primereact/resources/primereact.min.css';
-import 'primeicons/primeicons.css'
+import 'antd/dist/antd.css';
 
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
@@ -14,7 +11,10 @@ import { hot } from 'react-hot-loader';
 import { IRootState } from 'app/shared/reducers';
 import { getSession } from 'app/shared/reducers/authentication';
 import { getProfile } from 'app/shared/reducers/application-profile';
-import Header from 'app/shared/layout/header/header';
+import Topbar from 'app/componentes/layout/header/topbar';
+import Sidebar from 'app/componentes/layout/sidebar/sidebar';
+import LayoutPrincipal from 'app/componentes/layout/layoutPrincipal';
+
 import Footer from 'app/shared/layout/footer/footer';
 import { hasAnyAuthority } from 'app/shared/auth/private-route';
 import ErrorBoundary from 'app/shared/error/error-boundary';
@@ -31,29 +31,16 @@ export const App = (props: IAppProps) => {
     props.getProfile();
   }, []);
 
-  const paddingTop = '60px';
   return (
     <Router basename={baseHref}>
-      <div className="app-container" style={{ paddingTop }}>
-        <ToastContainer position={toast.POSITION.TOP_LEFT} className="toastify-container" toastClassName="toastify-toast" />
+        <ToastContainer position={toast.POSITION.TOP_RIGHT} className="toastify-container" toastClassName="toastify-toast" />
         <ErrorBoundary>
-          <Header
-            isAuthenticated={props.isAuthenticated}
-            isAdmin={props.isAdmin}
-            ribbonEnv={props.ribbonEnv}
-            isInProduction={props.isInProduction}
-            isSwaggerEnabled={props.isSwaggerEnabled}
-          />
+          <LayoutPrincipal isAuthenticated={props.isAuthenticated}
+                           isAdmin={props.isAdmin}
+                           content={<AppRoutes />} />
+
         </ErrorBoundary>
-        <div className="container-fluid view-container" id="app-view-container">
-          <Card className="jh-card">
-            <ErrorBoundary>
-              <AppRoutes />
-            </ErrorBoundary>
-          </Card>
-          <Footer />
-        </div>
-      </div>
+  
     </Router>
   );
 };
