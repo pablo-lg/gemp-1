@@ -1,10 +1,13 @@
 package ar.com.telecom.gemp.web.rest;
 
+import ar.com.telecom.gemp.security.UserAuthenticationProvider;
 import ar.com.telecom.gemp.security.jwt.JWTFilter;
 import ar.com.telecom.gemp.security.jwt.TokenProvider;
 import ar.com.telecom.gemp.web.rest.vm.LoginVM;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import javax.validation.Valid;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,11 +23,14 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/api")
 public class UserJWTController {
+    @Autowired
+    //private UserAuthenticationProvider customAuthenticationProvider;
     private final TokenProvider tokenProvider;
 
-    private final AuthenticationManagerBuilder authenticationManagerBuilder;
+    private final UserAuthenticationProvider authenticationManagerBuilder;
 
-    public UserJWTController(TokenProvider tokenProvider, AuthenticationManagerBuilder authenticationManagerBuilder) {
+   // public UserJWTController(TokenProvider tokenProvider, AuthenticationManagerBuilder authenticationManagerBuilder) {
+    public UserJWTController(TokenProvider tokenProvider, UserAuthenticationProvider authenticationManagerBuilder) {
         this.tokenProvider = tokenProvider;
         this.authenticationManagerBuilder = authenticationManagerBuilder;
     }
@@ -36,7 +42,7 @@ public class UserJWTController {
             loginVM.getPassword()
         );
 
-        Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
+        Authentication authentication = authenticationManagerBuilder.authenticate(authenticationToken);
         SecurityContextHolder.getContext().setAuthentication(authentication);
         boolean rememberMe = (loginVM.isRememberMe() == null) ? false : loginVM.isRememberMe();
         String jwt = tokenProvider.createToken(authentication, rememberMe);
