@@ -18,6 +18,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 
 /**
  * REST controller for managing the current user's account.
@@ -98,8 +101,10 @@ public class AccountResource {
      * @throws RuntimeException {@code 500 (Internal Server Error)} if the user couldn't be returned.
      */
     @GetMapping("/account")
-    public Optional<String> getAccount() {
-        return SecurityUtils.getCurrentUserLogin();
+    public UserDetails getAccount() {
+        SecurityContext securityContext = SecurityContextHolder.getContext();
+        return (UserDetails) securityContext.getAuthentication().getPrincipal();
+        // return SecurityUtils.getCurrentUserLogin();
     }
 
     /**

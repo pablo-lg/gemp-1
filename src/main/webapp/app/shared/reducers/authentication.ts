@@ -69,13 +69,16 @@ export default (state: AuthenticationState = initialState, action): Authenticati
         showModalLogin: true,
       };
     case SUCCESS(ACTION_TYPES.GET_SESSION): {
+      const account = action.payload.data
+      account.activated=true
+      account.authorities = account.authorities.map(a=> a.authority)
       const isAuthenticated = action.payload && action.payload.data && action.payload.data.activated;
       return {
         ...state,
         isAuthenticated,
         loading: false,
         sessionHasBeenFetched: true,
-        account: action.payload.data,
+        account
       };
     }
     case ACTION_TYPES.ERROR_MESSAGE:
