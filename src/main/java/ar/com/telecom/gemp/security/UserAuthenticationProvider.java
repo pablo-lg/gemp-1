@@ -32,8 +32,13 @@ public class UserAuthenticationProvider implements AuthenticationProvider {
 
         // Prueba del ldap
         try {
-            Map<String, String> resultadoLdap = ldap.login(username, password);
-            grantedAuths.add(new SimpleGrantedAuthority((resultadoLdap.get("perfil"))));
+            Map<String, Object> resultadoLdap = ldap.login(username, password);
+            List perfil = (List) resultadoLdap.get("perfil");
+            for (Object p : perfil) {
+                grantedAuths.add(new SimpleGrantedAuthority((String) p));
+            }
+
+           // grantedAuths.add(new SimpleGrantedAuthority((String) (resultadoLdap.get("perfil"))));
 
             return new UsernamePasswordAuthenticationToken
               (username, password, grantedAuths);

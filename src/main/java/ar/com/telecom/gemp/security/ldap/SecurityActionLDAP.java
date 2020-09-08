@@ -42,9 +42,9 @@ public class SecurityActionLDAP {
 	private Map ctx = null;
 
 
-	public Map<String, String> login(String userInput, String passInput) throws Exception {
+	public Map<String, Object> login(String userInput, String passInput) throws Exception {
 		
-		Map<String,String> respuesta = new HashMap<String, String>();
+		Map<String,Object> respuesta = new HashMap<String, Object>();
 		try {
 			if (this.validateUserLDAP(userInput, passInput)) {
 
@@ -59,18 +59,24 @@ public class SecurityActionLDAP {
 					throw new BadCredentialsException("Eror al validar datos del usuario");
 
 				}
-					
-				String rol = (String) roles.get(0);
-				System.out.println("----------------------------------------> "+rol);
+				List perfil = new ArrayList<String>();
 				
 				String attributes[] = { "tvalue" };
-				Map role = ldapServer.getRole(rol, attributes);
-				List perfil = (ArrayList<String>) role.get("tvalue");
+				for (Object r : roles) {
+					String rol = (String) r;
+					Map role = ldapServer.getRole(rol, attributes);
+
+					ArrayList<String> per = (ArrayList<String>) role.get("tvalue");
+					perfil.add(per.get(0).toString());
+					
+				}   
+
+
 				
 				respuesta.put("nombre",nombre);
 				respuesta.put("apellido",apellido);
 				respuesta.put("email",email);
-				respuesta.put("perfil",perfil.toString());
+				respuesta.put("perfil",perfil);
                 return respuesta;
 
 

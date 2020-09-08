@@ -7,7 +7,7 @@ export default config;
 export const SERVER_API_URL = process.env.SERVER_API_URL;
 
 export const AUTHORITIES = {
-  ADMIN: '[AD]',
+  ADMIN: 'AD',
   USER: 'ROLE_USER',
 };
 
