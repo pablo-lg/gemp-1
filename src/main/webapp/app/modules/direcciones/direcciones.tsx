@@ -1,5 +1,5 @@
 
-import { Link } from 'react-router-dom';
+import { Link, RouteComponentProps } from 'react-router-dom';
 
 import { connect } from 'react-redux';
 
@@ -11,6 +11,8 @@ import { IRootState } from 'app/shared/reducers';
 
 import React, { useState, useEffect, Fragment, useLayoutEffect } from 'react';
 import axios from 'axios';
+import { getProvincias, getLocalidades, getPartidos, getCalles, getGeographic } from './mu.reducer';
+
 
 import {
   Row, Col,
@@ -28,6 +30,7 @@ import {
   Tooltip,
   notification,
   Tabs,
+  Descriptions,
 } from 'antd';
 import { SearchOutlined } from '@ant-design/icons';
 import { GroupContext } from 'antd/lib/checkbox/Group';
@@ -36,50 +39,34 @@ import { GroupContext } from 'antd/lib/checkbox/Group';
 // import 'react-bootstrap-typeahead/css/Typeahead.css';
 
 
+export interface IDireccionesProps extends StateProps, DispatchProps, RouteComponentProps<{ url: string }> { }
 
 
-export const Direcciones = (props) => {
+export const Direcciones = (props: IDireccionesProps) => {
 
 
+ const [isLoading, setIsLoading] = useState(false);
 
-  const [editForm, setEditForm] = useState(true);
-
-  const [paises, setPaises] = useState([]);
   const [pais, setPais] = useState("Argentina");
 
-  const [provincias, setProvincias] = useState([]);
   const [provincia, setProvincia] = useState(null);
 
-  const [partidos, setPartidos] = useState([]);
   const [partido, setPartido] = useState(null);
 
-  const [localidades, setLocalidades] = useState([]);
   const [localidad, setLocalidad] = useState(null);
 
-  const [calles, setCalles] = useState([]);
   const [calle, setCalle] = useState(null);
-  const [searchCalle, setSearchCalle] = useState();
 
   const [altura, setAltura] = useState(null);
-  const [rangosAltura, setRangosAltura] = useState();
+  const [rangosAltura, setRangosAltura] = useState(null);
 
-  const [geographic, setGeographic] = useState();
 
-  const [isLoading, setIsLoading] = useState(false);
-  const [options, setOptions] = useState([]);
-
-  const [zonas, setZonas] = useState();
-  const [zona, setZona] = useState(null);
 
   const [regionTelefonia, setRegionTelefonia] = useState(null);
-  const [codigoPostal, setCodigoPostal] = useState(null);
-  const [geoX, setGeoX] = useState(null);
-  const [geoY, setGeoY] = useState(null);
+
   const [region, setRegion] = useState(null);
   const [subRegion, setSubRegion] = useState(null);
-  const [zonaCompetencia, setZonaCompetencia] = useState(null);
-  const [barriosEspeciales, setBarriosEspeciales] = useState(null);
-  const [hub, setHub] = useState(null);
+ 
   const [form] = Form.useForm();
 
 
@@ -95,37 +82,26 @@ export const Direcciones = (props) => {
   }
 
   useEffect(() => {
-    const fetchData = async () => {
-      const result = await axios(
-        'geographicAddressManagement/v1/areas?fatherIdentification=' + pais + '&fatherType=Paises&fullText=false&limit=999&offset=0&type=Provincias&fields=name,type,identification',
-      );
-
-      setProvincias(result.data);
-      setPartidos([]);
-      setPartido(null);
-      setLocalidades([]);
-      setLocalidad(null);
-      setCalles([]);
-
-    };
-    setProvincias([]);
-    fetchData();
+   props.getProvincias(pais)
   }, [pais]);
+
   useEffect(() => {
-    const fetchData = async () => {
-      const result = await axios(
-        'geographicAddressManagement/v1/areas?fatherIdentification=' + pais + '&fatherIdentification=' + provincia + '&fatherType=Provincias&fullText=false&limit=999&offset=0&type=Partidos&fields=name,type,identification',
-
-      );
-
-      setPartidos(result.data);
-      setLocalidades([]);
-      setLocalidad(null)
-      setCalles([]);
-      form.resetFields();
-    };
-    fetchData()
+    if (provincia){
+    props.getPartidos(pais,provincia)
+    }
   }, [provincia]);
+
+  useEffect(() => {
+    if (partido && provincia) {
+    props.getLocalidades(pais,provincia, partido)
+    }
+  }, [partido]);
+
+  useEffect(() => {
+    if (partido && provincia && localidad) {
+   // props.getCalles(pais,provincia, partido,localidad)
+    }
+  }, [localidad]);
  
 
 
@@ -178,120 +154,50 @@ export const Direcciones = (props) => {
   }
 
   const handleSubmit = () => {
-
-    const fetchData = async () => {
-      try {
-        const result = await axios(
-          'geographicAddressManagement/v1/geographicAddress?city=' + partido + '&country=' + pais + '&locality=' + localidad + '&stateOrProvince=' + provincia + '&streetName=' + calle + '&streetNr=' + altura,
-        );
-
-
-        fetchXY(result.data.geographicLocation.geometry[0].x, result.data.geographicLocation.geometry[0].y);
-        setGeographic(result.data);
-        setZonas(result.data.zones);
-        setGeoX(result.data.geographicLocation.geometry[0].x)
-        setGeoY(result.data.geographicLocation.geometry[0].y)
-        const zc = result.data.zones.filter(d => d.type === "Zonas Competencia")
-        setZonaCompetencia(zc[0] ? zc[0].value : null)
-        setHub(result.data.zones.filter(d => d.type === "Hubs")[0].value)
-        const be = result.data.zones.filter(d => d.type === "Barrios Especiales")
-        setBarriosEspeciales(be[0] ? be[0].value : null)
-
-        openNotification('Ok', result.status + "", 'success')
-
-        setCodigoPostal(result.data.postcode)
-      } catch (error) {
-        openNotification('error', error.message, 'error')
-      }
-
-    };
-    fetchData()
-    fetchRegionTelefonia();
+     props.getGeographic(pais, provincia, partido, localidad, calle, altura)
+    //fetchRegionTelefonia();
     // fetchXY();
-
-  };
-  const handleInputChange = q => {
-    setSearchCalle(q);
   };
 
-  const handleSelect = select => {
 
-    setPais(select.split(',')[0]);
-    setProvincia(select.split(',')[1]);
-    setPartido(select.split(',')[2]);
-    setLocalidad(select.split(',')[3]);
-    setCalle(select.split(',')[4]);
-
-
-  }
+  
   const handleSelectLocalidad = (select) => {
     // "identification": "ARGENTINA,BUENOS AIRES,VILLARINO,PEDRO LURO",
     setPais(select.split(',')[0]);
     setProvincia(select.split(',')[1]);
     setPartido(select.split(',')[2]);
     setLocalidad(select.split(',')[3]);
-
-
   }
   const handleSearchLocalidad = (query) => {
     setLocalidad(null)
-
-
     if (query.length > 2) {
       // if (!query.includes(prevQuery)) {
-      setPrevQuery(query);
-
-
-      setIsLoading(true);
-      const fetchData = async () => {
-        const varCountry = ((pais) ? '&fatherIdentification=' + pais : '');
-        const varState = ((provincia) ? '&fatherIdentification=' + provincia : '');
-        const varCity = ((partido) ? '&fatherType=partidos&fatherIdentification=' + partido : '');
-        // const varLocalidad = ((localidad) ? '&fatherType=localidades&fatherIdentification=' + localidad : '');
-        const server = 'geographicAddressManagement/v1/areas?fullText=true&limit=999&offset=0&type=LOCALIDADES&name=' + query
-        const result = await axios(
-          server + varCountry + varState + varCity
-
-        );
-
-        // result.data es la lista con todas las localidades
-        // const resultLocalidades = result.data.map(l => l.identification.split(','))
-        // result.data.map(o => o.texto = o.name + ' ' + o.stateOrProvince + ' ' + o.city)
-        setOptions(result.data);
-        setLocalidades(result.data);
-
+        setPrevQuery(query);
+        setIsLoading(true);
+        props.getLocalidades(pais,provincia, partido, query)
         setIsLoading(false);
-      };
-      fetchData()
-      // }
+      }
     }
+    
+  const handleSelectCalles = select => {
+    setPais(select.split(',')[0]);
+    setProvincia(select.split(',')[1]);
+    setPartido(select.split(',')[2]);
+    setLocalidad(select.split(',')[3]);
+    setCalle(select.split(',')[4]);
   }
-
-  const handleSearch = (query) => {
+  const handleSearchCalles = (query) => {
     // this.setState({ isLoading: true });
     if (query.length > 2) {
       // if (!query.includes(prevQuery)) {
       setPrevQuery(query);
       setIsLoading(true);
-      const fetchData = async () => {
-        const varCity = ((partido) ? '&city=' + partido : '');
-        const varCountry = ((pais) ? '&country=' + pais : '');
-        const varLocalidad = ((localidad) ? '&locality=' + localidad : '');
-        const varState = ((provincia) ? '&stateOrProvince=' + provincia : '');
-        const server = 'geographicAddressManagement/v1/streets?fullText=true&offset=0&name=' + query
-        const result = await axios(
-          server + varCity + varCountry + varLocalidad + varState
-        );
+      props.getCalles(pais,provincia, partido,localidad, query)
 
-        setCalles(result.data);
-        result.data.map(o => o.texto = o.name + ' ' + o.stateOrProvince + ' ' + o.city)
-        setRangosAltura(result.data.map(r => r.numberRanges.evenSides.map(s => s.number + ' - ' + s.numberLast + '\n')))
-        setOptions(result.data);
+        setRangosAltura(props.calles.map(r => r.numberRanges.evenSides.map(s => s.number + ' - ' + s.numberLast + '\n')))
         setIsLoading(false);
       };
-      fetchData()
-      // }
-    }
+    
   };
 
   const opcionesSelectName = (optSelect) => (
@@ -307,7 +213,7 @@ export const Direcciones = (props) => {
   const opcionesSelectIdent = (optSelect) => (
     optSelect ? optSelect.map(otherEntity => (
       <Select.Option value={otherEntity.identification} key={otherEntity.identification}>
-        {otherEntity.identification.split(',')[4]} {otherEntity.identification.split(',')[3]}  {otherEntity.identification.split(',')[2]} {otherEntity.identification.split(',')[1]}
+        {otherEntity.identification.split(',')[4]} {otherEntity.identification.split(',')[3]} , {otherEntity.identification.split(',')[2]} , {otherEntity.identification.split(',')[1]}
       </Select.Option>
     )
     )
@@ -321,7 +227,18 @@ export const Direcciones = (props) => {
     setCalle(null);
     setAltura(null);
   }
+  const { provincias, localidades, partidos, calles, geographic ,zonas, geoX,
+    geoY, zonaCompetencia, hub,codigoPostal, barriosEspeciales, loading, errorMessage,
+    streetType,intersectionLeft,intersectionRight } = props;
 
+  const initialValues = {
+    pais: 'Argentina',
+    provincia: null,
+    partido: null,
+    localidad: null,
+    calle: null,
+    altura: null,
+  }
 
   return (
 
@@ -330,7 +247,7 @@ export const Direcciones = (props) => {
         labelCol={{ span: 4 }}
         wrapperCol={{ span: 16 }}
         layout="vertical"
-        initialValues={{ size: componentSize }}
+        initialValues={initialValues}
         onValuesChange={onFormLayoutChange}
       >
 
@@ -340,14 +257,14 @@ export const Direcciones = (props) => {
             <Select allowClear showSearch
               placeholder="Provincia"
               defaultValue={null}
-              value={provincia}
+              // value={provincia}
               onSelect={(value, event) => setProvincia(value)}>
               {opcionesSelectName(provincias)}
             </Select>
           </Form.Item >
           <Form.Item label="Partido" style={{ display: 'inline-block', width: 'calc(20% - 4px)', margin: '0 4px 0 0' }}>
             <Select allowClear placeholder="Partido"
-              value={partido}
+              // value={partido}
               showSearch onSelect={(value, event) => setPartido(value)}>
               {opcionesSelectName(partidos)}
 
@@ -356,7 +273,7 @@ export const Direcciones = (props) => {
           <Form.Item label="Localidad" style={{ display: 'inline-block', width: 'calc(60% - 4px)', margin: '0 4px 0 0' }}>
             <Select placeholder="Localidad"
               allowClear
-              value={localidad}
+             // value={localidad}
               onSearch={handleSearchLocalidad}
               showSearch
               onSelect={handleSelectLocalidad}>
@@ -369,9 +286,9 @@ export const Direcciones = (props) => {
             <Select showSearch
               // loading={isLoading}
               placeholder="Calle..."
-              onSearch={handleSearch}
+              onSearch={handleSearchCalles}
               value={calle}
-              onSelect={handleSelect}>
+              onSelect={handleSelectCalles}>
               {opcionesSelectIdent(calles)}
             </Select>
           </Form.Item>
@@ -387,6 +304,23 @@ export const Direcciones = (props) => {
           </Form.Item>
         </Form.Item>
       </Form>
+      <div>
+        {geoX ? 
+      <Descriptions title="Datos de certa">
+        <Descriptions.Item label="Codigo postal">{codigoPostal}</Descriptions.Item>
+        <Descriptions.Item label="Zona competencia">{zonaCompetencia}</Descriptions.Item>
+        <Descriptions.Item label="Hub">{hub}</Descriptions.Item>
+        <Descriptions.Item label="Tipo de Calle">{streetType}</Descriptions.Item>
+        <Descriptions.Item label="Interseccion der">{intersectionRight}</Descriptions.Item>
+        <Descriptions.Item label="Interseccion izq">{intersectionLeft}</Descriptions.Item>
+        <Descriptions.Item label="Geo X">{geoX}</Descriptions.Item>
+        <Descriptions.Item label="Geo Y">{geoY}</Descriptions.Item>
+        <Descriptions.Item label="Barrios Especiales">{barriosEspeciales}</Descriptions.Item>
+      </Descriptions>
+      :
+      null
+      }
+      </div>
 
 
     </div>
@@ -397,6 +331,36 @@ export const Direcciones = (props) => {
   );
 };
 
+const mapStateToProps = ({ mu }: IRootState) => ({
+  provincias: mu.provincias,
+  partidos: mu.partidos,
+  localidades: mu.localidades,
+  calles: mu.calles,
+  loading: mu.loading,
+  errorMessage: mu.errorMessage,
+  geographic: mu.geographic,
+  zonas: mu.zonas,
+  geoX: mu.geoX,
+  geoY: mu.geoY,
+  zonaCompetencia: mu.zonaCompetencia,
+  hub: mu.hub,
+  codigoPostal: mu.codigoPostal,
+  barriosEspeciales: mu.barriosEspeciales,
+  streetType: mu.streetType,
+  intersectionLeft: mu.intersectionLeft,
+  intersectionRight: mu.intersectionRight,
 
-export default Direcciones;
+});
+
+const mapDispatchToProps = {
+  getProvincias,
+  getPartidos,
+  getLocalidades,
+  getCalles,
+  getGeographic,
+};
+type StateProps = ReturnType<typeof mapStateToProps>;
+type DispatchProps = typeof mapDispatchToProps;
+export default connect(mapStateToProps, mapDispatchToProps)(Direcciones);
+
 

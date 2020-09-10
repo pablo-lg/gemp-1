@@ -27,6 +27,9 @@ import tipoDesp, {
 import segmento, {
   SegmentoState
 } from 'app/entities/segmento/segmento.reducer';
+import mu, {
+  MuState
+} from 'app/modules/direcciones/mu.reducer';
 /* jhipster-needle-add-reducer-import - JHipster will add reducer here */
 
 export interface IRootState {
@@ -43,6 +46,8 @@ export interface IRootState {
   readonly tipoObra: TipoObraState;
   readonly tipoDesp: TipoDespState;
   readonly segmento: SegmentoState;
+  readonly mu: MuState;
+
   /* jhipster-needle-add-reducer-type - JHipster will add reducer type here */
   readonly loadingBar: any;
 }
@@ -61,6 +66,7 @@ const rootReducer = combineReducers<IRootState>({
   tipoObra,
   tipoDesp,
   segmento,
+  mu,
   /* jhipster-needle-add-reducer-combine - JHipster will add reducer here */
   loadingBar,
 });
