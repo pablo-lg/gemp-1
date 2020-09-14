@@ -1,5 +1,8 @@
 import 'react-toastify/dist/ReactToastify.css';
 import './app.scss';
+import 'primereact/resources/themes/nova/theme.css';
+import 'primereact/resources/primereact.min.css';
+import 'primeicons/primeicons.css'
 
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';

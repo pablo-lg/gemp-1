@@ -1,14 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { Link, RouteComponentProps } from 'react-router-dom';
-import { Button, Col, Row, Table } from 'reactstrap';
+// import { Button, Col, Row, Table } from 'reactstrap';
 import { ICrudGetAllAction } from 'react-jhipster';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { Table, Input, Button, Popconfirm, Form, InputNumber, Space, Modal } from 'antd';
 
 import { IRootState } from 'app/shared/reducers';
 import { getEntities } from './tipo-emp.reducer';
 import { ITipoEmp } from 'app/shared/model/tipo-emp.model';
 import { APP_DATE_FORMAT, APP_LOCAL_DATE_FORMAT } from 'app/config/constants';
+import TipoEmpUpdate from './tipo-emp-update';
 
 export interface ITipoEmpProps extends StateProps, DispatchProps, RouteComponentProps<{ url: string }> {}
 
@@ -18,57 +20,77 @@ export const TipoEmp = (props: ITipoEmpProps) => {
   }, []);
 
   const { tipoEmpList, match, loading } = props;
+  const [data, setData] = useState([]);
+  const [showUpdate, setShowUpdate] = useState(false);
+
+  useEffect(() => {
+    setData(props.tipoEmpList.map(s => s))
+  }, [props.tipoEmpList]);
+
+  const columns = [
+
+    {
+      title: 'descripcion',
+      dataIndex: 'descripcion',
+      width: '40%',
+      editable: true,
+
+
+    },
+    {
+      title: 'valor',
+      dataIndex: 'valor',
+      width: '40%',
+      editable: true,
+    },
+    {
+      title: 'accion',
+      dataIndex: 'accion',
+      width: '20%',
+      render: (text, record) => (
+        <Space size="middle">
+          <a><Link to={`${match.url}/${record.id}/edit`}>edit</Link></a>
+          <a><Link to={`${match.url}/${record.id}/delete`}>delete</Link></a>
+        </Space>
+      ),
+
+    },
+  ];
+  const onCancelModal = () => {
+    setShowUpdate(false)
+  }
+  const handleAdd= () =>{
+    props.history.push(`${match.url}/new`)
+  }
+  const tableHeader = () => {
+    <h2 id="tipo-emp-heading">
+    Tipo Emps
+    <Link to={`${match.url}/new`} className="btn btn-primary float-right jh-create-entity" id="jh-create-entity">
+      <FontAwesomeIcon icon="plus" />
+      &nbsp; Create new Tipo Emp
+    </Link>
+  </h2>
+  }
   return (
     <div>
-      <h2 id="tipo-emp-heading">
-        Tipo Emps
-        <Link to={`${match.url}/new`} className="btn btn-primary float-right jh-create-entity" id="jh-create-entity">
-          <FontAwesomeIcon icon="plus" />
-          &nbsp; Create new Tipo Emp
-        </Link>
-      </h2>
-      <div className="table-responsive">
-        {tipoEmpList && tipoEmpList.length > 0 ? (
-          <Table responsive>
-            <thead>
-              <tr>
-                <th>ID</th>
-                <th>Descripcion</th>
-                <th>Valor</th>
-                <th />
-              </tr>
-            </thead>
-            <tbody>
-              {tipoEmpList.map((tipoEmp, i) => (
-                <tr key={`entity-${i}`}>
-                  <td>
-                    <Button tag={Link} to={`${match.url}/${tipoEmp.id}`} color="link" size="sm">
-                      {tipoEmp.id}
-                    </Button>
-                  </td>
-                  <td>{tipoEmp.descripcion}</td>
-                  <td>{tipoEmp.valor}</td>
-                  <td className="text-right">
-                    <div className="btn-group flex-btn-group-container">
-                      <Button tag={Link} to={`${match.url}/${tipoEmp.id}`} color="info" size="sm">
-                        <FontAwesomeIcon icon="eye" /> <span className="d-none d-md-inline">View</span>
-                      </Button>
-                      <Button tag={Link} to={`${match.url}/${tipoEmp.id}/edit`} color="primary" size="sm">
-                        <FontAwesomeIcon icon="pencil-alt" /> <span className="d-none d-md-inline">Edit</span>
-                      </Button>
-                      <Button tag={Link} to={`${match.url}/${tipoEmp.id}/delete`} color="danger" size="sm">
-                        <FontAwesomeIcon icon="trash" /> <span className="d-none d-md-inline">Delete</span>
-                      </Button>
-                    </div>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </Table>
-        ) : (
-          !loading && <div className="alert alert-warning">No Tipo Emps found</div>
-        )}
+      <Button onClick={handleAdd} type="primary" style={{ marginBottom: 16 }}>
+        Add
+    </Button>
+      <div >
+      <Table 
+          dataSource={data}
+          columns={columns}
+          size='small'
+          title={() => tableHeader}
+          />
       </div>
+      <Modal
+          title="Basic Modal"
+          visible={showUpdate}
+          onCancel={onCancelModal}
+        >
+       <TipoEmpUpdate/>
+        </Modal>
     </div>
   );
 };
