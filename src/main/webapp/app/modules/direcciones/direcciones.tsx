@@ -130,12 +130,11 @@ export const Direcciones = (props: IDireccionesProps) => {
     // fetchXY();
   };
 
-  const handleSelectLocalidad = (select) => {
-    // "identification": "ARGENTINA,BUENOS AIRES,VILLARINO,PEDRO LURO",
-    // setPais(select.split(',')[0]);
-    // setProvincia(select.split(',')[1]);
-    // setPartido(select.split(',')[2]);
-    setLocalidad(select.split(',')[3]);
+  const handleSelectLocalidad = (value, select) => {
+    setPais(select.key.split(',')[0]);
+    setProvincia(select.key.split(',')[1]);
+    setPartido(select.key.split(',')[2]);
+    setLocalidad(value)
     setCalle(null);
   }
   const handleSearchLocalidad = (query) => {
@@ -243,7 +242,7 @@ export const Direcciones = (props: IDireccionesProps) => {
               // onSearch={handleSearchLocalidad}
               showSearch
               // onSelect={(value, event) => setLocalidad(value)}>
-              onSelect={handleSelectLocalidad}>
+                onSelect={(value, select ) => handleSelectLocalidad( value, select)}>
               {opcionesSelectIdent(localidades)}
             </Select>
           </Form.Item>
