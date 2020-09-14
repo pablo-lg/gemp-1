@@ -139,8 +139,8 @@ export default (state: MuState = initialState, action): MuState => {
 
   export const getLocalidades = (pais, provincia, partido, query=null) => {
     const varQuery = ((query) ? '&fullText=true&name=' + query : '&fullText=false');
-    const varCountry = ((pais) ? '&fatherType=paises&fatherIdentification=' + pais : '');
-    const varState = ((provincia) ? '&fatherType=provincias&fatherIdentification=' + provincia : '');
+    const varCountry = ((pais) ? '&fatherIdentification=' + pais : '');
+    const varState = ((provincia) ? '&fatherIdentification=' + provincia : '');
     const varCity = ((partido) ? '&fatherType=partidos&fatherIdentification=' + partido : '');
     const server = 'geographicAddressManagement/v1/areas?limit=999&offset=0&type=LOCALIDADES'
     const requestUrl = server + varQuery + varCountry  + varState + varCity
