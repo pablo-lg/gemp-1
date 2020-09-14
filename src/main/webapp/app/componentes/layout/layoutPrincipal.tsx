@@ -39,7 +39,7 @@ const LayoutPrincipal = (props) => {
   return (
 
     <Layout>
-        <Sidebar/>
+        <Sidebar />
         <Layout className="site-layout">
         <Topbar
             isAuthenticated={props.isAuthenticated}

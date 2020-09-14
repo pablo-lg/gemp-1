@@ -3,6 +3,7 @@ import './topbar.css'
 
 import React, { useState } from 'react';
 
+import { connect } from 'react-redux';
 
 import { Navbar, Nav, NavbarToggler, NavbarBrand, Collapse } from 'reactstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -11,6 +12,8 @@ import { NavLink as Link } from 'react-router-dom';
 import LoadingBar from 'react-redux-loading-bar';
 
 import { MailOutlined, UserOutlined, SettingOutlined } from '@ant-design/icons';
+import { useSelector } from 'react-redux';
+import { IRootState } from 'app/shared/reducers';
 
 
 export interface IHeaderProps {
@@ -19,6 +22,8 @@ export interface IHeaderProps {
   ribbonEnv: string;
   isInProduction: boolean;
   isSwaggerEnabled: boolean;
+  account: any;
+
 }
 
 const Topbar = (props: IHeaderProps) => {
@@ -26,6 +31,9 @@ const Topbar = (props: IHeaderProps) => {
 
   const [menuOpen, setMenuOpen] = useState(false);
   const { SubMenu } = Menu;
+
+
+
 
   const renderDevRibbon = () =>
     props.isInProduction === false ? (
@@ -56,23 +64,7 @@ const Topbar = (props: IHeaderProps) => {
           }
            
           </SubMenu>
-          {props.isAuthenticated && props.isAdmin && (
-          <SubMenu key="sub2" title='admin' className="menuTopbar" style={{ float: 'right', color: 'rgb(9, 2, 15)' }}>
-            <Menu.Item key="1" >
-              <Link to="/docs">API</Link>
-            </Menu.Item>
-            <Menu.Item key="2">
-              <Link to="/health">Health</Link>
-            </Menu.Item>
-            <Menu.Item key="3">
-              <Link to="/logs">Logs</Link>
-            </Menu.Item>
-            <Menu.Item key="4">
-              <Link to="/metrics">Metrics</Link>
-            </Menu.Item>
 
-          </SubMenu>
-            )}
         </Menu>
       </Header>
     </Layout>
@@ -81,6 +73,10 @@ const Topbar = (props: IHeaderProps) => {
   );
 };
 
-export default Topbar;
+const mapStateToProps = ({ authentication }: IRootState) => ({
+  account: authentication.account,
+});
+
+export default connect(mapStateToProps)(Topbar);
 
 

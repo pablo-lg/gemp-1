@@ -34,12 +34,13 @@ export const App = (props: IAppProps) => {
   return (
     <Router basename={baseHref}>
         <ToastContainer position={toast.POSITION.TOP_RIGHT} className="toastify-container" toastClassName="toastify-toast" />
-        <ErrorBoundary>
-          <LayoutPrincipal isAuthenticated={props.isAuthenticated}
-                           isAdmin={props.isAdmin}
-                           content={<AppRoutes />} />
-
-        </ErrorBoundary>
+        
+        {props.isAuthenticated ? <ErrorBoundary>
+                                   <LayoutPrincipal isAuthenticated={props.isAuthenticated}
+                                        isAdmin={props.isAdmin}
+                                        content={<AppRoutes />} />
+                                   </ErrorBoundary>
+                               : <AppRoutes />}
   
     </Router>
   );
