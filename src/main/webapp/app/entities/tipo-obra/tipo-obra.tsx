@@ -62,7 +62,7 @@ const save = async (id: React.Key) => {
 
     if (id == null) {
       props.createEntity(row);
-      //setEditingId(null);
+      // setEditingId(null);
     } else {
       const newData = [...data];
       const index = newData.findIndex(item => id === item.id);

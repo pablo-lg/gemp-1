@@ -80,13 +80,13 @@ export const Segmento = (props: ISegmentoProps) => {
             ...row,
           });
           props.updateEntity(newData[index]);
-          //setEditingId(null);
+          // setEditingId(null);
           setActualizar(!actualizar);
         }
        else {
         newData.push(row);
         props.updateEntity(newData[index]);
-        //setEditingId(null);
+        // setEditingId(null);
         setActualizar(!actualizar);
       }
     }

@@ -37,9 +37,9 @@ spring:
       indent-output: true
   datasource:
     type: com.zaxxer.hikari.HikariDataSource
-    url: jdbc:h2:file:./target/h2db/db/gemp;DB_CLOSE_DELAY=-1
-    username: gemp
-    password:
+    url: jdbc:oracle:thin:@DLGEMPRODORA1:1978:DOGEMDE1
+    username: A000112
+    password: desarrollo.2020
     hikari:
       poolName: Hikari
       auto-commit: false

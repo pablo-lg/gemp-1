@@ -452,7 +452,7 @@ const handleSearchLocalidad = (query) => {
   <Select allowClear showSearch
           placeholder="Tipo emprendimiento" 
           defaultValue={null}
-          //value={tipoEmp} 
+          // value={tipoEmp} 
           onSelect={(value, event) => setProvincia(value)}>
           {      props.tipoEmpList ? props.tipoEmpList.map(otherEntity => (
                     <Select.Option value={otherEntity.valor} key={otherEntity.valor}>
@@ -469,7 +469,7 @@ const handleSearchLocalidad = (query) => {
   <Select allowClear showSearch
           placeholder="Tipo de obra" 
           defaultValue={null}
-          //value={tipoEmp} 
+          // value={tipoEmp} 
           onSelect={(value, event) => setProvincia(value)}>
           {      props.tipoObraList ? props.tipoObraList.map(otherEntity => (
                     <Select.Option value={otherEntity.valor} key={otherEntity.valor}>
@@ -486,7 +486,7 @@ const handleSearchLocalidad = (query) => {
   <Select allowClear showSearch
           placeholder="Segmento" 
           defaultValue={null}
-          //value={tipoEmp} 
+          // value={tipoEmp} 
           onSelect={(value, event) => setProvincia(value)}>
           {      props.segmentoList ? props.segmentoList.map(otherEntity => (
                     <Select.Option value={otherEntity.valor} key={otherEntity.valor}>
