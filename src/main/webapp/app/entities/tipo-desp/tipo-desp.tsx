@@ -3,73 +3,118 @@ import { connect } from 'react-redux';
 import { Link, RouteComponentProps } from 'react-router-dom';
 import { ICrudGetAllAction } from 'react-jhipster';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-
+import { Table, Input, Button, Popconfirm, Form, InputNumber, Space, Row } from 'antd';
 import { IRootState } from 'app/shared/reducers';
 import { getEntities, updateEntity, deleteEntity, createEntity } from './tipo-desp.reducer';
 import { ITipoDesp } from 'app/shared/model/tipo-desp.model';
 import { APP_DATE_FORMAT, APP_LOCAL_DATE_FORMAT } from 'app/config/constants';
-import { Table, Input, Button, Popconfirm, Form, InputNumber, Space, Modal } from 'antd';
 import { PlusOutlined , PlusSquareTwoTone , PlusCircleFilled } from '@ant-design/icons';
 
+import {EditableCell} from '../../componentes/table/editableCell'
 
 
-export interface ITipoDespProps extends StateProps, DispatchProps, RouteComponentProps<{ url: string }> {}
+export interface ITipoDespProps extends StateProps, DispatchProps, RouteComponentProps<{ url: string }> { }
+
 
 export const TipoDesp = (props: ITipoDespProps) => {
+  const [actualizar, setActualizar] = useState(false);
+  const [data, setData] = useState([]);
   useEffect(() => {
     props.getEntities();
-  }, [props.updateSuccess]);
+  }, [actualizar,props.updateSuccess]);
 
-  const { tipoDespList, match, loading } = props;
-
-  // Global Search
   const { Search } = Input;
+
   const [filter, setFilter] = useState('');
+
   const filterFn = l => (l.descripcion.toUpperCase().includes(filter.toUpperCase()) || l.valor.toUpperCase().includes(filter.toUpperCase()));
+  // const changeFilter = val => setFilter(val);
 
   const changeFilter = evt => setFilter(evt.target.value);
-  const [isNew, setIsNew] = useState(false);
 
-  const [data, setData] = useState([]);
-  const [showUpdate, setShowUpdate] = useState(false);
 
-  const [item, setItem] = useState(null);
+  useEffect(() => {
+    setData(props.entityList.filter(filterFn).map(s => s))
+  }, [props.entityList, filter]);
+
+  const [editingId, setEditingId] = useState(null);
+  const cancel = () => {
+    setData(data.filter(item => item.id !== null))
+    setEditingId(null);
+  };
+  useEffect(() => {
+    if (props.updateSuccess) {
+      cancel();
+    }
+  }, [props.updateSuccess]);
 
   const [form] = Form.useForm();
 
 
-  useEffect(() => {
-    setData(props.tipoDespList.filter(filterFn).map(s => s))
-  }, [props.tipoDespList, filter]);
+  const isEditing = (record: ITipoDesp) => record.id === editingId;
 
-const edit = (record) =>{
-  if (!record) {
-    setIsNew(true);
-    setItem(null);
+  const handleDelete = id => {
+    props.deleteEntity(id);
+    setActualizar(!actualizar);
+  };
 
-  }else{
-    setIsNew(false);
-    setItem(record);
-  }
-  setShowUpdate(true);
-}
+  const edit = (record: ITipoDesp) => {
+    form.setFieldsValue({ ...record });
+    setEditingId(record.id);
+  };
 
-const handleDelete = id => {
-  props.deleteEntity(id);
-};
+  const save = async (id: React.Key) => {
+    try {
+      const row = (await form.validateFields()) as ITipoDesp;
 
-const onCancel=() => { setShowUpdate(false)}
-const save =  (value) => {
-
-    if (item == null) {
-       props.createEntity(value);
-    } else {
-       value.id = item.id ;
-       props.updateEntity(value);
+      if (id == null) {
+        props.createEntity(row);
+        setEditingId(null);
+        setActualizar(!actualizar);
+      } else {
+        const newData = [...data];
+        const index = newData.findIndex(item => id === item.id);
+        if (index > -1) {
+          const item = newData[index];
+          newData.splice(index, 1, {
+            ...item,
+            ...row,
+          });
+          props.updateEntity(newData[index]);
+          //setEditingId(null);
+          setActualizar(!actualizar);
+        }
+       else {
+        newData.push(row);
+        props.updateEntity(newData[index]);
+        //setEditingId(null);
+        setActualizar(!actualizar);
+      }
     }
-    onCancel;
 
-};
+
+    } catch (errInfo) {
+      console.error('Validate Failed:', errInfo);
+    }
+  };
+
+  const handleAdd = () => {
+    const nuevoData = {
+      id:null,
+      descripcion:'',
+      valor:''
+
+    };
+    edit(nuevoData);
+
+
+    setData([nuevoData, ...data])
+
+
+  };
+
+
+
 
 
   const columns = [
@@ -79,6 +124,7 @@ const save =  (value) => {
       dataIndex: 'descripcion',
       width: '40%',
       editable: true,
+  
 
 
     },
@@ -87,33 +133,61 @@ const save =  (value) => {
       dataIndex: 'valor',
       width: '40%',
       editable: true,
+  
     },
     {
-      title: 'accion',
-      dataIndex: 'accion',
-      width: '20%',
-      render: (text, record) =>(
+      title: 'operation',
+      dataIndex: 'operation',
+      render(_: any, record: ITipoDesp) {
+        const editable = isEditing(record);
+        return editable ? (
+          <span>
+            <Popconfirm title="Guardar?" onConfirm={() => save(record.id)}>
+            <a style={{ marginRight: 8 }}>
+              Guardar
+          </a>
+            </Popconfirm>
+            <a href="javascript:;" onClick={cancel} style={{ marginRight: 8 }}>
+
+                Cancelar</a>
+          </span>
+        ) : (
             <Space size="middle">
               <a onClick={() => edit(record)}>
-                Edit
+                Editar
               </a>
-              <Popconfirm title="Sure to delete?" onConfirm={() => handleDelete(record.id)}>
-                <a>Delete</a>
+              <Popconfirm title="Eliminar registro?" onConfirm={() => handleDelete(record.id)}>
+                <a>Eliminar</a>
               </Popconfirm>
             </Space>
-          
-      ),
+          );
+      },
 
     },
   ];
 
-
+  const mergedColumns = columns.map(col => {
+    if (!col.editable) {
+      return col;
+    }
+    return {
+      ...col,
+      onCell: (record: ITipoDesp) => ({
+        record,
+        inputType: col.dataIndex === 'id' ? 'number' : 'text',
+        dataIndex: col.dataIndex,
+        title: col.title,
+        editing: isEditing(record),
+      }),
+    };
+  });
+  const { entityList, match, loading } = props;
   return (
-    <div>
+    <Form form={form} component={false}>
       <div>
       
 
-      <Button  icon={<PlusOutlined />} onClick={() => edit(false)}  style={{ marginBottom: 16, marginRight: 8 }}/>
+      <Button  icon={<PlusOutlined />} onClick={handleAdd}  style={{ marginBottom: 16, marginRight: 8 }}/>
       
     
     <Search 
@@ -122,59 +196,28 @@ const save =  (value) => {
       style={{ width: 200,  marginBottom: 16}}
     />
     </div>
-      <div >
-      <Table 
-          dataSource={data}
-          columns={columns}
-          size='small'
-          />
-      </div>
-      <Modal
-      visible={showUpdate}
-      title="Tipo de Despliegue"
-      okText="Create"
-      cancelText="Cancel"
-      onCancel={onCancel}
-      onOk={() => {
-        form
-          .validateFields()
-          .then(values => {
-            form.resetFields();
-            save(values);
-          })
-          .catch(info => {
-            console.error('Validate Failed:', info);
-          });
-      }}
-    >
-      <Form
-        form={form}
-        layout="vertical"
-        name="form_in_modal"
-        initialValues={item}
-      >
-        <Form.Item
-          name="descripcion"
-          label="Descripcion"
-          rules={[{ required: true, message: 'Por favor ingrese la descripcion' }]}
-        >
-          <Input />
-        </Form.Item>
-        <Form.Item
-          name="valor"
-          label="Valor"
-          rules={[{ required: true, message: 'Por favor ingrese el valor' }]}
-        >
-          <Input />
-        </Form.Item>
-      </Form>
-    </Modal>
-    </div>
+      <Table
+        components={{
+          body: {
+            cell: EditableCell,
+          },
+        }}
+        rowClassName={() => 'editable-row'}
+        bordered
+        
+        dataSource={data}
+        columns={mergedColumns}
+        pagination={{
+          onChange: cancel,
+        }}
+      />
+    </Form>
   );
 };
 
+
 const mapStateToProps = ({ tipoDesp }: IRootState) => ({
-  tipoDespList: tipoDesp.entities,
+  entityList: tipoDesp.entities,
   loading: tipoDesp.loading,
   updating: tipoDesp.updating,
   updateSuccess: tipoDesp.updateSuccess,

@@ -10,6 +10,10 @@ export const ACTION_TYPES = {
     FETCH_GEOGRAPHIC: 'mu/FETCH_GEOGRAPHIC',
     FETCH_TECNICA: 'mu/FETCH_TECNICA',
     FETCH_COBRE: 'mu/FETCH_COBRE',
+    RESET_PARTIDOS: 'mu/RESET_PARTIDOS',
+    RESET_LOCALIDADES: 'mu/RESET_LOCALIDADES',
+    RESET_CALLES: 'mu/RESET_CALLES',
+
   };
 
   const initialState = {
@@ -111,6 +115,21 @@ export default (state: MuState = initialState, action): MuState => {
             intersectionRight:action.payload.data.beetweenStreet.intersectionRight,
 
           };
+          case ACTION_TYPES.RESET_PARTIDOS:
+            return {
+              ...state,
+              partidos: []
+            };
+          case ACTION_TYPES.RESET_LOCALIDADES:
+            return {
+              ...state,
+              localidades: []
+            };
+          case ACTION_TYPES.RESET_CALLES:
+            return {
+              ...state,
+              calles: []
+            };                          
       default:
         return state;
     }
@@ -174,3 +193,21 @@ export default (state: MuState = initialState, action): MuState => {
     };
   };
 
+  export const resetPartidos = () => {
+    return {
+      type: ACTION_TYPES.RESET_PARTIDOS,
+    };
+
+  }
+  export const resetLocalidades = () => {
+    return {
+      type: ACTION_TYPES.RESET_LOCALIDADES,
+    };
+
+  }
+  export const resetCalles = () => {
+    return {
+      type: ACTION_TYPES.RESET_CALLES,
+    };
+
+  }
