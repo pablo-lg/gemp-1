@@ -126,16 +126,6 @@ export const Direcciones = (props: IDireccionesProps) => {
 
   }
 
-  const handleSubmit = () => {
-    props.getGeographic(pais, form.getFieldValue('provincia'),
-                              form.getFieldValue('partido'),
-                              form.getFieldValue('localidad'),
-                              form.getFieldValue('calle'),
-                              form.getFieldValue('altura'))
-    // fetchRegionTelefonia();
-    // fetchXY();
-  };
-
 
   const handleSelectProvincia =() => {
     props.getPartidos(pais, form.getFieldValue('provincia'))
@@ -144,11 +134,9 @@ export const Direcciones = (props: IDireccionesProps) => {
     props.getLocalidades(pais, form.getFieldValue('provincia'), form.getFieldValue('partido'))
 
   }
-  
 
   const handleSelectLocalidad = (value, select) => {
     form.setFieldsValue({
-
       localidad: select.key.split(',')[3],
     });
     // props.getCalles(pais,form.getFieldValue('provincia'), form.getFieldValue('partido'),form.getFieldValue('localidad'))
@@ -165,20 +153,12 @@ export const Direcciones = (props: IDireccionesProps) => {
   }
 
   const handleSelectCalles = (value, select) => {
-
     form.setFieldsValue({
       provincia: select.key.split(',')[1],
       partido: select.key.split(',')[2],
       localidad: select.key.split(',')[3],
       calle: select.key.split(',')[4],
     });
-    // setPais(select.key.split(',')[0]);
-    // setProvincia(select.key.split(',')[1]);
-    // setPartido(select.key.split(',')[2]);
-    // setLocalidad(select.key.split(',')[3]);
-    // setCalle(value);
-    // setRangosAltura(select.map(r => r.numberRanges.evenSides.map(s => s.number + ' - ' + s.numberLast + '\n')))
-
   }
   const handleSearchCalles = (query) => {
     // this.setState({ isLoading: true });
@@ -213,14 +193,6 @@ export const Direcciones = (props: IDireccionesProps) => {
       : null
   );
 
-  const resetValues = () => {
-    // setProvincia(null);
-    // setPartido(null);
-    // setLocalidad(null);
-    // setCalle(null);
-    // setAltura(null);
-    
-  }
   const onFinish = values => {
     props.getGeographic(pais, values.provincia, values.partido, values.localidad, values.calle, values.altura)
 
@@ -234,7 +206,6 @@ export const Direcciones = (props: IDireccionesProps) => {
   return (
 
     <div>
-      <Button onClick={resetValues}>clear</Button>
       <Form
         form={form}
         onFinish={onFinish}
