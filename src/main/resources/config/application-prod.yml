@@ -13,6 +13,9 @@
 # http://docs.spring.io/spring-boot/docs/current/reference/html/common-application-properties.html
 # ===================================================================
 
+spring.autoconfigure.exclude: org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration
+
+
 logging:
   level:
     ROOT: INFO
@@ -31,14 +34,7 @@ spring:
       enabled: false
     livereload:
       enabled: false
-  datasource:
-    type: com.zaxxer.hikari.HikariDataSource
-    url: jdbc:oracle:thin:@DLGEMPRODORA1:1978:DOGEMDE1
-    username: A000112
-    password: desarrollo.2020
-    hikari:
-      poolName: Hikari
-      auto-commit: false
+
   jpa:
     show-sql: false
   # Replace by 'prod, faker' to add the faker context and have sample data loaded in production

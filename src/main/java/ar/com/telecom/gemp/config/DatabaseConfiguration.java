@@ -1,5 +1,9 @@
 package ar.com.telecom.gemp.config;
 
+import javax.naming.Context;
+import javax.naming.InitialContext;
+import javax.sql.DataSource;
+
 import io.github.jhipster.config.JHipsterConstants;
 import io.github.jhipster.config.h2.H2ConfigurationHelper;
 import java.sql.SQLException;
@@ -25,6 +29,31 @@ public class DatabaseConfiguration {
     public DatabaseConfiguration(Environment env) {
         this.env = env;
     }
+
+    @Bean
+	public DataSource dataSource() {
+		DataSource dataSource = null; 
+		System.out.println("value of datasource"+dataSource);
+		try {
+	   
+	    Context initialContex = new InitialContext();
+	    System.out.println("value of datasource"+dataSource);
+	    
+	    dataSource = (DataSource)(initialContex.lookup("java:/oragempds"));
+	    
+	    System.out.println("value of datasource"+dataSource);
+	    
+	    if(dataSource != null) {
+	    	dataSource.getConnection();
+		    
+	    }
+	    
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+	   
+	    return dataSource;
+	}
 
     /**
      * Open the TCP port for the H2 database, so it is available remotely.
