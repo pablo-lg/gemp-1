@@ -4,7 +4,6 @@ import ar.com.telecom.gemp.domain.User;
 import ar.com.telecom.gemp.repository.UserRepository;
 import java.util.*;
 import java.util.stream.Collectors;
-import org.hibernate.validator.internal.constraintvalidators.hv.EmailValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.core.GrantedAuthority;
@@ -33,12 +32,7 @@ public class DomainUserDetailsService implements UserDetailsService {
     public UserDetails loadUserByUsername(final String login) {
         log.debug("Authenticating {}", login);
 
-        if (new EmailValidator().isValid(login, null)) {
-            return userRepository
-                .findOneWithAuthoritiesByEmailIgnoreCase(login)
-                .map(user -> createSpringSecurityUser(login, user))
-                .orElseThrow(() -> new UsernameNotFoundException("User with email " + login + " was not found in the database"));
-        }
+
 
         String lowercaseLogin = login.toLowerCase(Locale.ENGLISH);
         return userRepository

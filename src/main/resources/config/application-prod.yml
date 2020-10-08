@@ -18,9 +18,9 @@ spring.autoconfigure.exclude: org.springframework.boot.autoconfigure.jdbc.DataSo
 
 logging:
   level:
-    ROOT: INFO
-    io.github.jhipster: INFO
-    ar.com.telecom.gemp: INFO
+    ROOT: DEBUG
+    io.github.jhipster: DEBUG
+    ar.com.telecom.gemp: DEBUG
 
 management:
   metrics:

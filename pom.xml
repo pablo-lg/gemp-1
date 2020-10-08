@@ -187,10 +187,7 @@
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-core</artifactId>
         </dependency>
-        <dependency>
-            <groupId>org.hibernate.validator</groupId>
-            <artifactId>hibernate-validator</artifactId>
-        </dependency>
+
         <dependency>
             <groupId>org.liquibase</groupId>
             <artifactId>liquibase-core</artifactId>
@@ -250,6 +247,12 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.hibernate.validator</groupId>
+                    <artifactId>hibernate-validator</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -495,11 +498,7 @@
                         </execution>
                     </executions>
                     <configuration>
-                        <archive>
-                            <manifestEntries>
-                                <Dependencies>jdk.unsupported</Dependencies>
-                            </manifestEntries>
-                        </archive>
+
                         <warSourceIncludes>WEB-INF/**,META-INF/**</warSourceIncludes>
                         <failOnMissingWebXml>false</failOnMissingWebXml>
                         <warSourceDirectory>target/classes/static/</warSourceDirectory>
@@ -1068,13 +1067,7 @@
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-war-plugin</artifactId>
-                        <configuration>
-                            <archive>
-                                <manifestEntries>
-                                    <Dependencies>jdk.unsupported</Dependencies>
-                                </manifestEntries>
-                            </archive>
-                        </configuration>
+
                     </plugin>
                 </plugins>
             </build>
