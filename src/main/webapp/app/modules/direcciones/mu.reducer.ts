@@ -8,6 +8,7 @@ export const ACTION_TYPES = {
     FETCH_LOCALIDADES: 'mu/FETCH_LOCALIDADES',
     FETCH_CALLES: 'mu/FETCH_CALLES',
     FETCH_GEOGRAPHIC: 'mu/FETCH_GEOGRAPHIC',
+    FETCH_TECHNICAL: 'mu/FETCH_TECHNICAL',
     FETCH_TECNICA: 'mu/FETCH_TECNICA',
     FETCH_COBRE: 'mu/FETCH_COBRE',
     RESET_PARTIDOS: 'mu/RESET_PARTIDOS',
@@ -25,6 +26,7 @@ export const ACTION_TYPES = {
     localidades: [] as any[],
     calles: [] as any[],
     geographic: [] as any[],
+    technical: [] as any[],
     zonas: null,
     geoX: null,
     geoY: null,
@@ -35,6 +37,12 @@ export const ACTION_TYPES = {
     streetType:null,
     intersectionLeft:null,
     intersectionRight:null,
+    country:null,
+    stateOrProvince:null,
+    city:null,
+    locality:null,
+    streetName:null,
+    streetNr:null,
 
 
     
@@ -57,6 +65,7 @@ export default (state: MuState = initialState, action): MuState => {
       case REQUEST(ACTION_TYPES.FETCH_LOCALIDADES):
       case REQUEST(ACTION_TYPES.FETCH_CALLES):
       case REQUEST(ACTION_TYPES.FETCH_GEOGRAPHIC):
+      case REQUEST(ACTION_TYPES.FETCH_TECHNICAL):
 
         return {
           ...state,
@@ -68,6 +77,7 @@ export default (state: MuState = initialState, action): MuState => {
       case FAILURE(ACTION_TYPES.FETCH_LOCALIDADES):
       case FAILURE(ACTION_TYPES.FETCH_CALLES):
       case FAILURE(ACTION_TYPES.FETCH_GEOGRAPHIC):
+      case FAILURE(ACTION_TYPES.FETCH_TECHNICAL):
 
         return {
           ...state,
@@ -103,6 +113,12 @@ export default (state: MuState = initialState, action): MuState => {
             ...state,
             loading: false,
             geographic: action.payload.data,
+            country:action.payload.data.country,
+            stateOrProvince:action.payload.data.stateOrProvince,
+            city:action.payload.data.city,
+            locality:action.payload.data.locality,
+            streetName:action.payload.data.streetName,
+            streetNr:action.payload.data.streetNr,
             zonas: action.payload.data.zones,
             geoX: action.payload.data.geographicLocation.geometry[0].x,
             geoY: action.payload.data.geographicLocation.geometry[0].y,
@@ -114,6 +130,13 @@ export default (state: MuState = initialState, action): MuState => {
             intersectionLeft:action.payload.data.beetweenStreet.intersectionLeft,
             intersectionRight:action.payload.data.beetweenStreet.intersectionRight,
 
+
+          };
+        case SUCCESS(ACTION_TYPES.FETCH_TECHNICAL):
+          return {
+            ...state,
+            loading: false,
+            technical: action.payload.data,
           };
           case ACTION_TYPES.RESET_PARTIDOS:
             return {
@@ -189,6 +212,16 @@ export default (state: MuState = initialState, action): MuState => {
 
     return {
       type: ACTION_TYPES.FETCH_GEOGRAPHIC,
+      payload: axios.get(requestUrl),
+    };
+  };
+
+  export const getTechnical = (pais, provincia, partido, localidad, calle, altura) => {
+
+    const requestUrl ='resourceIventoryManagment/v1/technicalFeasibility?city=' + partido + '&country=' + pais + '&locality=' + localidad + '&stateOrProvince=' + provincia + '&streetName=' + calle + '&streetNr=' + altura;
+
+    return {
+      type: ACTION_TYPES.FETCH_TECHNICAL,
       payload: axios.get(requestUrl),
     };
   };

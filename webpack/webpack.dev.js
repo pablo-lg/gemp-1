@@ -49,7 +49,8 @@ module.exports = (options) => webpackMerge(commonConfig({ env: ENV }), {
         '/v2/api-docs',
         '/h2-console',
         '/auth',
-        '/geographicAddressManagement/v1'
+        '/geographicAddressManagement/v1',
+        '/resourceIventoryManagment/v1/',
       ],
       target: `http${options.tls ? 's' : ''}://localhost:8080`,
       secure: false,

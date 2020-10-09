@@ -11,7 +11,8 @@ import { IRootState } from 'app/shared/reducers';
 
 import React, { useState, useEffect, Fragment, useLayoutEffect } from 'react';
 import axios from 'axios';
-import { getProvincias, getLocalidades, getPartidos, getCalles, getGeographic, resetPartidos, resetCalles, resetLocalidades } from './mu.reducer';
+import { getProvincias, getLocalidades, getPartidos, getCalles, getGeographic,
+        getTechnical ,resetPartidos, resetCalles, resetLocalidades } from './mu.reducer';
 
 
 import {
@@ -194,8 +195,8 @@ export const Direcciones = (props: IDireccionesProps) => {
   );
 
   const onFinish = values => {
-    props.getGeographic(pais, values.provincia, values.partido, values.localidad, values.calle, values.altura)
-
+    props.getGeographic(pais, values.provincia, values.partido, values.localidad, values.calle, values.altura);
+    props.getTechnical(pais, values.provincia, values.partido, values.localidad, values.calle, values.altura);
     console.error('Received values of form: ', values);
   };
   
@@ -291,6 +292,7 @@ const mapStateToProps = ({ mu }: IRootState) => ({
   loading: mu.loading,
   errorMessage: mu.errorMessage,
   geographic: mu.geographic,
+  technial: mu.technical,
   zonas: mu.zonas,
   geoX: mu.geoX,
   geoY: mu.geoY,
@@ -310,6 +312,7 @@ const mapDispatchToProps = {
   getLocalidades,
   getCalles,
   getGeographic,
+  getTechnical,
   resetPartidos,
   resetLocalidades,
   resetCalles,

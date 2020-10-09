@@ -106,139 +106,7 @@ export const Calles = (props) => {
     setComponentSize(size);
   }
 
-  useEffect(() => {
-    const fetchData = async () => {
-      const result = await axios(
-        'geographicAddressManagement/v1/areas?fatherIdentification=' + pais + '&fatherType=Paises&fullText=false&limit=999&offset=0&type=Provincias&fields=name,type,identification',
-      );
 
-      setProvincias(result.data);
-      setPartidos([]);
-      setPartido(null);
-      setLocalidades([]);
-      setLocalidad(null);
-      setCalles([]);
-
-    };
-    setProvincias([]);
-    fetchData();
-  }, [pais]);
-  useEffect(() => {
-    const fetchData = async () => {
-      const result = await axios(
-        'geographicAddressManagement/v1/areas?fatherIdentification=' + pais + '&fatherIdentification=' + provincia + '&fatherType=Provincias&fullText=false&limit=999&offset=0&type=Partidos&fields=name,type,identification',
-
-      );
-
-      setPartidos(result.data);
-      setLocalidades([]);
-      setLocalidad(null)
-      setCalles([]);
-      form.resetFields();
-    };
-    fetchData()
-  }, [provincia]);
-/**
-  useEffect(() => {
-
-
-
-    const fetchData = async () => {
-      const result = await axios(
-        'geographicAddressManagement/v1/areas?fullText=false&limit=999&offset=0&type=Paises&fields=name,type,identification',
-      );
-
-      setPaises(result.data);
-      setProvincias([]);
-      setPartidos([]);
-      setLocalidades([]);
-      setCalles([]);
-    };
-
-    fetchData();
-  }, []);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      const result = await axios(
-        'geographicAddressManagement/v1/areas?fatherIdentification=' + pais + '&fatherType=Paises&fullText=false&limit=999&offset=0&type=Provincias&fields=name,type,identification',
-      );
-
-      setProvincias(result.data);
-      setPartidos([]);
-      setPartido(null);
-      setLocalidades([]);
-      setLocalidad(null);
-      setCalles([]);
-
-    };
-    setProvincias([]);
-    fetchData();
-  }, [pais]);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      const result = await axios(
-        'geographicAddressManagement/v1/areas?fatherIdentification=' + pais + '&fatherIdentification=' + provincia + '&fatherType=Provincias&fullText=false&limit=999&offset=0&type=Partidos&fields=name,type,identification',
-
-      );
-
-      setPartidos(result.data);
-      setLocalidades([]);
-      setLocalidad(null)
-      setCalles([]);
-      form.resetFields();
-    };
-    fetchData()
-  }, [provincia]);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      const result = await axios(
-        'geographicAddressManagement/v1/areas?fatherIdentification=' + pais + '&fatherIdentification=' + provincia + '&fatherIdentification=' + partido + '&fatherType=Partidos&fullText=false&limit=999&offset=0&type=Localidades&fields=name,type,identification',
-
-      );
-
-      setLocalidades(result.data);
-      setLocalidad(null)
-      setCalles([]);
-      setAltura(null);
-      setBarriosEspeciales(null);
-      setCodigoPostal(null);
-      setGeoX(null);
-      setGeoY(null);
-      setHub(null);
-      setZonaCompetencia(null);
-    };
-    fetchData()
-  }, [partido]);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      const varCity = ((partido) ? '&city=' + partido : '');
-      const varCountry = ((pais) ? '&country=' + pais : '');
-      const varLocalidad = ((localidad) ? '&localidad=' + localidad : '');
-      const varState = ((provincia) ? '&stateOrProvince=' + provincia : '');
-      const server = 'geographicAddressManagement/v1/streets?fullText=false&offset=0'
-      const result = await axios(
-        server + varCity + varCountry + varLocalidad + varState
-
-      );
-
-      setCalles(result.data);
-      setCalle(null);
-      setAltura(null);
-      setBarriosEspeciales(null);
-      setCodigoPostal(null);
-      setGeoX(null);
-      setGeoY(null);
-      setHub(null);
-      setZonaCompetencia(null);
-    };
-    fetchData()
-  }, [localidad]);
-
-*/
 
 
 const openNotification = (message='test', descripcition='test', type='success') => {
@@ -256,183 +124,17 @@ useEffect(() => {
 },[]);
 
 
-  const fetchRegionTelefonia = () => {
-    const fetchData = async () => {
-      const result = await axios(
-        'geographicAddressManagement/v1/areas?fullText=false&identification=' + pais + '%2C%20' + provincia + '&limit=999&offset=0&type=provincias',
 
-      );
+  
 
-      setRegionTelefonia(result.data[0].characteristics[0].value);
-      console.error(regionTelefonia)
-
-    };
-    fetchData()
-
-  }
-
-  const fetchXY = (gx, gy) => {
-    const fetchData = async () => {
-      const result = await axios(
-        'geographicAddressManagement/v1/areas?fields=name%2Ctype%2Ccharacteristics&fullText=false&limit=999&offset=0&type=regiones&type=sub-regiones&type=BARRIOS&type=ZONAS%20COMERCIALES&type=ZONAS%20OPERATIVAS&type=ZONAS%20TECNICAS%20PRINCIPALES&type=LOCALIDADES&type=partidos&type=provincias&type=HUBS&x=' + gx + '&y=' + gy,
-
-      );
-
-      const reg = result.data.filter(d => d.type === "REGIONES")
-      const subReg = result.data.filter(d => d.type === "SUB-REGIONES")
-
-      setRegion(reg[0].name);
-      setSubRegion(subReg[0].name)
-
-    };
-    fetchData()
-
-  }
-
-  const handleSubmit = () => {
-
-    const fetchData = async () => {
-      try {
-      const result = await axios(
-        'geographicAddressManagement/v1/geographicAddress?city=' + partido + '&country=' + pais + '&locality=' + localidad + '&stateOrProvince=' + provincia + '&streetName=' + calle + '&streetNr=' + altura,
-        );
+  const handleSubmit = () => {}
 
 
-      fetchXY(result.data.geographicLocation.geometry[0].x, result.data.geographicLocation.geometry[0].y);
-      setGeographic(result.data);
-      setZonas(result.data.zones);
-      setGeoX(result.data.geographicLocation.geometry[0].x)
-      setGeoY(result.data.geographicLocation.geometry[0].y)
-      const zc=result.data.zones.filter(d => d.type === "Zonas Competencia")
-      setZonaCompetencia(zc[0] ? zc[0].value : null)
-      setHub(result.data.zones.filter(d => d.type === "Hubs")[0].value)
-      const be = result.data.zones.filter(d => d.type === "Barrios Especiales")
-      setBarriosEspeciales(be[0] ? be[0].value : null)
-
-      openNotification('Ok',result.status+"",'success')
-
-      setCodigoPostal(result.data.postcode)
-    } catch (error) {
-      openNotification('error',error.message, 'error')
-    }
-
-    };
-    fetchData()
-    fetchRegionTelefonia();
-    // fetchXY();
-
-  };
-  const handleInputChange = q => {
-    setSearchCalle(q);
-  };
-
-  const handleSelect = select => {
-
-    setPais(select.split(',')[0]);
-    setProvincia(select.split(',')[1]);
-    setPartido(select.split(',')[2]);
-    setLocalidad(select.split(',')[3]);
-    setCalle(select.split(',')[4]);
 
 
-  }
-const handleSelectLocalidad = (select) =>{
-  // "identification": "ARGENTINA,BUENOS AIRES,VILLARINO,PEDRO LURO",
-  setPais(select.split(',')[0]);
-  setProvincia(select.split(',')[1]);
-  setPartido(select.split(',')[2]);
-  setLocalidad(select.split(',')[3]);
 
 
-}
-const handleSearchLocalidad = (query) => {
-  setLocalidad(null)
-
-
-  if (query.length > 2) {
-    // if (!query.includes(prevQuery)) {
-      setPrevQuery(query);
-
-
-      setIsLoading(true);
-      const fetchData = async () => {
-        const varCountry = ((pais) ? '&fatherIdentification=' + pais : '');
-        const varState = ((provincia) ? '&fatherIdentification=' + provincia : '');
-        const varCity = ((partido) ? '&fatherType=partidos&fatherIdentification=' + partido : '');
-        // const varLocalidad = ((localidad) ? '&fatherType=localidades&fatherIdentification=' + localidad : '');
-        const server = 'geographicAddressManagement/v1/areas?fullText=true&limit=999&offset=0&type=LOCALIDADES&name=' + query
-        const result = await axios(
-          server  + varCountry  + varState + varCity
-
-        );
-
-        // result.data es la lista con todas las localidades
-        // const resultLocalidades = result.data.map(l => l.identification.split(','))
-        // result.data.map(o => o.texto = o.name + ' ' + o.stateOrProvince + ' ' + o.city)
-        setOptions(result.data);
-        setLocalidades(result.data);
-
-        setIsLoading(false);
-      };
-      fetchData()
-   // }
-  }
-}
-
-  const handleSearch = (query) => {
-    // this.setState({ isLoading: true });
-    if (query.length > 2) {
-      // if (!query.includes(prevQuery)) {
-        setPrevQuery(query);
-        setIsLoading(true);
-        const fetchData = async () => {
-          const varCity = ((partido) ? '&city=' + partido : '');
-          const varCountry = ((pais) ? '&country=' + pais : '');
-          const varLocalidad = ((localidad) ? '&locality=' + localidad : '');
-          const varState = ((provincia) ? '&stateOrProvince=' + provincia : '');
-          const server = 'geographicAddressManagement/v1/streets?fullText=true&offset=0&name=' + query
-          const result = await axios(
-            server + varCity + varCountry + varLocalidad + varState
-          );
-
-          setCalles(result.data);
-          result.data.map(o => o.texto = o.name + ' ' + o.stateOrProvince + ' ' + o.city)
-          setRangosAltura(result.data.map(r => r.numberRanges.evenSides.map(s => s.number +' - '+ s.numberLast+ '\n')))
-          setOptions(result.data);
-          setIsLoading(false);
-        };
-        fetchData()
-     // }
-    }
-  };
-
-  const opcionesSelectName = (optSelect) => (
-      optSelect ? optSelect.map(otherEntity => (
-                    <Select.Option value={otherEntity.name} key={otherEntity.name}>
-                      {otherEntity.name}
-                    </Select.Option>
-                    )
-                  ) 
-                : null   
-    );
-
-    const opcionesSelectIdent = (optSelect) => (
-      optSelect ? optSelect.map(otherEntity => (
-                <Select.Option value={otherEntity.identification} key={otherEntity.identification}>
-                 {otherEntity.identification.split(',')[4]} {otherEntity.identification.split(',')[3]}  {otherEntity.identification.split(',')[2]} {otherEntity.identification.split(',')[1]}
-                </Select.Option>
-                    )
-                  ) 
-                : null   
-    );
-
-    const resetValues=() => {
-      setProvincia(null);
-      setPartido(null);
-      setLocalidad(null);
-      setCalle(null);
-      setAltura(null);
-    }
+ 
 
     const formDireccion = (
       <Form
@@ -442,10 +144,7 @@ const handleSearchLocalidad = (query) => {
       initialValues={{ size: componentSize }}
       onValuesChange={onFormLayoutChange}
     >
-      <Button onClick={resetValues}>clear</Button>
-      <Button type="primary" icon={<SearchOutlined />} onClick={(event) => handleSubmit()}>
-        Geographic
-        </Button>
+ 
         <Form.Item style={{ marginBottom: 4 }}>
 
 <Form.Item label="Tipo Emprendimiento" style={{ display: 'inline-block', width: 'calc(30% - 4px)', margin: '0 4px 0 0' }} >
@@ -505,81 +204,57 @@ const handleSearchLocalidad = (query) => {
       <Form.Item style={{ marginBottom: 4 }}>
 
         <Form.Item label="Provincia" style={{ display: 'inline-block', width: 'calc(20% - 4px)', margin: '0 4px 0 0' }} >
-          <Select allowClear showSearch
-                  placeholder="Provincia" 
-                  defaultValue={null}
-                  value={provincia} 
-                  onSelect={(value, event) => setProvincia(value)}>
-                  {opcionesSelectName(provincias)}
-          </Select>
+        <Input value={props.stateOrProvince} placeholder="Provincia"  />
+
         </Form.Item >
         <Form.Item label="Partido"  style={{ display: 'inline-block', width: 'calc(20% - 4px)', margin: '0 4px 0 0' }}>
-          <Select allowClear placeholder="Partido" 
-                value={partido} 
-                showSearch onSelect={(value, event) => setPartido(value)}>
-          {opcionesSelectName(partidos)}
+        <Input value={props.city} placeholder="Partido"  />
 
-          </Select>
         </Form.Item>
         <Form.Item label="Localidad" style={{ display: 'inline-block', width: 'calc(60% - 4px)', margin: '0 4px 0 0' }}>
-          <Select placeholder="Localidad" 
-                  allowClear
-                  value={localidad} 
-                  onSearch={handleSearchLocalidad}
-                  showSearch 
-                  onSelect={handleSelectLocalidad}>
-            {opcionesSelectIdent(localidades)}
-          </Select>
+        <Input value={props.locality} placeholder="Localidad"  />
+
         </Form.Item>
       </Form.Item>
       <Form.Item style={{ marginBottom: 4 }}>
         <Form.Item label="Calle" style={{ display: 'inline-block', width: 'calc(66% - 4px)', margin: '1px 4px 0 0' }}>
-          <Select showSearch
-            // loading={isLoading}
-            placeholder="Calle..."
-            onSearch={handleSearch}
-            value={calle}
-            onSelect={handleSelect}>
-            {opcionesSelectIdent(calles)}
-          </Select>
+        <Input value={props.streetName} placeholder="Calle"  />
         </Form.Item>
         <Form.Item label="Altura" style={{ display: 'inline-block', width: 'calc(17% - 4px)', margin: '1px 4px 0 0' }}>
-          <Tooltip title={rangosAltura}>
-          <InputNumber value={altura} placeholder="Altura" onChange={(value) => setAltura(value)} />
-          </Tooltip>
+          <Input value={props.streetNr} placeholder="Altura" />
         </Form.Item>
         <Form.Item label="C. P." style={{ display: 'inline-block', width: 'calc(16% - 4px)', margin: '1px  4px 0 0' }}>
-          <InputNumber disabled={editForm} value={codigoPostal} placeholder="C. P." onChange={(e) => setCodigoPostal(e)}  />
+          <Input disabled={editForm} value={props.codigoPostal} placeholder="C. P." />
         </Form.Item>
       </Form.Item>
       <Form.Item style={{ marginBottom: 4 }}>
 
         <Form.Item label="latitud" style={{ display: 'inline-block', width: 'calc(50% - 4px)', margin: '1px 4px 0 0' }}>
-          <Input disabled={editForm} value={geoX} placeholder="latitud" onChange={(e) => setGeoX(e.target.value)}  />
+          <Input disabled={editForm} value={props.geoX} placeholder="latitud"/>
         </Form.Item>
         <Form.Item label="longitud" style={{ display: 'inline-block', width: 'calc(50% - 4px)', margin: '1px  4px 0 0' }}>
-          <Input disabled={editForm} value={geoY} placeholder="longitud" onChange={(e) => setGeoY(e.target.value)} />
+          <Input disabled={editForm} value={props.geoY} placeholder="longitud" />
         </Form.Item>
       </Form.Item>
 
       <Form.Item style={{ marginBottom: 4 }}>
         <Form.Item label="region" style={{ display: 'inline-block', width: 'calc(50% - 4px)', margin: '1px 4px 0 0' }}>
-          <Input disabled={editForm} value={region} placeholder="region" onChange={(e) => setRegion(e.target.value)} />
+          <Input disabled={editForm} value="falta definir" placeholder="region"  />
         </Form.Item>
         <Form.Item label="subregion" style={{ display: 'inline-block', width: 'calc(50% - 4px)', margin: '1px  4px 0 0' }}>
-          <Input disabled={editForm} value={subRegion} placeholder="subregion" onChange={(e) => setSubRegion(e.target.value)}  />
+          <Input disabled={editForm} value="falta definir" placeholder="subregion"   />
         </Form.Item>
       </Form.Item>
 
       <Form.Item style={{ marginBottom: 4 }}>
         <Form.Item label="Zona competencia" style={{ display: 'inline-block', width: 'calc(33% - 4px)', margin: '1px 4px 0 0' }}>
-          <Input disabled={editForm} value={zonaCompetencia} placeholder="zona de competencia" onChange={(e) => setZonaCompetencia(e.target.value)}  />
+          <Input disabled={editForm} value={props.zonaCompetencia} placeholder="zona de competencia"   />
         </Form.Item>
         <Form.Item label="Hubs" style={{ display: 'inline-block', width: 'calc(33% - 4px)', margin: '1px  4px 0 0' }}>
-          <Input disabled={editForm} value={hub} placeholder="hubs" onChange={(e) => setHub(e.target.value)}  />
+          <Input disabled={editForm} value={props.hub} placeholder="hubs"  />
         </Form.Item>
         <Form.Item label="Barrio especial" style={{ display: 'inline-block', width: 'calc(33% - 4px)', margin: '1px  4px 0 0' }}>
-          <Input disabled={editForm} value={barriosEspeciales} placeholder="barrio especial" onChange={(e) => setBarriosEspeciales(e.target.value)}  />
+          <Input disabled={editForm} value={props.barriosEspeciales} placeholder="barrio especial"  />
         </Form.Item>  
       </Form.Item>
 
@@ -622,13 +297,37 @@ const handleSearchLocalidad = (query) => {
 
   );
 };
-const mapStateToProps = ({ tipoObra, tipoEmp, segmento }: IRootState) => ({
+const mapStateToProps = ({ tipoObra, tipoEmp, segmento, mu }: IRootState) => ({
   tipoObraList: tipoObra.entities,
   tipoEmpList: tipoEmp.entities,
   loadingEmp: tipoEmp.loading,
   loadingObra: tipoObra.loading,
   segmentoList: segmento.entities,
   loadingSeg: segmento.loading,
+  provincias: mu.provincias,
+  partidos: mu.partidos,
+  localidades: mu.localidades,
+  calles: mu.calles,
+  loading: mu.loading,
+  errorMessage: mu.errorMessage,
+  geographic: mu.geographic,
+  technial: mu.technical,
+  zonas: mu.zonas,
+  geoX: mu.geoX,
+  geoY: mu.geoY,
+  zonaCompetencia: mu.zonaCompetencia,
+  hub: mu.hub,
+  codigoPostal: mu.codigoPostal,
+  barriosEspeciales: mu.barriosEspeciales,
+  streetType: mu.streetType,
+  intersectionLeft: mu.intersectionLeft,
+  intersectionRight: mu.intersectionRight,
+  country:mu.country,
+  stateOrProvince:mu.stateOrProvince,
+  city:mu.city,
+  locality:mu.locality,
+  streetName:mu.streetName,
+  streetNr:mu.streetNr,
 });
 
 const mapDispatchToProps = {
