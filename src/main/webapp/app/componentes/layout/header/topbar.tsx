@@ -48,8 +48,7 @@ const Topbar = (props: IHeaderProps) => {
 
   return (
 
-    <Layout className="layout">
-      <Header className="topbar">
+      <Header className="site-layout-background" style={{ padding: 0 }}>
         <Menu mode="horizontal" defaultSelectedKeys={['2']} >
           <SubMenu key="sub1" icon={<UserOutlined className="menuTopbar" style={{ fontSize: '25px' }} />} style={{ float: 'right', fontSize: '25px' }}>
            
@@ -67,7 +66,6 @@ const Topbar = (props: IHeaderProps) => {
 
         </Menu>
       </Header>
-    </Layout>
 
 
   );

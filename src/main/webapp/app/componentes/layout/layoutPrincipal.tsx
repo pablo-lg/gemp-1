@@ -1,4 +1,4 @@
-import { Layout, Menu, Breadcrumb } from 'antd';
+import { Layout, Menu, Breadcrumb,  } from 'antd';
 import './layoutPrincipal.css'
 
 import React, { useState } from 'react';
@@ -24,7 +24,7 @@ export interface IHeaderProps {
 }
 
 const LayoutPrincipal = (props) => {
- const { Header, Sider, Content } = Layout;
+ const { Header, Sider, Content, Footer } = Layout;
 
   const [menuOpen, setMenuOpen] = useState(false);
   const { SubMenu } = Menu;
@@ -38,7 +38,7 @@ const LayoutPrincipal = (props) => {
 
   return (
 
-    <Layout>
+    <Layout style={{ minHeight: '100vh' }}>
         <Sidebar />
         <Layout className="site-layout">
         <Topbar
@@ -49,15 +49,16 @@ const LayoutPrincipal = (props) => {
             isSwaggerEnabled={true}
           />
             <Content
-            className="site-layout-background"
             style={{
-              margin: '24px 16px',
+              margin: '8px 8px',
               padding: 24,
               minHeight: 280,
             }}
-          >
+          ><div className="site-layout-background" style={{ padding: 24, minHeight: 360 }}>
             {props.content}
+            </div>
           </Content>
+          <Footer style={{ textAlign: 'center' }}>Telecom Argentina</Footer>
         </Layout>
     </Layout>
 

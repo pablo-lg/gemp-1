@@ -23,6 +23,19 @@ export const DatosCerta = (props) => {
           :
           null
         }
+        {props.technical.physicalNetworkElements ?
+            <Descriptions title="Tecnologias" bordered>
+            {props.technical.physicalNetworkElements.map(net => (
+              <><Descriptions.Item key={net.accessType} label="Tecnologia">{net.accessType}</Descriptions.Item>
+                <Descriptions.Item key={net.accessType} label="Elemento de red">{net.physicalCharacteristic[0].name}</Descriptions.Item></>
+
+            ))}
+
+
+          </Descriptions>
+          :
+          null
+        }
       </div>);
     
 }
@@ -41,6 +54,8 @@ const mapStateToProps = ({ mu }: IRootState) => ({
     streetType: mu.streetType,
     intersectionLeft: mu.intersectionLeft,
     intersectionRight: mu.intersectionRight,
+    technical: mu.technical,
+
   
   });
 

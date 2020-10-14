@@ -8,9 +8,9 @@ import { IRootState } from 'app/shared/reducers';
 import { getEntities, updateEntity, deleteEntity, createEntity } from './tipo-desp.reducer';
 import { ITipoDesp } from 'app/shared/model/tipo-desp.model';
 import { APP_DATE_FORMAT, APP_LOCAL_DATE_FORMAT } from 'app/config/constants';
-import { PlusOutlined , PlusSquareTwoTone , PlusCircleFilled } from '@ant-design/icons';
+import { PlusOutlined, PlusSquareTwoTone, PlusCircleFilled } from '@ant-design/icons';
 
-import {EditableCell} from '../../componentes/table/editableCell'
+import { EditableCell } from '../../componentes/table/editableCell'
 
 
 export interface ITipoDespProps extends StateProps, DispatchProps, RouteComponentProps<{ url: string }> { }
@@ -21,7 +21,7 @@ export const TipoDesp = (props: ITipoDespProps) => {
   const [data, setData] = useState([]);
   useEffect(() => {
     props.getEntities();
-  }, [actualizar,props.updateSuccess]);
+  }, [actualizar, props.updateSuccess]);
 
   const { Search } = Input;
 
@@ -81,16 +81,16 @@ export const TipoDesp = (props: ITipoDespProps) => {
             ...row,
           });
           props.updateEntity(newData[index]);
-          //setEditingId(null);
+          // setEditingId(null);
           setActualizar(!actualizar);
         }
-       else {
-        newData.push(row);
-        props.updateEntity(newData[index]);
-        //setEditingId(null);
-        setActualizar(!actualizar);
+        else {
+          newData.push(row);
+          props.updateEntity(newData[index]);
+          // setEditingId(null);
+          setActualizar(!actualizar);
+        }
       }
-    }
 
 
     } catch (errInfo) {
@@ -100,9 +100,9 @@ export const TipoDesp = (props: ITipoDespProps) => {
 
   const handleAdd = () => {
     const nuevoData = {
-      id:null,
-      descripcion:'',
-      valor:''
+      id: null,
+      descripcion: '',
+      valor: ''
 
     };
     edit(nuevoData);
@@ -124,7 +124,7 @@ export const TipoDesp = (props: ITipoDespProps) => {
       dataIndex: 'descripcion',
       width: '40%',
       editable: true,
-  
+
 
 
     },
@@ -133,7 +133,7 @@ export const TipoDesp = (props: ITipoDespProps) => {
       dataIndex: 'valor',
       width: '40%',
       editable: true,
-  
+
     },
     {
       title: 'operation',
@@ -143,13 +143,13 @@ export const TipoDesp = (props: ITipoDespProps) => {
         return editable ? (
           <span>
             <Popconfirm title="Guardar?" onConfirm={() => save(record.id)}>
-            <a style={{ marginRight: 8 }}>
-              Guardar
+              <a style={{ marginRight: 8 }}>
+                Guardar
           </a>
             </Popconfirm>
             <a href="javascript:;" onClick={cancel} style={{ marginRight: 8 }}>
 
-                Cancelar</a>
+              Cancelar</a>
           </span>
         ) : (
             <Space size="middle">
@@ -185,17 +185,17 @@ export const TipoDesp = (props: ITipoDespProps) => {
   return (
     <Form form={form} component={false}>
       <div>
-      
 
-      <Button  icon={<PlusOutlined />} onClick={handleAdd}  style={{ marginBottom: 16, marginRight: 8 }}/>
-      
-    
-    <Search 
-      placeholder="input search text"
-      onChange={changeFilter}
-      style={{ width: 200,  marginBottom: 16}}
-    />
-    </div>
+
+        <Button icon={<PlusOutlined />} onClick={handleAdd} style={{ marginBottom: 16, marginRight: 8 }} />
+
+
+        <Search
+          placeholder="input search text"
+          onChange={changeFilter}
+          style={{ width: 200, marginBottom: 16 }}
+        />
+      </div>
       <Table
         components={{
           body: {
@@ -204,7 +204,7 @@ export const TipoDesp = (props: ITipoDespProps) => {
         }}
         rowClassName={() => 'editable-row'}
         bordered
-        
+
         dataSource={data}
         columns={mergedColumns}
         pagination={{

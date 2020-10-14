@@ -14,6 +14,9 @@ export const ACTION_TYPES = {
     RESET_PARTIDOS: 'mu/RESET_PARTIDOS',
     RESET_LOCALIDADES: 'mu/RESET_LOCALIDADES',
     RESET_CALLES: 'mu/RESET_CALLES',
+    SET_DOMICILIO: 'mu/SET_DOMICILIO',
+    RESET_DOMICILIO: 'mu/RESET_DOMICILIO'
+
 
   };
 
@@ -113,12 +116,7 @@ export default (state: MuState = initialState, action): MuState => {
             ...state,
             loading: false,
             geographic: action.payload.data,
-            country:action.payload.data.country,
-            stateOrProvince:action.payload.data.stateOrProvince,
-            city:action.payload.data.city,
-            locality:action.payload.data.locality,
-            streetName:action.payload.data.streetName,
-            streetNr:action.payload.data.streetNr,
+
             zonas: action.payload.data.zones,
             geoX: action.payload.data.geographicLocation.geometry[0].x,
             geoY: action.payload.data.geographicLocation.geometry[0].y,
@@ -152,7 +150,30 @@ export default (state: MuState = initialState, action): MuState => {
             return {
               ...state,
               calles: []
-            };                          
+            };      
+          case ACTION_TYPES.SET_DOMICILIO:
+            return{
+              ...state,
+              country:action.pais,
+              stateOrProvince:action.provincia,
+              city:action.partido,
+              locality:action.localidad,
+              streetName:action.calle,
+              streetNr:action.altura,
+
+            } ;
+          case ACTION_TYPES.RESET_DOMICILIO:
+            return{
+              ...state,
+              country:null,
+              stateOrProvince:null,
+              city:null,
+              locality:null,
+              streetName:null,
+              streetNr:null,
+
+            }   
+
       default:
         return state;
     }
@@ -242,5 +263,15 @@ export default (state: MuState = initialState, action): MuState => {
     return {
       type: ACTION_TYPES.RESET_CALLES,
     };
-
+  }
+  export const setDomicilio = (pais, provincia, partido, localidad, calle, altura) => {
+    return {
+      type: ACTION_TYPES.SET_DOMICILIO,
+      pais, provincia, partido, localidad, calle, altura
+    };
+  }
+    export const resetDomicilio = () => {
+      return {
+        type: ACTION_TYPES.RESET_DOMICILIO,
+      };
   }
