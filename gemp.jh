@@ -22,9 +22,15 @@ entity Segmento {
   valor String
 }
 
+entity Tecnologia {
+  Id  Long required,
+  valor String
+}
 
 
-service all with serviceImpl 
+
+
+
 
 
 // Set pagination options
