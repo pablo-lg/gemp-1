@@ -1,7 +1,7 @@
 package ar.com.telecom.gemp.web.rest;
 
 import ar.com.telecom.gemp.domain.Segmento;
-import ar.com.telecom.gemp.service.SegmentoService;
+import ar.com.telecom.gemp.repository.SegmentoRepository;
 import ar.com.telecom.gemp.web.rest.errors.BadRequestAlertException;
 
 import io.github.jhipster.web.util.HeaderUtil;
@@ -10,6 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
@@ -22,6 +23,7 @@ import java.util.Optional;
  */
 @RestController
 @RequestMapping("/api")
+@Transactional
 public class SegmentoResource {
 
     private final Logger log = LoggerFactory.getLogger(SegmentoResource.class);
@@ -31,10 +33,10 @@ public class SegmentoResource {
     @Value("${jhipster.clientApp.name}")
     private String applicationName;
 
-    private final SegmentoService segmentoService;
+    private final SegmentoRepository segmentoRepository;
 
-    public SegmentoResource(SegmentoService segmentoService) {
-        this.segmentoService = segmentoService;
+    public SegmentoResource(SegmentoRepository segmentoRepository) {
+        this.segmentoRepository = segmentoRepository;
     }
 
     /**
@@ -50,7 +52,7 @@ public class SegmentoResource {
         if (segmento.getId() != null) {
             throw new BadRequestAlertException("A new segmento cannot already have an ID", ENTITY_NAME, "idexists");
         }
-        Segmento result = segmentoService.save(segmento);
+        Segmento result = segmentoRepository.save(segmento);
         return ResponseEntity.created(new URI("/api/segmentos/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, false, ENTITY_NAME, result.getId().toString()))
             .body(result);
@@ -71,7 +73,7 @@ public class SegmentoResource {
         if (segmento.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
-        Segmento result = segmentoService.save(segmento);
+        Segmento result = segmentoRepository.save(segmento);
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(applicationName, false, ENTITY_NAME, segmento.getId().toString()))
             .body(result);
@@ -85,7 +87,7 @@ public class SegmentoResource {
     @GetMapping("/segmentos")
     public List<Segmento> getAllSegmentos() {
         log.debug("REST request to get all Segmentos");
-        return segmentoService.findAll();
+        return segmentoRepository.findAll();
     }
 
     /**
@@ -97,7 +99,7 @@ public class SegmentoResource {
     @GetMapping("/segmentos/{id}")
     public ResponseEntity<Segmento> getSegmento(@PathVariable Long id) {
         log.debug("REST request to get Segmento : {}", id);
-        Optional<Segmento> segmento = segmentoService.findOne(id);
+        Optional<Segmento> segmento = segmentoRepository.findById(id);
         return ResponseUtil.wrapOrNotFound(segmento);
     }
 
@@ -110,7 +112,7 @@ public class SegmentoResource {
     @DeleteMapping("/segmentos/{id}")
     public ResponseEntity<Void> deleteSegmento(@PathVariable Long id) {
         log.debug("REST request to delete Segmento : {}", id);
-        segmentoService.delete(id);
+        segmentoRepository.deleteById(id);
         return ResponseEntity.noContent().headers(HeaderUtil.createEntityDeletionAlert(applicationName, false, ENTITY_NAME, id.toString())).build();
     }
 }

@@ -27,6 +27,10 @@ import tipoDesp, {
 import segmento, {
   SegmentoState
 } from 'app/entities/segmento/segmento.reducer';
+// prettier-ignore
+import tecnologia, {
+  TecnologiaState
+} from 'app/entities/tecnologia/tecnologia.reducer';
 /* jhipster-needle-add-reducer-import - JHipster will add reducer here */
 
 export interface IRootState {
@@ -43,6 +47,7 @@ export interface IRootState {
   readonly tipoObra: TipoObraState;
   readonly tipoDesp: TipoDespState;
   readonly segmento: SegmentoState;
+  readonly tecnologia: TecnologiaState;
   /* jhipster-needle-add-reducer-type - JHipster will add reducer type here */
   readonly loadingBar: any;
 }
@@ -61,6 +66,7 @@ const rootReducer = combineReducers<IRootState>({
   tipoObra,
   tipoDesp,
   segmento,
+  tecnologia,
   /* jhipster-needle-add-reducer-combine - JHipster will add reducer here */
   loadingBar,
 });

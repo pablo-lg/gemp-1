@@ -1,18 +1,14 @@
 {
-  "name": "TipoEmp",
+  "name": "Tecnologia",
   "fields": [
-    {
-      "fieldName": "descripcion",
-      "fieldType": "String"
-    },
     {
       "fieldName": "valor",
       "fieldType": "String"
     }
   ],
   "relationships": [],
-  "changelogDate": "20200819173209",
-  "entityTableName": "tipo_emp",
+  "changelogDate": "20201016173835",
+  "entityTableName": "tecnologia",
   "dto": "no",
   "pagination": "no",
   "service": "no",
