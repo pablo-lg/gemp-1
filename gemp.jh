@@ -1,16 +1,5 @@
-entity TipoEmp {
-  Id  Long required,
-  descripcion  String
-  valor String
-}
 
-entity TipoObra {
-  Id  Long required,
-  descripcion  String,
-  valor String
-}
-
-entity TipoDesp {
+entity Despliegue {
   Id  Long required,
   descripcion  String,
   valor String
@@ -18,13 +7,54 @@ entity TipoDesp {
 
 entity Segmento {
   Id  Long required,
-  descripcion  String,
-  valor String
+  descripcion String
+}
+
+entity Tecnologia {
+  Id  Long required,
+  descripcion String
+}
+
+entity Competencia {
+  Id  Long required,
+  descripcion String
+}
+
+entity Estado {
+  Id  Long required,
+  descripcion String
 }
 
 
 
-service all with serviceImpl 
+entity TipoObra {
+  Id  Long required,
+  descripcion String
+}
+
+entity Obra {
+  Id Long required,
+  descripcion String,
+  habilitada Boolean,
+  fechaFinObra LocalDate,
+}
+
+entity TipoEmp {
+  Id  Long required,
+  descripcion  String
+  valor String
+}
+
+relationship ManyToOne {
+	TipoObra{Segmento(descripcion)} to Segmento
+}
+
+relationship ManyToOne {
+	Obra{TipoObra(descripcion)} to TipoObra
+}
+
+
+
 
 
 // Set pagination options
