@@ -29,10 +29,6 @@ export const SegmentoDetail = (props: ISegmentoDetailProps) => {
             <span id="descripcion">Descripcion</span>
           </dt>
           <dd>{segmentoEntity.descripcion}</dd>
-          <dt>
-            <span id="valor">Valor</span>
-          </dt>
-          <dd>{segmentoEntity.valor}</dd>
         </dl>
         <Button tag={Link} to="/segmento" replace color="info">
           <FontAwesomeIcon icon="arrow-left" /> <span className="d-none d-md-inline">Back</span>

@@ -3,7 +3,6 @@ package ar.com.telecom.gemp.web.rest;
 import ar.com.telecom.gemp.GempApp;
 import ar.com.telecom.gemp.domain.TipoObra;
 import ar.com.telecom.gemp.repository.TipoObraRepository;
-import ar.com.telecom.gemp.service.TipoObraService;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -33,14 +32,8 @@ public class TipoObraResourceIT {
     private static final String DEFAULT_DESCRIPCION = "AAAAAAAAAA";
     private static final String UPDATED_DESCRIPCION = "BBBBBBBBBB";
 
-    private static final String DEFAULT_VALOR = "AAAAAAAAAA";
-    private static final String UPDATED_VALOR = "BBBBBBBBBB";
-
     @Autowired
     private TipoObraRepository tipoObraRepository;
-
-    @Autowired
-    private TipoObraService tipoObraService;
 
     @Autowired
     private EntityManager em;
@@ -58,8 +51,7 @@ public class TipoObraResourceIT {
      */
     public static TipoObra createEntity(EntityManager em) {
         TipoObra tipoObra = new TipoObra()
-            .descripcion(DEFAULT_DESCRIPCION)
-            .valor(DEFAULT_VALOR);
+            .descripcion(DEFAULT_DESCRIPCION);
         return tipoObra;
     }
     /**
@@ -70,8 +62,7 @@ public class TipoObraResourceIT {
      */
     public static TipoObra createUpdatedEntity(EntityManager em) {
         TipoObra tipoObra = new TipoObra()
-            .descripcion(UPDATED_DESCRIPCION)
-            .valor(UPDATED_VALOR);
+            .descripcion(UPDATED_DESCRIPCION);
         return tipoObra;
     }
 
@@ -95,7 +86,6 @@ public class TipoObraResourceIT {
         assertThat(tipoObraList).hasSize(databaseSizeBeforeCreate + 1);
         TipoObra testTipoObra = tipoObraList.get(tipoObraList.size() - 1);
         assertThat(testTipoObra.getDescripcion()).isEqualTo(DEFAULT_DESCRIPCION);
-        assertThat(testTipoObra.getValor()).isEqualTo(DEFAULT_VALOR);
     }
 
     @Test
@@ -129,8 +119,7 @@ public class TipoObraResourceIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(tipoObra.getId().intValue())))
-            .andExpect(jsonPath("$.[*].descripcion").value(hasItem(DEFAULT_DESCRIPCION)))
-            .andExpect(jsonPath("$.[*].valor").value(hasItem(DEFAULT_VALOR)));
+            .andExpect(jsonPath("$.[*].descripcion").value(hasItem(DEFAULT_DESCRIPCION)));
     }
     
     @Test
@@ -144,8 +133,7 @@ public class TipoObraResourceIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.id").value(tipoObra.getId().intValue()))
-            .andExpect(jsonPath("$.descripcion").value(DEFAULT_DESCRIPCION))
-            .andExpect(jsonPath("$.valor").value(DEFAULT_VALOR));
+            .andExpect(jsonPath("$.descripcion").value(DEFAULT_DESCRIPCION));
     }
     @Test
     @Transactional
@@ -159,7 +147,7 @@ public class TipoObraResourceIT {
     @Transactional
     public void updateTipoObra() throws Exception {
         // Initialize the database
-        tipoObraService.save(tipoObra);
+        tipoObraRepository.saveAndFlush(tipoObra);
 
         int databaseSizeBeforeUpdate = tipoObraRepository.findAll().size();
 
@@ -168,8 +156,7 @@ public class TipoObraResourceIT {
         // Disconnect from session so that the updates on updatedTipoObra are not directly saved in db
         em.detach(updatedTipoObra);
         updatedTipoObra
-            .descripcion(UPDATED_DESCRIPCION)
-            .valor(UPDATED_VALOR);
+            .descripcion(UPDATED_DESCRIPCION);
 
         restTipoObraMockMvc.perform(put("/api/tipo-obras")
             .contentType(MediaType.APPLICATION_JSON)
@@ -181,7 +168,6 @@ public class TipoObraResourceIT {
         assertThat(tipoObraList).hasSize(databaseSizeBeforeUpdate);
         TipoObra testTipoObra = tipoObraList.get(tipoObraList.size() - 1);
         assertThat(testTipoObra.getDescripcion()).isEqualTo(UPDATED_DESCRIPCION);
-        assertThat(testTipoObra.getValor()).isEqualTo(UPDATED_VALOR);
     }
 
     @Test
@@ -204,7 +190,7 @@ public class TipoObraResourceIT {
     @Transactional
     public void deleteTipoObra() throws Exception {
         // Initialize the database
-        tipoObraService.save(tipoObra);
+        tipoObraRepository.saveAndFlush(tipoObra);
 
         int databaseSizeBeforeDelete = tipoObraRepository.findAll().size();
 

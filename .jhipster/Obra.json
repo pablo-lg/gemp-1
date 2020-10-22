@@ -1,0 +1,37 @@
+{
+  "name": "Obra",
+  "fields": [
+    {
+      "fieldName": "descripcion",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "habilitada",
+      "fieldType": "Boolean"
+    },
+    {
+      "fieldName": "fechaFinObra",
+      "fieldType": "LocalDate"
+    }
+  ],
+  "relationships": [
+    {
+      "relationshipType": "many-to-one",
+      "otherEntityName": "tipoObra",
+      "otherEntityRelationshipName": "obra",
+      "relationshipName": "tipoObra",
+      "otherEntityField": "descripcion"
+    }
+  ],
+  "changelogDate": "20201022153050",
+  "entityTableName": "obra",
+  "dto": "no",
+  "pagination": "no",
+  "service": "no",
+  "jpaMetamodelFiltering": false,
+  "fluentMethods": true,
+  "readOnly": false,
+  "embedded": false,
+  "clientRootFolder": "",
+  "applications": "*"
+}

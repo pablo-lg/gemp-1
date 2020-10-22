@@ -34,7 +34,6 @@ export const Segmento = (props: ISegmentoProps) => {
               <tr>
                 <th>ID</th>
                 <th>Descripcion</th>
-                <th>Valor</th>
                 <th />
               </tr>
             </thead>
@@ -47,7 +46,6 @@ export const Segmento = (props: ISegmentoProps) => {
                     </Button>
                   </td>
                   <td>{segmento.descripcion}</td>
-                  <td>{segmento.valor}</td>
                   <td className="text-right">
                     <div className="btn-group flex-btn-group-container">
                       <Button tag={Link} to={`${match.url}/${segmento.id}`} color="info" size="sm">

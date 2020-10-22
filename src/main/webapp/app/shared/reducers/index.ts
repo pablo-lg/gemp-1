@@ -27,6 +27,26 @@ import tipoDesp, {
 import segmento, {
   SegmentoState
 } from 'app/entities/segmento/segmento.reducer';
+// prettier-ignore
+import despliegue, {
+  DespliegueState
+} from 'app/entities/despliegue/despliegue.reducer';
+// prettier-ignore
+import tecnologia, {
+  TecnologiaState
+} from 'app/entities/tecnologia/tecnologia.reducer';
+// prettier-ignore
+import competencia, {
+  CompetenciaState
+} from 'app/entities/competencia/competencia.reducer';
+// prettier-ignore
+import estado, {
+  EstadoState
+} from 'app/entities/estado/estado.reducer';
+// prettier-ignore
+import obra, {
+  ObraState
+} from 'app/entities/obra/obra.reducer';
 /* jhipster-needle-add-reducer-import - JHipster will add reducer here */
 
 export interface IRootState {
@@ -43,6 +63,11 @@ export interface IRootState {
   readonly tipoObra: TipoObraState;
   readonly tipoDesp: TipoDespState;
   readonly segmento: SegmentoState;
+  readonly despliegue: DespliegueState;
+  readonly tecnologia: TecnologiaState;
+  readonly competencia: CompetenciaState;
+  readonly estado: EstadoState;
+  readonly obra: ObraState;
   /* jhipster-needle-add-reducer-type - JHipster will add reducer type here */
   readonly loadingBar: any;
 }
@@ -61,6 +86,11 @@ const rootReducer = combineReducers<IRootState>({
   tipoObra,
   tipoDesp,
   segmento,
+  despliegue,
+  tecnologia,
+  competencia,
+  estado,
+  obra,
   /* jhipster-needle-add-reducer-combine - JHipster will add reducer here */
   loadingBar,
 });

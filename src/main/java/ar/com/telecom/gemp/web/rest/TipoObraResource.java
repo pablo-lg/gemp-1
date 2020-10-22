@@ -1,7 +1,7 @@
 package ar.com.telecom.gemp.web.rest;
 
 import ar.com.telecom.gemp.domain.TipoObra;
-import ar.com.telecom.gemp.service.TipoObraService;
+import ar.com.telecom.gemp.repository.TipoObraRepository;
 import ar.com.telecom.gemp.web.rest.errors.BadRequestAlertException;
 
 import io.github.jhipster.web.util.HeaderUtil;
@@ -10,6 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
@@ -22,6 +23,7 @@ import java.util.Optional;
  */
 @RestController
 @RequestMapping("/api")
+@Transactional
 public class TipoObraResource {
 
     private final Logger log = LoggerFactory.getLogger(TipoObraResource.class);
@@ -31,10 +33,10 @@ public class TipoObraResource {
     @Value("${jhipster.clientApp.name}")
     private String applicationName;
 
-    private final TipoObraService tipoObraService;
+    private final TipoObraRepository tipoObraRepository;
 
-    public TipoObraResource(TipoObraService tipoObraService) {
-        this.tipoObraService = tipoObraService;
+    public TipoObraResource(TipoObraRepository tipoObraRepository) {
+        this.tipoObraRepository = tipoObraRepository;
     }
 
     /**
@@ -50,7 +52,7 @@ public class TipoObraResource {
         if (tipoObra.getId() != null) {
             throw new BadRequestAlertException("A new tipoObra cannot already have an ID", ENTITY_NAME, "idexists");
         }
-        TipoObra result = tipoObraService.save(tipoObra);
+        TipoObra result = tipoObraRepository.save(tipoObra);
         return ResponseEntity.created(new URI("/api/tipo-obras/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, false, ENTITY_NAME, result.getId().toString()))
             .body(result);
@@ -71,7 +73,7 @@ public class TipoObraResource {
         if (tipoObra.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
-        TipoObra result = tipoObraService.save(tipoObra);
+        TipoObra result = tipoObraRepository.save(tipoObra);
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(applicationName, false, ENTITY_NAME, tipoObra.getId().toString()))
             .body(result);
@@ -85,7 +87,7 @@ public class TipoObraResource {
     @GetMapping("/tipo-obras")
     public List<TipoObra> getAllTipoObras() {
         log.debug("REST request to get all TipoObras");
-        return tipoObraService.findAll();
+        return tipoObraRepository.findAll();
     }
 
     /**
@@ -97,7 +99,7 @@ public class TipoObraResource {
     @GetMapping("/tipo-obras/{id}")
     public ResponseEntity<TipoObra> getTipoObra(@PathVariable Long id) {
         log.debug("REST request to get TipoObra : {}", id);
-        Optional<TipoObra> tipoObra = tipoObraService.findOne(id);
+        Optional<TipoObra> tipoObra = tipoObraRepository.findById(id);
         return ResponseUtil.wrapOrNotFound(tipoObra);
     }
 
@@ -110,7 +112,7 @@ public class TipoObraResource {
     @DeleteMapping("/tipo-obras/{id}")
     public ResponseEntity<Void> deleteTipoObra(@PathVariable Long id) {
         log.debug("REST request to delete TipoObra : {}", id);
-        tipoObraService.delete(id);
+        tipoObraRepository.deleteById(id);
         return ResponseEntity.noContent().headers(HeaderUtil.createEntityDeletionAlert(applicationName, false, ENTITY_NAME, id.toString())).build();
     }
 }

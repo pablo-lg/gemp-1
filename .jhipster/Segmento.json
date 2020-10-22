@@ -4,10 +4,6 @@
     {
       "fieldName": "descripcion",
       "fieldType": "String"
-    },
-    {
-      "fieldName": "valor",
-      "fieldType": "String"
     }
   ],
   "relationships": [],
@@ -15,7 +11,7 @@
   "entityTableName": "segmento",
   "dto": "no",
   "pagination": "no",
-  "service": "serviceImpl",
+  "service": "no",
   "jpaMetamodelFiltering": false,
   "fluentMethods": true,
   "readOnly": false,
