@@ -29,8 +29,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WithMockUser
 public class TecnologiaResourceIT {
 
-    private static final String DEFAULT_VALOR = "AAAAAAAAAA";
-    private static final String UPDATED_VALOR = "BBBBBBBBBB";
+    private static final String DEFAULT_DESCRIPCION = "AAAAAAAAAA";
+    private static final String UPDATED_DESCRIPCION = "BBBBBBBBBB";
 
     @Autowired
     private TecnologiaRepository tecnologiaRepository;
@@ -51,7 +51,7 @@ public class TecnologiaResourceIT {
      */
     public static Tecnologia createEntity(EntityManager em) {
         Tecnologia tecnologia = new Tecnologia()
-            .valor(DEFAULT_VALOR);
+            .descripcion(DEFAULT_DESCRIPCION);
         return tecnologia;
     }
     /**
@@ -62,7 +62,7 @@ public class TecnologiaResourceIT {
      */
     public static Tecnologia createUpdatedEntity(EntityManager em) {
         Tecnologia tecnologia = new Tecnologia()
-            .valor(UPDATED_VALOR);
+            .descripcion(UPDATED_DESCRIPCION);
         return tecnologia;
     }
 
@@ -85,7 +85,7 @@ public class TecnologiaResourceIT {
         List<Tecnologia> tecnologiaList = tecnologiaRepository.findAll();
         assertThat(tecnologiaList).hasSize(databaseSizeBeforeCreate + 1);
         Tecnologia testTecnologia = tecnologiaList.get(tecnologiaList.size() - 1);
-        assertThat(testTecnologia.getValor()).isEqualTo(DEFAULT_VALOR);
+        assertThat(testTecnologia.getDescripcion()).isEqualTo(DEFAULT_DESCRIPCION);
     }
 
     @Test
@@ -119,7 +119,7 @@ public class TecnologiaResourceIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(tecnologia.getId().intValue())))
-            .andExpect(jsonPath("$.[*].valor").value(hasItem(DEFAULT_VALOR)));
+            .andExpect(jsonPath("$.[*].descripcion").value(hasItem(DEFAULT_DESCRIPCION)));
     }
     
     @Test
@@ -133,7 +133,7 @@ public class TecnologiaResourceIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.id").value(tecnologia.getId().intValue()))
-            .andExpect(jsonPath("$.valor").value(DEFAULT_VALOR));
+            .andExpect(jsonPath("$.descripcion").value(DEFAULT_DESCRIPCION));
     }
     @Test
     @Transactional
@@ -156,7 +156,7 @@ public class TecnologiaResourceIT {
         // Disconnect from session so that the updates on updatedTecnologia are not directly saved in db
         em.detach(updatedTecnologia);
         updatedTecnologia
-            .valor(UPDATED_VALOR);
+            .descripcion(UPDATED_DESCRIPCION);
 
         restTecnologiaMockMvc.perform(put("/api/tecnologias")
             .contentType(MediaType.APPLICATION_JSON)
@@ -167,7 +167,7 @@ public class TecnologiaResourceIT {
         List<Tecnologia> tecnologiaList = tecnologiaRepository.findAll();
         assertThat(tecnologiaList).hasSize(databaseSizeBeforeUpdate);
         Tecnologia testTecnologia = tecnologiaList.get(tecnologiaList.size() - 1);
-        assertThat(testTecnologia.getValor()).isEqualTo(UPDATED_VALOR);
+        assertThat(testTecnologia.getDescripcion()).isEqualTo(UPDATED_DESCRIPCION);
     }
 
     @Test

@@ -19,8 +19,8 @@ public class Tecnologia implements Serializable {
     @SequenceGenerator(name = "sequenceGenerator")
     private Long id;
 
-    @Column(name = "valor")
-    private String valor;
+    @Column(name = "descripcion")
+    private String descripcion;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
     public Long getId() {
@@ -31,17 +31,17 @@ public class Tecnologia implements Serializable {
         this.id = id;
     }
 
-    public String getValor() {
-        return valor;
+    public String getDescripcion() {
+        return descripcion;
     }
 
-    public Tecnologia valor(String valor) {
-        this.valor = valor;
+    public Tecnologia descripcion(String descripcion) {
+        this.descripcion = descripcion;
         return this;
     }
 
-    public void setValor(String valor) {
-        this.valor = valor;
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
 
@@ -66,7 +66,7 @@ public class Tecnologia implements Serializable {
     public String toString() {
         return "Tecnologia{" +
             "id=" + getId() +
-            ", valor='" + getValor() + "'" +
+            ", descripcion='" + getDescripcion() + "'" +
             "}";
     }
 }

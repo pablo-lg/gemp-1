@@ -33,7 +33,7 @@ export const Tecnologia = (props: ITecnologiaProps) => {
             <thead>
               <tr>
                 <th>ID</th>
-                <th>Valor</th>
+                <th>Descripcion</th>
                 <th />
               </tr>
             </thead>
@@ -45,7 +45,7 @@ export const Tecnologia = (props: ITecnologiaProps) => {
                       {tecnologia.id}
                     </Button>
                   </td>
-                  <td>{tecnologia.valor}</td>
+                  <td>{tecnologia.descripcion}</td>
                   <td className="text-right">
                     <div className="btn-group flex-btn-group-container">
                       <Button tag={Link} to={`${match.url}/${tecnologia.id}`} color="info" size="sm">

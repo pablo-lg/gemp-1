@@ -4,10 +4,6 @@
     {
       "fieldName": "descripcion",
       "fieldType": "String"
-    },
-    {
-      "fieldName": "valor",
-      "fieldType": "String"
     }
   ],
   "relationships": [],

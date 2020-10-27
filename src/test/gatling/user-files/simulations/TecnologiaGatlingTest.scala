@@ -72,7 +72,7 @@ class TecnologiaGatlingTest extends Simulation {
             .headers(headers_http_authenticated)
             .body(StringBody("""{
                 "id":null
-                , "valor":"SAMPLE_TEXT"
+                , "descripcion":"SAMPLE_TEXT"
                 }""")).asJson
             .check(status.is(201))
             .check(headerRegex("Location", "(.*)").saveAs("new_tecnologia_url"))).exitHereIfFailed

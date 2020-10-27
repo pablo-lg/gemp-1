@@ -1,6 +1,6 @@
 export interface ITecnologia {
   id?: number;
-  valor?: string;
+  descripcion?: string;
 }
 
 export const defaultValue: Readonly<ITecnologia> = {};

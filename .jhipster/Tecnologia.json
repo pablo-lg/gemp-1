@@ -2,12 +2,12 @@
   "name": "Tecnologia",
   "fields": [
     {
-      "fieldName": "valor",
+      "fieldName": "descripcion",
       "fieldType": "String"
     }
   ],
   "relationships": [],
-  "changelogDate": "20201016173835",
+  "changelogDate": "20201022152650",
   "entityTableName": "tecnologia",
   "dto": "no",
   "pagination": "no",

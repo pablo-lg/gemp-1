@@ -7,18 +7,18 @@ export default class TecnologiaUpdatePage {
   pageTitle: ElementFinder = element(by.id('gempApp.tecnologia.home.createOrEditLabel'));
   saveButton: ElementFinder = element(by.id('save-entity'));
   cancelButton: ElementFinder = element(by.id('cancel-save'));
-  valorInput: ElementFinder = element(by.css('input#tecnologia-valor'));
+  descripcionInput: ElementFinder = element(by.css('input#tecnologia-descripcion'));
 
   getPageTitle() {
     return this.pageTitle;
   }
 
-  async setValorInput(valor) {
-    await this.valorInput.sendKeys(valor);
+  async setDescripcionInput(descripcion) {
+    await this.descripcionInput.sendKeys(descripcion);
   }
 
-  async getValorInput() {
-    return this.valorInput.getAttribute('value');
+  async getDescripcionInput() {
+    return this.descripcionInput.getAttribute('value');
   }
 
   async save() {
@@ -35,8 +35,8 @@ export default class TecnologiaUpdatePage {
 
   async enterData() {
     await waitUntilDisplayed(this.saveButton);
-    await this.setValorInput('valor');
-    expect(await this.getValorInput()).to.match(/valor/);
+    await this.setDescripcionInput('descripcion');
+    expect(await this.getDescripcionInput()).to.match(/descripcion/);
     await this.save();
     await waitUntilHidden(this.saveButton);
     expect(await isVisible(this.saveButton)).to.be.false;

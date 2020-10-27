@@ -32,9 +32,6 @@ public class SegmentoResourceIT {
     private static final String DEFAULT_DESCRIPCION = "AAAAAAAAAA";
     private static final String UPDATED_DESCRIPCION = "BBBBBBBBBB";
 
-    private static final String DEFAULT_VALOR = "AAAAAAAAAA";
-    private static final String UPDATED_VALOR = "BBBBBBBBBB";
-
     @Autowired
     private SegmentoRepository segmentoRepository;
 
@@ -54,8 +51,7 @@ public class SegmentoResourceIT {
      */
     public static Segmento createEntity(EntityManager em) {
         Segmento segmento = new Segmento()
-            .descripcion(DEFAULT_DESCRIPCION)
-            .valor(DEFAULT_VALOR);
+            .descripcion(DEFAULT_DESCRIPCION);
         return segmento;
     }
     /**
@@ -66,8 +62,7 @@ public class SegmentoResourceIT {
      */
     public static Segmento createUpdatedEntity(EntityManager em) {
         Segmento segmento = new Segmento()
-            .descripcion(UPDATED_DESCRIPCION)
-            .valor(UPDATED_VALOR);
+            .descripcion(UPDATED_DESCRIPCION);
         return segmento;
     }
 
@@ -91,7 +86,6 @@ public class SegmentoResourceIT {
         assertThat(segmentoList).hasSize(databaseSizeBeforeCreate + 1);
         Segmento testSegmento = segmentoList.get(segmentoList.size() - 1);
         assertThat(testSegmento.getDescripcion()).isEqualTo(DEFAULT_DESCRIPCION);
-        assertThat(testSegmento.getValor()).isEqualTo(DEFAULT_VALOR);
     }
 
     @Test
@@ -125,8 +119,7 @@ public class SegmentoResourceIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(segmento.getId().intValue())))
-            .andExpect(jsonPath("$.[*].descripcion").value(hasItem(DEFAULT_DESCRIPCION)))
-            .andExpect(jsonPath("$.[*].valor").value(hasItem(DEFAULT_VALOR)));
+            .andExpect(jsonPath("$.[*].descripcion").value(hasItem(DEFAULT_DESCRIPCION)));
     }
     
     @Test
@@ -140,8 +133,7 @@ public class SegmentoResourceIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.id").value(segmento.getId().intValue()))
-            .andExpect(jsonPath("$.descripcion").value(DEFAULT_DESCRIPCION))
-            .andExpect(jsonPath("$.valor").value(DEFAULT_VALOR));
+            .andExpect(jsonPath("$.descripcion").value(DEFAULT_DESCRIPCION));
     }
     @Test
     @Transactional
@@ -164,8 +156,7 @@ public class SegmentoResourceIT {
         // Disconnect from session so that the updates on updatedSegmento are not directly saved in db
         em.detach(updatedSegmento);
         updatedSegmento
-            .descripcion(UPDATED_DESCRIPCION)
-            .valor(UPDATED_VALOR);
+            .descripcion(UPDATED_DESCRIPCION);
 
         restSegmentoMockMvc.perform(put("/api/segmentos")
             .contentType(MediaType.APPLICATION_JSON)
@@ -177,7 +168,6 @@ public class SegmentoResourceIT {
         assertThat(segmentoList).hasSize(databaseSizeBeforeUpdate);
         Segmento testSegmento = segmentoList.get(segmentoList.size() - 1);
         assertThat(testSegmento.getDescripcion()).isEqualTo(UPDATED_DESCRIPCION);
-        assertThat(testSegmento.getValor()).isEqualTo(UPDATED_VALOR);
     }
 
     @Test

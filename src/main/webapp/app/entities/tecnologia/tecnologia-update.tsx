@@ -72,10 +72,10 @@ export const TecnologiaUpdate = (props: ITecnologiaUpdateProps) => {
                 </AvGroup>
               ) : null}
               <AvGroup>
-                <Label id="valorLabel" for="tecnologia-valor">
-                  Valor
+                <Label id="descripcionLabel" for="tecnologia-descripcion">
+                  Descripcion
                 </Label>
-                <AvField id="tecnologia-valor" type="text" name="valor" />
+                <AvField id="tecnologia-descripcion" type="text" name="descripcion" />
               </AvGroup>
               <Button tag={Link} id="cancel-save" to="/tecnologia" replace color="info">
                 <FontAwesomeIcon icon="arrow-left" />

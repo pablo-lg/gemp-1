@@ -26,9 +26,9 @@ export const TecnologiaDetail = (props: ITecnologiaDetailProps) => {
         </h2>
         <dl className="jh-entity-details">
           <dt>
-            <span id="valor">Valor</span>
+            <span id="descripcion">Descripcion</span>
           </dt>
-          <dd>{tecnologiaEntity.valor}</dd>
+          <dd>{tecnologiaEntity.descripcion}</dd>
         </dl>
         <Button tag={Link} to="/tecnologia" replace color="info">
           <FontAwesomeIcon icon="arrow-left" /> <span className="d-none d-md-inline">Back</span>

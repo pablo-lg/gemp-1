@@ -22,9 +22,6 @@ public class Segmento implements Serializable {
     @Column(name = "descripcion")
     private String descripcion;
 
-    @Column(name = "valor")
-    private String valor;
-
     // jhipster-needle-entity-add-field - JHipster will add fields here
     public Long getId() {
         return id;
@@ -45,19 +42,6 @@ public class Segmento implements Serializable {
 
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
-    }
-
-    public String getValor() {
-        return valor;
-    }
-
-    public Segmento valor(String valor) {
-        this.valor = valor;
-        return this;
-    }
-
-    public void setValor(String valor) {
-        this.valor = valor;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
 
@@ -83,7 +67,6 @@ public class Segmento implements Serializable {
         return "Segmento{" +
             "id=" + getId() +
             ", descripcion='" + getDescripcion() + "'" +
-            ", valor='" + getValor() + "'" +
             "}";
     }
 }
