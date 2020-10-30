@@ -47,6 +47,9 @@ import estado, {
 import obra, {
   ObraState
 } from 'app/entities/obra/obra.reducer';
+import mu, {
+  MuState
+} from 'app/modules/direcciones/mu.reducer';
 /* jhipster-needle-add-reducer-import - JHipster will add reducer here */
 
 export interface IRootState {
@@ -68,6 +71,8 @@ export interface IRootState {
   readonly competencia: CompetenciaState;
   readonly estado: EstadoState;
   readonly obra: ObraState;
+  readonly mu: MuState;
+
   /* jhipster-needle-add-reducer-type - JHipster will add reducer type here */
   readonly loadingBar: any;
 }
@@ -91,6 +96,8 @@ const rootReducer = combineReducers<IRootState>({
   competencia,
   estado,
   obra,
+  mu,
+
   /* jhipster-needle-add-reducer-combine - JHipster will add reducer here */
   loadingBar,
 });

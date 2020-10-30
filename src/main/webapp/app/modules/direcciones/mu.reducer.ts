@@ -25,9 +25,13 @@ export const ACTION_TYPES = {
     errorMessage: null,
 
     provincias: [] as any[],
+    loadingProvincias: false,
     partidos: [] as any[],
+    loadingPartidos: false,
     localidades: [] as any[],
+    loadingLocalidades: false,
     calles: [] as any[],
+    loadingCalles: false,
     geographic: [] as any[],
     technical: [] as any[],
     zonas: null,
@@ -64,9 +68,29 @@ export const ACTION_TYPES = {
 export default (state: MuState = initialState, action): MuState => {
     switch (action.type) {
       case REQUEST(ACTION_TYPES.FETCH_PROVINCIAS):
+        return {
+          ...state,
+          errorMessage: null,
+          loadingProvincias: true,
+        };
       case REQUEST(ACTION_TYPES.FETCH_PARTIDOS):
+        return {
+          ...state,
+          errorMessage: null,
+          loadingPartidos: true,
+        };
       case REQUEST(ACTION_TYPES.FETCH_LOCALIDADES):
+        return {
+          ...state,
+          errorMessage: null,
+          loadingLocalidades: true,
+        };
       case REQUEST(ACTION_TYPES.FETCH_CALLES):
+        return {
+          ...state,
+          errorMessage: null,
+          loadingCalles: true,
+        };
       case REQUEST(ACTION_TYPES.FETCH_GEOGRAPHIC):
       case REQUEST(ACTION_TYPES.FETCH_TECHNICAL):
 
@@ -75,10 +99,31 @@ export default (state: MuState = initialState, action): MuState => {
           errorMessage: null,
           loading: true,
         };
+
       case FAILURE(ACTION_TYPES.FETCH_PROVINCIAS):
+        return {
+          ...state,
+          loadingProvincias: false,
+          errorMessage: action.payload,
+        };
       case FAILURE(ACTION_TYPES.FETCH_PARTIDOS):
+        return {
+          ...state,
+          loadingPartidos: false,
+          errorMessage: action.payload,
+        };
       case FAILURE(ACTION_TYPES.FETCH_LOCALIDADES):
+        return {
+          ...state,
+          loadingLocalidades: false,
+          errorMessage: action.payload,
+        };
       case FAILURE(ACTION_TYPES.FETCH_CALLES):
+        return {
+          ...state,
+          loadingCalles: false,
+          errorMessage: action.payload,
+        };
       case FAILURE(ACTION_TYPES.FETCH_GEOGRAPHIC):
       case FAILURE(ACTION_TYPES.FETCH_TECHNICAL):
 

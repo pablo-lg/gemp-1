@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { Link, RouteComponentProps } from 'react-router-dom';
 import { ICrudGetAllAction } from 'react-jhipster';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { Table, Input, Button, Popconfirm, Form, InputNumber, Space, Row } from 'antd';
+import { Table, Input, Button, Popconfirm, Form, InputNumber, Space, Row, Divider} from 'antd';
 import { IRootState } from 'app/shared/reducers';
 import { getEntities, updateEntity, deleteEntity, createEntity } from './segmento.reducer';
 import { ISegmento } from 'app/shared/model/segmento.model';
@@ -11,6 +11,9 @@ import { APP_DATE_FORMAT, APP_LOCAL_DATE_FORMAT } from 'app/config/constants';
 import { PlusOutlined , PlusSquareTwoTone , PlusCircleFilled } from '@ant-design/icons';
 
 import {EditableCell} from '../../componentes/table/editableCell'
+import { Typography } from 'antd';
+
+const { Title } = Typography;
 
 export interface ISegmentoProps extends StateProps, DispatchProps, RouteComponentProps<{ url: string }> { }
 
@@ -26,7 +29,7 @@ export const Segmento = (props: ISegmentoProps) => {
 
   const [filter, setFilter] = useState('');
 
-  const filterFn = l => (l.descripcion.toUpperCase().includes(filter.toUpperCase()) || l.valor.toUpperCase().includes(filter.toUpperCase()));
+  const filterFn = l => (l.descripcion.toUpperCase().includes(filter.toUpperCase()));
   // const changeFilter = val => setFilter(val);
 
   const changeFilter = evt => setFilter(evt.target.value);
@@ -121,18 +124,11 @@ export const Segmento = (props: ISegmentoProps) => {
     {
       title: 'descripcion',
       dataIndex: 'descripcion',
-      width: '40%',
+      width: '80%',
       editable: true,
   
 
 
-    },
-    {
-      title: 'valor',
-      dataIndex: 'valor',
-      width: '40%',
-      editable: true,
-  
     },
     {
       title: 'operation',
@@ -184,6 +180,9 @@ export const Segmento = (props: ISegmentoProps) => {
   return (
     <Form form={form} component={false}>
       <div>
+      <Divider orientation="left">Segmentos</Divider>
+      </div>
+      <div>
       
 
       <Button  icon={<PlusOutlined />} onClick={handleAdd}  style={{ marginBottom: 16, marginRight: 8 }}/>
@@ -203,7 +202,7 @@ export const Segmento = (props: ISegmentoProps) => {
         }}
         rowClassName={() => 'editable-row'}
         bordered
-        
+        loading={props.loading}
         dataSource={data}
         columns={mergedColumns}
         pagination={{

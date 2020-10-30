@@ -157,7 +157,7 @@ export const Direcciones = (props) => {
         wrapperCol={{ span: 20 }}
         layout="vertical" >
         <Form.Item style={{ marginBottom: 4 }}>
-          <Form.Item name="provincia" label="Provincia" rules={[{ required: true }]} style={{ display: 'inline-block', width: 'calc(20% - 4px)', margin: '0 4px 0 0' }} >
+          <Form.Item name="provincia" label="Provincia" rules={[{ required: true }]} style={{ display: 'inline-block', width: 'calc(33% - 4px)', margin: '0 4px 0 0' }} >
             <Select allowClear showSearch
                     placeholder="Provincia"
                     defaultValue={null}
@@ -167,7 +167,7 @@ export const Direcciones = (props) => {
               {opcionesSelectName(provincias)}
             </Select>
           </Form.Item >
-          <Form.Item name="partido" label="Partido" rules={[{ required: true }]} style={{ display: 'inline-block', width: 'calc(20% - 4px)', margin: '0 4px 0 0' }}>
+          <Form.Item name="partido" label="Partido" rules={[{ required: true }]} style={{ display: 'inline-block', width: 'calc(33% - 4px)', margin: '0 4px 0 0' }}>
             <Select allowClear placeholder="Partido"
                     showSearch
                     onClear={props.resetLocalidades}
@@ -175,7 +175,7 @@ export const Direcciones = (props) => {
               {opcionesSelectName(partidos)}
             </Select>
           </Form.Item>
-          <Form.Item name="localidad" label="Localidad" rules={[{ required: true }]} style={{ display: 'inline-block', width: 'calc(60% - 4px)', margin: '0 4px 0 0' }}>
+          <Form.Item name="localidad" label="Localidad" rules={[{ required: true }]} style={{ display: 'inline-block', width: 'calc(33% - 4px)', margin: '0 4px 0 0' }}>
             <Select placeholder="Localidad"
                     allowClear
                     showSearch

@@ -134,8 +134,8 @@ export const Calles = (props) => {
               placeholder="Tipo emprendimiento"
               defaultValue={null}>
               {props.tipoEmpList ? props.tipoEmpList.map(otherEntity => (
-                <Select.Option value={otherEntity.valor} key={otherEntity.valor}>
-                  {otherEntity.valor}
+                <Select.Option value={otherEntity.descripcion} key={otherEntity.descripcion}>
+                  {otherEntity.descripcion}
                 </Select.Option>
               ))
                 : null}
@@ -148,8 +148,8 @@ export const Calles = (props) => {
               placeholder="Tipo de obra"
               defaultValue={null}>
               {props.tipoObraList ? props.tipoObraList.map(otherEntity => (
-                <Select.Option value={otherEntity.valor} key={otherEntity.valor}>
-                  {otherEntity.valor}
+                <Select.Option value={otherEntity.descripcion} key={otherEntity.descripcion}>
+                  {otherEntity.descripcion}
                 </Select.Option>
               ))
                 : null}
@@ -162,8 +162,8 @@ export const Calles = (props) => {
               placeholder="Segmento"
               defaultValue={null}>
               {props.segmentoList ? props.segmentoList.map(otherEntity => (
-                <Select.Option value={otherEntity.valor} key={otherEntity.valor}>
-                  {otherEntity.valor}
+                <Select.Option value={otherEntity.descripcion} key={otherEntity.descripcion}>
+                  {otherEntity.descripcion}
                 </Select.Option>
               ))
                 : null}
@@ -181,8 +181,8 @@ export const Calles = (props) => {
               placeholder="Tipo Despliegue"
               defaultValue={null}>
               {props.topoDespList ? props.topoDespList.map(otherEntity => (
-                <Select.Option value={otherEntity.valor} key={otherEntity.valor}>
-                  {otherEntity.valor}
+                <Select.Option value={otherEntity.descripcion} key={otherEntity.descripcion}>
+                  {otherEntity.descripcion}
                 </Select.Option>
               ))
                 : null}
@@ -202,69 +202,69 @@ export const Calles = (props) => {
         <Button onClick={() => setVisibleDrawer(true)}>Actualizar domicilio</Button>
         <Form.Item style={{ marginBottom: 4 }}>
           <Form.Item label="Provincia" style={{ display: 'inline-block', width: 'calc(20% - 4px)', margin: '0 4px 0 0' }}>
-            <Input disabled={editForm} value={props.stateOrProvince} placeholder="Provincia" />
+            <Input readOnly value={props.stateOrProvince} placeholder="Provincia" />
           </Form.Item>
           <Form.Item label="Partido" style={{ display: 'inline-block', width: 'calc(20% - 4px)', margin: '0 4px 0 0' }}>
-            <Input disabled={editForm} value={props.city} placeholder="Partido" />
+            <Input readOnly value={props.city} placeholder="Partido" />
           </Form.Item>
           <Form.Item label="Localidad" style={{ display: 'inline-block', width: 'calc(60% - 4px)', margin: '0 4px 0 0' }}>
-            <Input disabled={editForm} value={props.locality} placeholder="Localidad" />
+            <Input readOnly value={props.locality} placeholder="Localidad" />
           </Form.Item>
         </Form.Item>
         <Form.Item style={{ marginBottom: 4 }}>
           <Form.Item label="Calle" style={{ display: 'inline-block', width: 'calc(66% - 4px)', margin: '1px 4px 0 0' }}>
-            <Input disabled={editForm} value={props.streetName} placeholder="Calle" />
+            <Input readOnly value={props.streetName} placeholder="Calle" />
           </Form.Item>
           <Form.Item label="Altura" style={{ display: 'inline-block', width: 'calc(17% - 4px)', margin: '1px 4px 0 0' }}>
-            <Input disabled={editForm} value={props.streetNr} placeholder="Altura" />
+            <Input readOnly value={props.streetNr} placeholder="Altura" />
           </Form.Item>
           <Form.Item label="C. P." style={{ display: 'inline-block', width: 'calc(16% - 4px)', margin: '1px  4px 0 0' }}>
-            <Input disabled={editForm} value={props.codigoPostal} placeholder="C. P." />
+            <Input readOnly value={props.codigoPostal} placeholder="C. P." />
           </Form.Item>
         </Form.Item>
 
         <Form.Item style={{ marginBottom: 4 }}>
           <Form.Item label="latitud" style={{ display: 'inline-block', width: 'calc(50% - 4px)', margin: '1px 4px 0 0' }}>
-            <Input disabled={editForm} value={props.geoX} placeholder="latitud" />
+            <Input readOnly value={props.geoX} placeholder="latitud" />
           </Form.Item>
           <Form.Item label="longitud" style={{ display: 'inline-block', width: 'calc(50% - 4px)', margin: '1px  4px 0 0' }}>
-            <Input disabled={editForm} value={props.geoY} placeholder="longitud" />
+            <Input readOnly value={props.geoY} placeholder="longitud" />
           </Form.Item>
         </Form.Item>
 
         <Form.Item style={{ marginBottom: 4 }}>
           <Form.Item label="region" style={{ display: 'inline-block', width: 'calc(50% - 4px)', margin: '1px 4px 0 0' }}>
-            <Input disabled={editForm} value="falta definir" placeholder="region" />
+            <Input readOnly value="falta definir" placeholder="region" />
           </Form.Item>
           <Form.Item label="subregion" style={{ display: 'inline-block', width: 'calc(50% - 4px)', margin: '1px  4px 0 0' }}>
-            <Input disabled={editForm} value="falta definir" placeholder="subregion" />
+            <Input readOnly value="falta definir" placeholder="subregion" />
           </Form.Item>
         </Form.Item>
 
         <Form.Item style={{ marginBottom: 4 }}>
           <Form.Item label="Zona competencia" style={{ display: 'inline-block', width: 'calc(33% - 4px)', margin: '1px 4px 0 0' }}>
-            <Input disabled={editForm} value={props.zonaCompetencia} placeholder="zona de competencia" />
+            <Input readOnly value={props.zonaCompetencia} placeholder="zona de competencia" />
           </Form.Item>
           <Form.Item label="Hubs" style={{ display: 'inline-block', width: 'calc(33% - 4px)', margin: '1px  4px 0 0' }}>
-            <Input disabled={editForm} value={props.hub} placeholder="hubs" />
+            <Input readOnly value={props.hub} placeholder="hubs" />
           </Form.Item>
           <Form.Item label="Barrio especial" style={{ display: 'inline-block', width: 'calc(33% - 4px)', margin: '1px  4px 0 0' }}>
-            <Input disabled={editForm} value={props.barriosEspeciales} placeholder="barrio especial" />
+            <Input readOnly value={props.barriosEspeciales} placeholder="barrio especial" />
           </Form.Item>
         </Form.Item>
 
         <Form.Item style={{ marginBottom: 4 }}>
           <Form.Item label="Calle izquierda" style={{ display: 'inline-block', width: 'calc(33% - 4px)', margin: '1px 4px 0 0' }}>
-            <Input disabled={editForm} value={props.intersectionLeft} placeholder="Calle izquierda" />
+            <Input readOnly value={props.intersectionLeft} placeholder="Calle izquierda" />
           </Form.Item>
           <Form.Item label="Calle Derecha" style={{ display: 'inline-block', width: 'calc(33% - 4px)', margin: '1px  4px 0 0' }}>
-            <Input disabled={editForm} value={props.intersectionRight} placeholder="Calle Derecha" />
+            <Input readOnly value={props.intersectionRight} placeholder="Calle Derecha" />
           </Form.Item>
           <Form.Item label="Latitud" style={{ display: 'inline-block', width: 'calc(16% - 4px)', margin: '1px  4px 0 0' }}>
-            <Input disabled={editForm} value={props.geoX} placeholder="Latitud" />
+            <Input readOnly value={props.geoX} placeholder="Latitud" />
           </Form.Item>
           <Form.Item label="Longitud" style={{ display: 'inline-block', width: 'calc(16% - 4px)', margin: '1px  4px 0 0' }}>
-            <Input disabled={editForm} value={props.geoY} placeholder="Longitud" />
+            <Input readOnly value={props.geoY} placeholder="Longitud" />
           </Form.Item>
         </Form.Item>
 

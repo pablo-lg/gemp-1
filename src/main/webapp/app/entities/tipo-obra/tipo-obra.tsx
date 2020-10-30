@@ -8,6 +8,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { IRootState } from 'app/shared/reducers';
 import { getEntities, updateEntity, deleteEntity, createEntity } from './tipo-obra.reducer';
 import { ITipoObra } from 'app/shared/model/tipo-obra.model';
+import {getEntities as getEntitiesSeg} from '../../entities/segmento/segmento.reducer';
+import { ISegmento } from 'app/shared/model/segmento.model';
 import { APP_DATE_FORMAT, APP_LOCAL_DATE_FORMAT } from 'app/config/constants';
 import {EditableCell} from '../../componentes/table/editableCell'
 import { PlusOutlined , PlusSquareTwoTone , PlusCircleFilled } from '@ant-design/icons';
@@ -20,12 +22,14 @@ export const TipoObra = (props: ITipoObraProps) => {
 
   useEffect(() => {
     props.getEntities();
+    props.getEntitiesSeg();
   }, [props.updateSuccess]);
 
 // Busqueda global
 const { Search } = Input;
 const [filter, setFilter] = useState('');
-const filterFn = l => (l.descripcion.toUpperCase().includes(filter.toUpperCase()) || l.valor.toUpperCase().includes(filter.toUpperCase()));
+
+const filterFn = l => (l.descripcion.toUpperCase().includes(filter.toUpperCase()));
 const changeFilter = evt => setFilter(evt.target.value);
 
 useEffect(() => {
@@ -59,7 +63,13 @@ const edit = (record: ITipoObra) => {
 const save = async (id: React.Key) => {
   try {
     const row = (await form.validateFields()) as ITipoObra;
-
+    const seg = {id: Number(row.segmento)}
+    row.segmento=seg
+        const entity = {
+          ...props.tipoObraEntity,
+          ...row,
+        };
+    // row.segmento = JSON.parse(String(row.segmento))
     if (id == null) {
       props.createEntity(row);
       // setEditingId(null);
@@ -90,14 +100,13 @@ const handleAdd = () => {
   const nuevoData = {
     id:null,
     descripcion:'',
-    valor:''
+    segmento: null,
   };
   edit(nuevoData);
   setData([nuevoData, ...data])
 };
 
 // Datos de la tabla
-
 
 const columns = [
 
@@ -107,12 +116,14 @@ const columns = [
     width: '40%',
     editable: true,
 
-
-
   },
   {
-    title: 'valor',
-    dataIndex: 'valor',
+    title: 'segmento',
+    dataIndex: 'segmento',
+    render:(text, record) => (record.segmento ? 
+      <div>{record.segmento.descripcion}</div> :
+      null
+  ),
     width: '40%',
     editable: true,
 
@@ -130,7 +141,6 @@ const columns = [
         </a>
           </Popconfirm>
           <a href="javascript:;" onClick={cancel} style={{ marginRight: 8 }}>
-
               Cancelar</a>
         </span>
       ) : (
@@ -156,10 +166,13 @@ const mergedColumns = columns.map(col => {
     ...col,
     onCell: (record: ITipoObra) => ({
       record,
-      inputType: col.dataIndex === 'id' ? 'number' : 'text',
+      inputType: col.title === 'segmento' ? 'select' : 'text',
+      list: props.segmentoList,
+      loadingList: props.loadingSeg,
       dataIndex: col.dataIndex,
       title: col.title,
       editing: isEditing(record),
+      form,
     }),
   };
 });
@@ -168,7 +181,6 @@ const mergedColumns = columns.map(col => {
   return (
     <Form form={form} component={false}>
     <div>
-    
 
     <Button  icon={<PlusOutlined />} onClick={handleAdd}  style={{ marginBottom: 16, marginRight: 8 }}/>
     
@@ -187,7 +199,7 @@ const mergedColumns = columns.map(col => {
       }}
       rowClassName={() => 'editable-row'}
       bordered
-      
+      loading={props.loading}
       dataSource={data}
       columns={mergedColumns}
       pagination={{
@@ -198,11 +210,17 @@ const mergedColumns = columns.map(col => {
   );
 };
 
-const mapStateToProps = ({ tipoObra }: IRootState) => ({
+const mapStateToProps = ({ tipoObra, segmento }: IRootState) => ({
   tipoObraList: tipoObra.entities,
   loading: tipoObra.loading,
   updating: tipoObra.updating,
   updateSuccess: tipoObra.updateSuccess,
+  tipoObraEntity: tipoObra.entity,
+  
+  segmentoList: segmento.entities,
+  loadingSeg: segmento.loading,
+
+
 });
 
 const mapDispatchToProps = {
@@ -210,6 +228,7 @@ const mapDispatchToProps = {
   getEntities,
   deleteEntity,
   createEntity,
+  getEntitiesSeg
 };
 
 type StateProps = ReturnType<typeof mapStateToProps>;

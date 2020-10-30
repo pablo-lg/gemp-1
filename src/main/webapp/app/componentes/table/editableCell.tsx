@@ -1,30 +1,95 @@
 import React, { useState, useEffect } from 'react';
 
-import { Table, Input, Button, Popconfirm, Form, InputNumber, Space, Row } from 'antd';
+import { Table, Input,Select, Button, Popconfirm, Form, InputNumber, Space, Row,Checkbox, Switch, DatePicker  } from 'antd';
 
-
+import moment from 'moment';
 
 interface EditableCellProps extends React.HTMLAttributes<HTMLElement> {
     editing: boolean;
     dataIndex: string;
     title: any;
-    inputType: 'number' | 'text';
+    inputType: 'select' | 'text' | 'date' | 'boolean';
+    list: any[],
+    loadingList: boolean
     record: any;
     index: number;
     children: React.ReactNode;
+    form: any;
   }
  export  const EditableCell: React.FC<EditableCellProps> = ({
     editing,
     dataIndex,
     title,
     inputType,
+    list,
+    loadingList,
     record,
     index,
     children,
+    form,
     ...restProps
   }) => {
-    const inputNode = inputType === 'number' ? <InputNumber /> : <Input />;
-  
+
+
+    const opcionesSelectName = (optSelect) => (
+      optSelect ? optSelect.map(otherEntity => (
+        <Select.Option value={otherEntity.id}
+                        key={otherEntity.id}>
+          {otherEntity.descripcion}
+        </Select.Option>
+      )
+      ) : null
+    );
+
+
+    const  disabledDate = (current) => {
+      // Can not select days before today and today
+      return current && current < moment().endOf('day');
+    }
+
+    const inputNode = () => {
+
+      switch(inputType) { 
+        case 'select': { 
+          return(
+            <Select allowClear placeholder={title} loading={loadingList}
+              showSearch>
+             {opcionesSelectName(list)}
+           </Select>
+        ) 
+        } 
+        case 'boolean': { 
+          return( <Switch checkedChildren="SI" unCheckedChildren="NO" />)
+        } 
+        case 'date': { 
+          return( <DatePicker disabledDate={disabledDate}  />)
+       } 
+
+        default: { 
+          return(<Input />) 
+        } 
+     } 
+      
+      // if (inputType === 'select'){
+      //   return(
+      //       <Select allowClear placeholder={title} loading={loadingList}
+      //         showSearch>
+      //        {opcionesSelectName(list)}
+      //      </Select>
+      //   )
+      //  }
+      //  if  (inputType === 'boolean') {
+      //       return( <Switch checkedChildren="SI" unCheckedChildren="NO" />)
+      //   }
+      //   if  (inputType === 'date') {
+      //     return( <DatePicker disabledDate={disabledDate}  />)
+      // }
+      //  if (inputType === 'text') {
+      //     return(<Input />)
+      //  }
+  }
+ 
+
     return (
       <td {...restProps}>
         {editing ? (
@@ -38,7 +103,7 @@ interface EditableCellProps extends React.HTMLAttributes<HTMLElement> {
               },
             ]}
           >
-            <Input placeholder={title}/>
+            {inputNode()}
           </Form.Item>
         ) : (
             children

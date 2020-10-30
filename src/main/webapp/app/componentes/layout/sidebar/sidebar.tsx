@@ -58,7 +58,19 @@ const Sidebar = (props) => {
           <Link to="/tipo-desp">Despliegues</Link>
         </Menu.Item>
         <Menu.Item key="14" icon={<TableOutlined />}>
-          <Link to="/tipo-obra">Obras</Link>
+          <Link to="/tipo-obra">Tipo-Obras</Link>
+        </Menu.Item>
+        <Menu.Item key="15" icon={<TableOutlined />}>
+          <Link to="/competencia">Competencia</Link>
+        </Menu.Item>
+        <Menu.Item key="16" icon={<TableOutlined />}>
+          <Link to="/tecnologia">Tecnologia</Link>
+        </Menu.Item>
+        <Menu.Item key="17" icon={<TableOutlined />}>
+          <Link to="/estado">Estado</Link>
+        </Menu.Item>
+        <Menu.Item key="18" icon={<TableOutlined />}>
+          <Link to="/obra">Obra</Link>
         </Menu.Item>
       </SubMenu>
       {props.isAuthenticated && props.isAdmin && (

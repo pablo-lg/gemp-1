@@ -52,10 +52,15 @@ const Topbar = (props: IHeaderProps) => {
         <Menu mode="horizontal" defaultSelectedKeys={['2']} >
           <SubMenu key="sub1" icon={<UserOutlined className="menuTopbar" style={{ fontSize: '25px' }} />} style={{ float: 'right', fontSize: '25px' }}>
            
-          {props.isAuthenticated ? 
-            <Menu.Item key="5">
-              <Link to="/logout">LogOut</Link>
+            <Menu.Item key="2">
+              Usuario: {props.account.username}
             </Menu.Item>
+          {props.isAuthenticated ? 
+          
+              <Menu.Item key="5">
+                <Link to="/logout">LogOut</Link>
+              </Menu.Item>
+            
             :
             <Menu.Item key="1" >
               <Link to="/login">Login</Link>

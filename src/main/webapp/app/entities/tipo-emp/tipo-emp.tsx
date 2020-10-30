@@ -200,7 +200,7 @@ export const TipoDesp = (props: ITipoDespProps) => {
         }}
         rowClassName={() => 'editable-row'}
         bordered
-        
+        loading={props.loading}
         dataSource={data}
         columns={mergedColumns}
         pagination={{
