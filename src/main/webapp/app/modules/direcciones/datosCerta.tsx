@@ -11,7 +11,7 @@ export const DatosCerta = (props) => {
         {props.geoX ?
           <Descriptions title="Datos de certa" bordered>
               <Descriptions.Item label="Codigo postal">{props.codigoPostal}</Descriptions.Item>
-              <Descriptions.Item label="Zona competencia">{props.zonaCompetencia}</Descriptions.Item>
+              <Descriptions.Item label="Zona competencia">{props.competencia}</Descriptions.Item>
               <Descriptions.Item label="Hub">{props.hub}</Descriptions.Item>
               <Descriptions.Item label="Tipo de Calle">{props.streetType}</Descriptions.Item>
               <Descriptions.Item label="Interseccion der">{props.intersectionRight}</Descriptions.Item>
@@ -48,6 +48,7 @@ const mapStateToProps = ({ mu }: IRootState) => ({
     geoX: mu.geoX,
     geoY: mu.geoY,
     zonaCompetencia: mu.zonaCompetencia,
+    competencia: mu.competencia,
     hub: mu.hub,
     codigoPostal: mu.codigoPostal,
     barriosEspeciales: mu.barriosEspeciales,

@@ -243,7 +243,7 @@ export const Calles = (props) => {
 
         <Form.Item style={{ marginBottom: 4 }}>
           <Form.Item label="Zona competencia" style={{ display: 'inline-block', width: 'calc(33% - 4px)', margin: '1px 4px 0 0' }}>
-            <Input readOnly value={props.zonaCompetencia} placeholder="zona de competencia" />
+            <Input readOnly value={props.competencia} placeholder="zona de competencia" />
           </Form.Item>
           <Form.Item label="Hubs" style={{ display: 'inline-block', width: 'calc(33% - 4px)', margin: '1px  4px 0 0' }}>
             <Input readOnly value={props.hub} placeholder="hubs" />
@@ -327,6 +327,7 @@ const mapStateToProps = ({ tipoObra, tipoEmp, segmento, mu, tipoDesp }: IRootSta
   geoX: mu.geoX,
   geoY: mu.geoY,
   zonaCompetencia: mu.zonaCompetencia,
+  competencia:mu.competencia,
   hub: mu.hub,
   codigoPostal: mu.codigoPostal,
   barriosEspeciales: mu.barriosEspeciales,

@@ -1,3 +1,4 @@
+import { Competencia } from './../../entities/competencia/competencia';
 import axios from 'axios';
 
 import { REQUEST, SUCCESS, FAILURE } from 'app/shared/reducers/action-type.util';
@@ -11,6 +12,7 @@ export const ACTION_TYPES = {
     FETCH_TECHNICAL: 'mu/FETCH_TECHNICAL',
     FETCH_TECNICA: 'mu/FETCH_TECNICA',
     FETCH_COBRE: 'mu/FETCH_COBRE',
+    FETCH_COMPETENCIA: 'mu/FETCH_COMPETENCIA',
     RESET_PARTIDOS: 'mu/RESET_PARTIDOS',
     RESET_LOCALIDADES: 'mu/RESET_LOCALIDADES',
     RESET_CALLES: 'mu/RESET_CALLES',
@@ -38,6 +40,7 @@ export const ACTION_TYPES = {
     geoX: null,
     geoY: null,
     zonaCompetencia: null,
+    competencia: null,
     hub: null,
     codigoPostal: null,
     barriosEspeciales: null,
@@ -92,6 +95,7 @@ export default (state: MuState = initialState, action): MuState => {
           loadingCalles: true,
         };
       case REQUEST(ACTION_TYPES.FETCH_GEOGRAPHIC):
+      case REQUEST(ACTION_TYPES.FETCH_COMPETENCIA):
       case REQUEST(ACTION_TYPES.FETCH_TECHNICAL):
 
         return {
@@ -125,6 +129,7 @@ export default (state: MuState = initialState, action): MuState => {
           errorMessage: action.payload,
         };
       case FAILURE(ACTION_TYPES.FETCH_GEOGRAPHIC):
+      case FAILURE(ACTION_TYPES.FETCH_COMPETENCIA):
       case FAILURE(ACTION_TYPES.FETCH_TECHNICAL):
 
         return {
@@ -180,6 +185,12 @@ export default (state: MuState = initialState, action): MuState => {
             ...state,
             loading: false,
             technical: action.payload.data,
+          };
+        case SUCCESS(ACTION_TYPES.FETCH_COMPETENCIA):
+          return {
+            ...state,
+            loading: false,
+            competencia: action.payload.data[0].subtype,
           };
           case ACTION_TYPES.RESET_PARTIDOS:
             return {
@@ -288,6 +299,16 @@ export default (state: MuState = initialState, action): MuState => {
 
     return {
       type: ACTION_TYPES.FETCH_TECHNICAL,
+      payload: axios.get(requestUrl),
+    };
+  };
+
+  export const getCompetencia = (name) => {
+
+    const requestUrl ='geographicAddressManagement/v1/areas?fullText=false&name='+name+'&offset=0&type=ZONAS%20COMPETENCIA';
+
+    return {
+      type: ACTION_TYPES.FETCH_COMPETENCIA,
       payload: axios.get(requestUrl),
     };
   };

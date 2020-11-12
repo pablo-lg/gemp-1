@@ -5,7 +5,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import {
   getProvincias, getLocalidades, getPartidos, getCalles, getGeographic,
-  getTechnical, resetPartidos, resetCalles, resetLocalidades, setDomicilio
+  getTechnical, getCompetencia, resetPartidos, resetCalles, resetLocalidades, setDomicilio
 } from './mu.reducer';
 
 import {
@@ -140,6 +140,7 @@ export const Direcciones = (props) => {
     props.getTechnical(pais, form.getFieldValue('provincia'), form.getFieldValue('partido'), 
           form.getFieldValue('localidad'), form.getFieldValue('calle'), form.getFieldValue('altura'));
 
+    props.getCompetencia(props.zonaCompetencia);
   }
 
   const { provincias, localidades, partidos, calles} = props;
@@ -227,6 +228,7 @@ const mapStateToProps = ({ mu }: IRootState) => ({
   geoX: mu.geoX,
   geoY: mu.geoY,
   zonaCompetencia: mu.zonaCompetencia,
+  competencia: mu.competencia,
   hub: mu.hub,
   codigoPostal: mu.codigoPostal,
   barriosEspeciales: mu.barriosEspeciales,
@@ -242,6 +244,7 @@ const mapDispatchToProps = {
   getCalles,
   getGeographic,
   getTechnical,
+  getCompetencia,
   resetPartidos,
   resetLocalidades,
   resetCalles,
