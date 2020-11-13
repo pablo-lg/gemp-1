@@ -126,3 +126,9 @@ jhipster:
 # ===================================================================
 
 # application:
+
+mu:
+  http: 192.168.216.177
+  geographicport: 9090
+  technicalport: 80
+

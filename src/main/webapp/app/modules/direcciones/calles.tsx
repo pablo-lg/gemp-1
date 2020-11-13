@@ -120,7 +120,7 @@ export const Calles = (props) => {
 
       <Form
         labelCol={{ span: 4 }}
-        wrapperCol={{ span: 16 }}
+        wrapperCol={{ span: 20 }}
         layout="vertical"
         initialValues={{ size: componentSize }}
         onValuesChange={onFormLayoutChange}
@@ -218,26 +218,18 @@ export const Calles = (props) => {
           <Form.Item label="Altura" style={{ display: 'inline-block', width: 'calc(17% - 4px)', margin: '1px 4px 0 0' }}>
             <Input readOnly value={props.streetNr} placeholder="Altura" />
           </Form.Item>
-          <Form.Item label="C. P." style={{ display: 'inline-block', width: 'calc(16% - 4px)', margin: '1px  4px 0 0' }}>
+          <Form.Item label="C. P." style={{ display: 'inline-block', width: 'calc(17% - 4px)', margin: '1px  4px 0 0' }}>
             <Input readOnly value={props.codigoPostal} placeholder="C. P." />
           </Form.Item>
         </Form.Item>
 
-        <Form.Item style={{ marginBottom: 4 }}>
-          <Form.Item label="latitud" style={{ display: 'inline-block', width: 'calc(50% - 4px)', margin: '1px 4px 0 0' }}>
-            <Input readOnly value={props.geoX} placeholder="latitud" />
-          </Form.Item>
-          <Form.Item label="longitud" style={{ display: 'inline-block', width: 'calc(50% - 4px)', margin: '1px  4px 0 0' }}>
-            <Input readOnly value={props.geoY} placeholder="longitud" />
-          </Form.Item>
-        </Form.Item>
 
         <Form.Item style={{ marginBottom: 4 }}>
           <Form.Item label="region" style={{ display: 'inline-block', width: 'calc(50% - 4px)', margin: '1px 4px 0 0' }}>
-            <Input readOnly value="falta definir" placeholder="region" />
+            <Input readOnly value={props.region} placeholder="region" />
           </Form.Item>
           <Form.Item label="subregion" style={{ display: 'inline-block', width: 'calc(50% - 4px)', margin: '1px  4px 0 0' }}>
-            <Input readOnly value="falta definir" placeholder="subregion" />
+            <Input readOnly value={props.subregion} placeholder="subregion" />
           </Form.Item>
         </Form.Item>
 
@@ -248,7 +240,7 @@ export const Calles = (props) => {
           <Form.Item label="Hubs" style={{ display: 'inline-block', width: 'calc(33% - 4px)', margin: '1px  4px 0 0' }}>
             <Input readOnly value={props.hub} placeholder="hubs" />
           </Form.Item>
-          <Form.Item label="Barrio especial" style={{ display: 'inline-block', width: 'calc(33% - 4px)', margin: '1px  4px 0 0' }}>
+          <Form.Item label="Barrio especial" style={{ display: 'inline-block', width: 'calc(34% - 4px)', margin: '1px  4px 0 0' }}>
             <Input readOnly value={props.barriosEspeciales} placeholder="barrio especial" />
           </Form.Item>
         </Form.Item>
@@ -260,10 +252,10 @@ export const Calles = (props) => {
           <Form.Item label="Calle Derecha" style={{ display: 'inline-block', width: 'calc(33% - 4px)', margin: '1px  4px 0 0' }}>
             <Input readOnly value={props.intersectionRight} placeholder="Calle Derecha" />
           </Form.Item>
-          <Form.Item label="Latitud" style={{ display: 'inline-block', width: 'calc(16% - 4px)', margin: '1px  4px 0 0' }}>
+          <Form.Item label="Latitud" style={{ display: 'inline-block', width: 'calc(17% - 4px)', margin: '1px  4px 0 0' }}>
             <Input readOnly value={props.geoX} placeholder="Latitud" />
           </Form.Item>
-          <Form.Item label="Longitud" style={{ display: 'inline-block', width: 'calc(16% - 4px)', margin: '1px  4px 0 0' }}>
+          <Form.Item label="Longitud" style={{ display: 'inline-block', width: 'calc(17% - 4px)', margin: '1px  4px 0 0' }}>
             <Input readOnly value={props.geoY} placeholder="Longitud" />
           </Form.Item>
         </Form.Item>
@@ -327,6 +319,8 @@ const mapStateToProps = ({ tipoObra, tipoEmp, segmento, mu, tipoDesp }: IRootSta
   geoX: mu.geoX,
   geoY: mu.geoY,
   zonaCompetencia: mu.zonaCompetencia,
+  region: mu.region,
+  subregion: mu.subregion,
   competencia:mu.competencia,
   hub: mu.hub,
   codigoPostal: mu.codigoPostal,

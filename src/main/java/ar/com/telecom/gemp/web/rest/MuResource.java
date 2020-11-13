@@ -33,8 +33,11 @@ public class MuResource {
 
     private final Logger log = LoggerFactory.getLogger(MuResource.class);
     // private String server = "http://192.168.218.213:9090/geographicAddressManagement/v1/";
-    private String server = "192.168.218.213";
-    private int port = 9090;
+    @Value("${mu.http}")
+    private String server;
+    // private String server = "192.168.216.177";
+    @Value("${mu.geographicport}")
+    private int port;
 
     @Value("${jhipster.clientApp.name}")
     private String applicationName;

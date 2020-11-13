@@ -41,7 +41,9 @@ public class MuResourceTechnical {
 
     private final Logger log = LoggerFactory.getLogger(MuResourceTechnical.class);
     // private String server = "http://192.168.218.213:9090/geographicAddressManagement/v1/";
-    private String server = "192.168.218.213";
+    @Value("${mu.http}")
+    private String server;
+    @Value("${mu.technicalport}")
     private int port = 80;
 
     @Value("${jhipster.clientApp.name}")
