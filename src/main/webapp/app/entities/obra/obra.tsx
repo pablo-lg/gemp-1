@@ -15,6 +15,7 @@ import {EditableCell} from '../../componentes/table/editableCell'
 import { PlusOutlined , PlusSquareTwoTone , PlusCircleFilled } from '@ant-design/icons';
 
 export interface IObraProps extends StateProps, DispatchProps, RouteComponentProps<{ url: string }> {}
+import moment from 'moment';
 
 export const Obra = (props: IObraProps) => {
   const [data, setData] = useState([]);
@@ -54,9 +55,16 @@ const handleDelete = id => {
 };
 
 const [form] = Form.useForm();
-const edit = (record: IObra) => {
-  form.setFieldsValue({ ...record });
-  setEditingId(record.id);
+
+const edit = (record) => {
+  let registro = null;
+  registro = {...record};
+  registro.fechaFinObra = record.fechaFinObra;
+  registro.tipoObra = registro.tipoObra.id;
+  registro.fechaFinObra = moment(record.fechaFinObra)
+  //record.tipoObra = record.tipoObra.id;
+  form.setFieldsValue({ ...registro });
+  setEditingId(registro.id);
 };
 
 const save = async (id: React.Key) => {
@@ -99,8 +107,8 @@ const handleAdd = () => {
     id:null,
     descripcion:'',
     habilitada: false,
-    fechaFinObra:'',
-    tipoObra: null,
+    fechaFinObra:moment(),
+    tipoObra: {id:null},
   };
   edit(nuevoData);
   setData([nuevoData, ...data])

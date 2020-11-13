@@ -19,7 +19,7 @@
     "formik": "^2.1.5",
     "loaders.css": "0.1.2",
     "lodash": "4.17.15",
-    "moment": "2.24.0",
+    "moment": "^2.26.0",
     "primeicons": "^4.0.0",
     "primereact": "^5.0.0-rc.1",
     "react": "16.13.1",

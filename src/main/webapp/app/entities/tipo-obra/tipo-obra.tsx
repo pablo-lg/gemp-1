@@ -56,8 +56,12 @@ const handleDelete = id => {
 
 const [form] = Form.useForm();
 const edit = (record: ITipoObra) => {
-  form.setFieldsValue({ ...record });
-  setEditingId(record.id);
+  let registro = null;
+  registro = {...record};
+  registro.segmento = registro.segmento.id;
+  //record.segmento = record.segmento.id;
+  form.setFieldsValue({ ...registro });
+  setEditingId(registro.id);
 };
 
 const save = async (id: React.Key) => {
@@ -100,7 +104,7 @@ const handleAdd = () => {
   const nuevoData = {
     id:null,
     descripcion:'',
-    segmento: null,
+    segmento: {id:null},
   };
   edit(nuevoData);
   setData([nuevoData, ...data])
@@ -169,6 +173,7 @@ const mergedColumns = columns.map(col => {
       inputType: col.title === 'segmento' ? 'select' : 'text',
       list: props.segmentoList,
       loadingList: props.loadingSeg,
+      // idList: record.segmento.id,
       dataIndex: col.dataIndex,
       title: col.title,
       editing: isEditing(record),

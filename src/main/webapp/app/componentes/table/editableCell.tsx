@@ -11,6 +11,7 @@ interface EditableCellProps extends React.HTMLAttributes<HTMLElement> {
     inputType: 'select' | 'text' | 'date' | 'boolean';
     list: any[],
     loadingList: boolean
+    idList: any;
     record: any;
     index: number;
     children: React.ReactNode;
@@ -23,6 +24,7 @@ interface EditableCellProps extends React.HTMLAttributes<HTMLElement> {
     inputType,
     list,
     loadingList,
+    idList,
     record,
     index,
     children,
@@ -53,6 +55,7 @@ interface EditableCellProps extends React.HTMLAttributes<HTMLElement> {
         case 'select': { 
           return(
             <Select allowClear placeholder={title} loading={loadingList}
+            // defaultValue={idList}
               showSearch>
              {opcionesSelectName(list)}
            </Select>
@@ -62,7 +65,7 @@ interface EditableCellProps extends React.HTMLAttributes<HTMLElement> {
           return( <Switch checkedChildren="SI" unCheckedChildren="NO" />)
         } 
         case 'date': { 
-          return( <DatePicker disabledDate={disabledDate}  />)
+          return( <DatePicker  disabledDate={disabledDate}  />)
        } 
 
         default: { 
