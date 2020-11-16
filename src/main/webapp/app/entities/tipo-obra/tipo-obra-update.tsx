@@ -7,6 +7,8 @@ import { ICrudGetAction, ICrudGetAllAction, ICrudPutAction } from 'react-jhipste
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { IRootState } from 'app/shared/reducers';
 
+import { ISegmento } from 'app/shared/model/segmento.model';
+import { getEntities as getSegmentos } from 'app/entities/segmento/segmento.reducer';
 import { getEntity, updateEntity, createEntity, reset } from './tipo-obra.reducer';
 import { ITipoObra } from 'app/shared/model/tipo-obra.model';
 import { convertDateTimeFromServer, convertDateTimeToServer, displayDefaultDateTime } from 'app/shared/util/date-utils';
@@ -15,9 +17,10 @@ import { mapIdList } from 'app/shared/util/entity-utils';
 export interface ITipoObraUpdateProps extends StateProps, DispatchProps, RouteComponentProps<{ id: string }> {}
 
 export const TipoObraUpdate = (props: ITipoObraUpdateProps) => {
+  const [segmentoId, setSegmentoId] = useState('0');
   const [isNew, setIsNew] = useState(!props.match.params || !props.match.params.id);
 
-  const { tipoObraEntity, loading, updating } = props;
+  const { tipoObraEntity, segmentos, loading, updating } = props;
 
   const handleClose = () => {
     props.history.push('/tipo-obra');
@@ -29,6 +32,8 @@ export const TipoObraUpdate = (props: ITipoObraUpdateProps) => {
     } else {
       props.getEntity(props.match.params.id);
     }
+
+    props.getSegmentos();
   }, []);
 
   useEffect(() => {
@@ -78,10 +83,17 @@ export const TipoObraUpdate = (props: ITipoObraUpdateProps) => {
                 <AvField id="tipo-obra-descripcion" type="text" name="descripcion" />
               </AvGroup>
               <AvGroup>
-                <Label id="valorLabel" for="tipo-obra-valor">
-                  Valor
-                </Label>
-                <AvField id="tipo-obra-valor" type="text" name="valor" />
+                <Label for="tipo-obra-segmento">Segmento</Label>
+                <AvInput id="tipo-obra-segmento" type="select" className="form-control" name="segmento.id">
+                  <option value="" key="0" />
+                  {segmentos
+                    ? segmentos.map(otherEntity => (
+                        <option value={otherEntity.id} key={otherEntity.id}>
+                          {otherEntity.descripcion}
+                        </option>
+                      ))
+                    : null}
+                </AvInput>
               </AvGroup>
               <Button tag={Link} id="cancel-save" to="/tipo-obra" replace color="info">
                 <FontAwesomeIcon icon="arrow-left" />
@@ -102,6 +114,7 @@ export const TipoObraUpdate = (props: ITipoObraUpdateProps) => {
 };
 
 const mapStateToProps = (storeState: IRootState) => ({
+  segmentos: storeState.segmento.entities,
   tipoObraEntity: storeState.tipoObra.entity,
   loading: storeState.tipoObra.loading,
   updating: storeState.tipoObra.updating,
@@ -109,6 +122,7 @@ const mapStateToProps = (storeState: IRootState) => ({
 });
 
 const mapDispatchToProps = {
+  getSegmentos,
   getEntity,
   updateEntity,
   createEntity,

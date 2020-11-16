@@ -1,7 +1,7 @@
 package ar.com.telecom.gemp.web.rest;
 
 import ar.com.telecom.gemp.domain.TipoEmp;
-import ar.com.telecom.gemp.service.TipoEmpService;
+import ar.com.telecom.gemp.repository.TipoEmpRepository;
 import ar.com.telecom.gemp.web.rest.errors.BadRequestAlertException;
 
 import io.github.jhipster.web.util.HeaderUtil;
@@ -10,6 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
@@ -22,6 +23,7 @@ import java.util.Optional;
  */
 @RestController
 @RequestMapping("/api")
+@Transactional
 public class TipoEmpResource {
 
     private final Logger log = LoggerFactory.getLogger(TipoEmpResource.class);
@@ -31,10 +33,10 @@ public class TipoEmpResource {
     @Value("${jhipster.clientApp.name}")
     private String applicationName;
 
-    private final TipoEmpService tipoEmpService;
+    private final TipoEmpRepository tipoEmpRepository;
 
-    public TipoEmpResource(TipoEmpService tipoEmpService) {
-        this.tipoEmpService = tipoEmpService;
+    public TipoEmpResource(TipoEmpRepository tipoEmpRepository) {
+        this.tipoEmpRepository = tipoEmpRepository;
     }
 
     /**
@@ -50,7 +52,7 @@ public class TipoEmpResource {
         if (tipoEmp.getId() != null) {
             throw new BadRequestAlertException("A new tipoEmp cannot already have an ID", ENTITY_NAME, "idexists");
         }
-        TipoEmp result = tipoEmpService.save(tipoEmp);
+        TipoEmp result = tipoEmpRepository.save(tipoEmp);
         return ResponseEntity.created(new URI("/api/tipo-emps/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, false, ENTITY_NAME, result.getId().toString()))
             .body(result);
@@ -71,7 +73,7 @@ public class TipoEmpResource {
         if (tipoEmp.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
-        TipoEmp result = tipoEmpService.save(tipoEmp);
+        TipoEmp result = tipoEmpRepository.save(tipoEmp);
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(applicationName, false, ENTITY_NAME, tipoEmp.getId().toString()))
             .body(result);
@@ -85,7 +87,7 @@ public class TipoEmpResource {
     @GetMapping("/tipo-emps")
     public List<TipoEmp> getAllTipoEmps() {
         log.debug("REST request to get all TipoEmps");
-        return tipoEmpService.findAll();
+        return tipoEmpRepository.findAll();
     }
 
     /**
@@ -97,7 +99,7 @@ public class TipoEmpResource {
     @GetMapping("/tipo-emps/{id}")
     public ResponseEntity<TipoEmp> getTipoEmp(@PathVariable Long id) {
         log.debug("REST request to get TipoEmp : {}", id);
-        Optional<TipoEmp> tipoEmp = tipoEmpService.findOne(id);
+        Optional<TipoEmp> tipoEmp = tipoEmpRepository.findById(id);
         return ResponseUtil.wrapOrNotFound(tipoEmp);
     }
 
@@ -110,7 +112,7 @@ public class TipoEmpResource {
     @DeleteMapping("/tipo-emps/{id}")
     public ResponseEntity<Void> deleteTipoEmp(@PathVariable Long id) {
         log.debug("REST request to delete TipoEmp : {}", id);
-        tipoEmpService.delete(id);
+        tipoEmpRepository.deleteById(id);
         return ResponseEntity.noContent().headers(HeaderUtil.createEntityDeletionAlert(applicationName, false, ENTITY_NAME, id.toString())).build();
     }
 }
