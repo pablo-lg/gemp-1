@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.9.xsd">
+    <!--
+        Added the constraints for entity Emprendimiento.
+    -->
+    <changeSet id="20201116132022-2" author="jhipster">
+        
+        <addForeignKeyConstraint baseColumnNames="obra_id"
+                                 baseTableName="emprendimiento"
+                                 constraintName="fk_emprendimiento_obra_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="obra"/>
+
+        <addForeignKeyConstraint baseColumnNames="tipo_obra_id"
+                                 baseTableName="emprendimiento"
+                                 constraintName="emprendimiento_tipo_obra_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="tipo_obra"/>
+
+        <addForeignKeyConstraint baseColumnNames="tipo_emp_id"
+                                 baseTableName="emprendimiento"
+                                 constraintName="fk_emprendimiento_tipo_emp_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="tipo_emp"/>
+
+        <addForeignKeyConstraint baseColumnNames="estado_id"
+                                 baseTableName="emprendimiento"
+                                 constraintName="fk_emprendimiento_estado_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="estado"/>
+
+        <addForeignKeyConstraint baseColumnNames="competencia_id"
+                                 baseTableName="emprendimiento"
+                                 constraintName="emprendimiento_competencia_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="competencia"/>
+
+        <addForeignKeyConstraint baseColumnNames="despliegue_id"
+                                 baseTableName="emprendimiento"
+                                 constraintName="emprendimiento_despliegue_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="despliegue"/>
+
+        <addForeignKeyConstraint baseColumnNames="nse_id"
+                                 baseTableName="emprendimiento"
+                                 constraintName="fk_emprendimiento_nse_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="nse"/>
+
+        <addForeignKeyConstraint baseColumnNames="segmento_id"
+                                 baseTableName="emprendimiento"
+                                 constraintName="fk_emprendimiento_segmento_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="segmento"/>
+
+        <addForeignKeyConstraint baseColumnNames="tecnologia_id"
+                                 baseTableName="emprendimiento"
+                                 constraintName="emprendimiento_tecnologia_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="tecnologia"/>
+
+        <addForeignKeyConstraint baseColumnNames="ejec_cuentas_id"
+                                 baseTableName="emprendimiento"
+                                 constraintName="emprendimiento_ejec_cuentas_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="ejec_cuentas"/>
+
+        <addForeignKeyConstraint baseColumnNames="direccion_id"
+                                 baseTableName="emprendimiento"
+                                 constraintName="emprendimiento_direccion_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="direccion"/>
+
+    </changeSet>
+</databaseChangeLog>

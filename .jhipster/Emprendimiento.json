@@ -1,0 +1,103 @@
+{
+  "name": "Emprendimiento",
+  "fields": [
+    {
+      "fieldName": "contacto",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "provincia",
+      "fieldType": "String"
+    }
+  ],
+  "relationships": [
+    {
+      "relationshipType": "many-to-one",
+      "otherEntityName": "obra",
+      "otherEntityRelationshipName": "emprendimiento",
+      "relationshipName": "obra",
+      "otherEntityField": "descripcion"
+    },
+    {
+      "relationshipType": "many-to-one",
+      "otherEntityName": "tipoObra",
+      "otherEntityRelationshipName": "emprendimiento",
+      "relationshipName": "tipoObra",
+      "otherEntityField": "descripcion"
+    },
+    {
+      "relationshipType": "many-to-one",
+      "otherEntityName": "tipoEmp",
+      "otherEntityRelationshipName": "emprendimiento",
+      "relationshipName": "tipoEmp",
+      "otherEntityField": "descripcion"
+    },
+    {
+      "relationshipType": "many-to-one",
+      "otherEntityName": "estado",
+      "otherEntityRelationshipName": "emprendimiento",
+      "relationshipName": "estado",
+      "otherEntityField": "descripcion"
+    },
+    {
+      "relationshipType": "many-to-one",
+      "otherEntityName": "competencia",
+      "otherEntityRelationshipName": "emprendimiento",
+      "relationshipName": "competencia",
+      "otherEntityField": "descripcion"
+    },
+    {
+      "relationshipType": "many-to-one",
+      "otherEntityName": "despliegue",
+      "otherEntityRelationshipName": "emprendimiento",
+      "relationshipName": "despliegue",
+      "otherEntityField": "descripcion"
+    },
+    {
+      "relationshipType": "many-to-one",
+      "otherEntityName": "nSE",
+      "otherEntityRelationshipName": "emprendimiento",
+      "relationshipName": "nSE",
+      "otherEntityField": "descripcion"
+    },
+    {
+      "relationshipType": "many-to-one",
+      "otherEntityName": "segmento",
+      "otherEntityRelationshipName": "emprendimiento",
+      "relationshipName": "segmento",
+      "otherEntityField": "descripcion"
+    },
+    {
+      "relationshipType": "many-to-one",
+      "otherEntityName": "tecnologia",
+      "otherEntityRelationshipName": "emprendimiento",
+      "relationshipName": "tecnologia",
+      "otherEntityField": "descripcion"
+    },
+    {
+      "relationshipType": "many-to-one",
+      "otherEntityName": "ejecCuentas",
+      "otherEntityRelationshipName": "emprendimiento",
+      "relationshipName": "ejecCuentas",
+      "otherEntityField": "nombre"
+    },
+    {
+      "relationshipType": "many-to-one",
+      "otherEntityName": "direccion",
+      "otherEntityRelationshipName": "emprendimiento",
+      "relationshipName": "direccion",
+      "otherEntityField": "calle"
+    }
+  ],
+  "changelogDate": "20201116132022",
+  "entityTableName": "emprendimiento",
+  "dto": "no",
+  "pagination": "no",
+  "service": "no",
+  "jpaMetamodelFiltering": false,
+  "fluentMethods": true,
+  "readOnly": false,
+  "embedded": false,
+  "clientRootFolder": "",
+  "applications": "*"
+}
