@@ -6,45 +6,6 @@ entity Despliegue {
 }
 
 entity Segmento {
-<<<<<<< HEAD
-  Id  Long required,
-  descripcion String
-}
-
-entity Tecnologia {
-  Id  Long required,
-  descripcion String
-}
-
-entity Competencia {
-  Id  Long required,
-  descripcion String
-}
-
-entity Estado {
-  Id  Long required,
-  descripcion String
-}
-
-
-
-entity TipoObra {
-  Id  Long required,
-  descripcion String
-}
-
-entity Obra {
-  Id Long required,
-  descripcion String,
-  habilitada Boolean,
-  fechaFinObra LocalDate,
-}
-
-entity TipoEmp {
-  Id  Long required,
-  descripcion  String
-  valor String
-=======
   Id  Long required,
   descripcion String
 }
@@ -144,7 +105,6 @@ relationship ManyToOne {
 
 relationship ManyToOne {
 	Obra{TipoObra(descripcion)} to TipoObra
->>>>>>> c3b58557939589934f3a33dc62831ec582cc85e0
 }
 
 relationship ManyToOne {

@@ -7,11 +7,7 @@
     }
   ],
   "relationships": [],
-<<<<<<< HEAD
-  "changelogDate": "20201022152650",
-=======
   "changelogDate": "20201116131122",
->>>>>>> c3b58557939589934f3a33dc62831ec582cc85e0
   "entityTableName": "tecnologia",
   "dto": "no",
   "pagination": "no",

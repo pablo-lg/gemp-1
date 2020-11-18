@@ -178,59 +178,9 @@ export const Segmento = (props: ISegmentoProps) => {
   });
   const { segmentoList, match, loading } = props;
   return (
-<<<<<<< HEAD
     <Form form={form} component={false}>
       <div>
       <Divider orientation="left">Segmentos</Divider>
-=======
-    <div>
-      <h2 id="segmento-heading">
-        Segmentos
-        <Link to={`${match.url}/new`} className="btn btn-primary float-right jh-create-entity" id="jh-create-entity">
-          <FontAwesomeIcon icon="plus" />
-          &nbsp; Create new Segmento
-        </Link>
-      </h2>
-      <div className="table-responsive">
-        {segmentoList && segmentoList.length > 0 ? (
-          <Table responsive>
-            <thead>
-              <tr>
-                <th>ID</th>
-                <th>Descripcion</th>
-                <th />
-              </tr>
-            </thead>
-            <tbody>
-              {segmentoList.map((segmento, i) => (
-                <tr key={`entity-${i}`}>
-                  <td>
-                    <Button tag={Link} to={`${match.url}/${segmento.id}`} color="link" size="sm">
-                      {segmento.id}
-                    </Button>
-                  </td>
-                  <td>{segmento.descripcion}</td>
-                  <td className="text-right">
-                    <div className="btn-group flex-btn-group-container">
-                      <Button tag={Link} to={`${match.url}/${segmento.id}`} color="info" size="sm">
-                        <FontAwesomeIcon icon="eye" /> <span className="d-none d-md-inline">View</span>
-                      </Button>
-                      <Button tag={Link} to={`${match.url}/${segmento.id}/edit`} color="primary" size="sm">
-                        <FontAwesomeIcon icon="pencil-alt" /> <span className="d-none d-md-inline">Edit</span>
-                      </Button>
-                      <Button tag={Link} to={`${match.url}/${segmento.id}/delete`} color="danger" size="sm">
-                        <FontAwesomeIcon icon="trash" /> <span className="d-none d-md-inline">Delete</span>
-                      </Button>
-                    </div>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </Table>
-        ) : (
-          !loading && <div className="alert alert-warning">No Segmentos found</div>
-        )}
->>>>>>> c3b58557939589934f3a33dc62831ec582cc85e0
       </div>
       <div>
       
