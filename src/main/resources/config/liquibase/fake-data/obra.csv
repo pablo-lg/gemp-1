@@ -1,16 +1,4 @@
 id;descripcion;habilitada;fecha_fin_obra
-<<<<<<< HEAD
-1;Ethiopia quantify;true;2020-10-22
-2;Money Market Account Avon Incredible;true;2020-10-22
-3;Bedfordshire;false;2020-10-22
-4;overriding gold Licensed Fresh Computer;false;2020-10-22
-5;array South Carolina;true;2020-10-21
-6;Algerian Dinar;true;2020-10-22
-7;primary iterate;true;2020-10-21
-8;Crest Future-proofed;true;2020-10-21
-9;vertical Automated;true;2020-10-22
-10;Computer;false;2020-10-22
-=======
 1;Ethiopia quantify;true;2020-11-16
 2;Money Market Account Avon Incredible;true;2020-11-16
 3;Bedfordshire;false;2020-11-16
@@ -21,4 +9,3 @@ id;descripcion;habilitada;fecha_fin_obra
 8;Crest Future-proofed;true;2020-11-15
 9;vertical Automated;true;2020-11-16
 10;Computer;false;2020-11-16
->>>>>>> c3b58557939589934f3a33dc62831ec582cc85e0

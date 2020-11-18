@@ -1,9 +1,7 @@
 import { combineReducers } from 'redux';
 import { loadingBarReducer as loadingBar } from 'react-redux-loading-bar';
-
 import authentication, { AuthenticationState } from './authentication';
 import applicationProfile, { ApplicationProfileState } from './application-profile';
-
 import administration, { AdministrationState } from 'app/modules/administration/administration.reducer';
 import userManagement, { UserManagementState } from 'app/modules/administration/user-management/user-management.reducer';
 import register, { RegisterState } from 'app/modules/account/register/register.reducer';
@@ -44,14 +42,6 @@ import estado, {
   EstadoState
 } from 'app/entities/estado/estado.reducer';
 // prettier-ignore
-<<<<<<< HEAD
-import obra, {
-  ObraState
-} from 'app/entities/obra/obra.reducer';
-import mu, {
-  MuState
-} from 'app/modules/direcciones/mu.reducer';
-=======
 import nSE, {
   NSEState
 } from 'app/entities/nse/nse.reducer';
@@ -71,9 +61,10 @@ import direccion, {
 import emprendimiento, {
   EmprendimientoState
 } from 'app/entities/emprendimiento/emprendimiento.reducer';
->>>>>>> c3b58557939589934f3a33dc62831ec582cc85e0
+import mu, {
+  MuState
+} from 'app/modules/direcciones/mu.reducer';
 /* jhipster-needle-add-reducer-import - JHipster will add reducer here */
-
 export interface IRootState {
   readonly authentication: AuthenticationState;
   readonly applicationProfile: ApplicationProfileState;
@@ -92,21 +83,15 @@ export interface IRootState {
   readonly tecnologia: TecnologiaState;
   readonly competencia: CompetenciaState;
   readonly estado: EstadoState;
-<<<<<<< HEAD
-  readonly obra: ObraState;
   readonly mu: MuState;
-
-=======
   readonly nSE: NSEState;
   readonly obra: ObraState;
   readonly ejecCuentas: EjecCuentasState;
   readonly direccion: DireccionState;
   readonly emprendimiento: EmprendimientoState;
->>>>>>> c3b58557939589934f3a33dc62831ec582cc85e0
   /* jhipster-needle-add-reducer-type - JHipster will add reducer type here */
   readonly loadingBar: any;
 }
-
 const rootReducer = combineReducers<IRootState>({
   authentication,
   applicationProfile,
@@ -125,17 +110,12 @@ const rootReducer = combineReducers<IRootState>({
   tecnologia,
   competencia,
   estado,
-<<<<<<< HEAD
   obra,
   mu,
-
-=======
   nSE,
-  obra,
   ejecCuentas,
   direccion,
   emprendimiento,
->>>>>>> c3b58557939589934f3a33dc62831ec582cc85e0
   /* jhipster-needle-add-reducer-combine - JHipster will add reducer here */
   loadingBar,
 });
