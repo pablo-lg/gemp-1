@@ -1,0 +1,65 @@
+{
+  "name": "Direccion",
+  "fields": [
+    {
+      "fieldName": "pais",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "provincia",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "partido",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "localidad",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "calle",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "altura",
+      "fieldType": "Long"
+    },
+    {
+      "fieldName": "region",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "subregion",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "hub",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "barriosEspeciales",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "codigoPostal",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "tipoCalle",
+      "fieldType": "String"
+    }
+  ],
+  "relationships": [],
+  "changelogDate": "20201116131922",
+  "entityTableName": "direccion",
+  "dto": "no",
+  "pagination": "no",
+  "service": "no",
+  "jpaMetamodelFiltering": false,
+  "fluentMethods": true,
+  "readOnly": false,
+  "embedded": false,
+  "clientRootFolder": "",
+  "applications": "*"
+}

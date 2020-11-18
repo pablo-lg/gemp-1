@@ -12,7 +12,15 @@ import Despliegue from './despliegue';
 import Tecnologia from './tecnologia';
 import Competencia from './competencia';
 import Estado from './estado';
+<<<<<<< HEAD
 import Obra from './obra';
+=======
+import NSE from './nse';
+import Obra from './obra';
+import EjecCuentas from './ejec-cuentas';
+import Direccion from './direccion';
+import Emprendimiento from './emprendimiento';
+>>>>>>> c3b58557939589934f3a33dc62831ec582cc85e0
 /* jhipster-needle-add-route-import - JHipster will add routes here */
 
 const Routes = ({ match }) => (
@@ -27,7 +35,15 @@ const Routes = ({ match }) => (
       <ErrorBoundaryRoute path={`${match.url}tecnologia`} component={Tecnologia} />
       <ErrorBoundaryRoute path={`${match.url}competencia`} component={Competencia} />
       <ErrorBoundaryRoute path={`${match.url}estado`} component={Estado} />
+<<<<<<< HEAD
       <ErrorBoundaryRoute path={`${match.url}obra`} component={Obra} />
+=======
+      <ErrorBoundaryRoute path={`${match.url}nse`} component={NSE} />
+      <ErrorBoundaryRoute path={`${match.url}obra`} component={Obra} />
+      <ErrorBoundaryRoute path={`${match.url}ejec-cuentas`} component={EjecCuentas} />
+      <ErrorBoundaryRoute path={`${match.url}direccion`} component={Direccion} />
+      <ErrorBoundaryRoute path={`${match.url}emprendimiento`} component={Emprendimiento} />
+>>>>>>> c3b58557939589934f3a33dc62831ec582cc85e0
       {/* jhipster-needle-add-route-path - JHipster will add routes here */}
     </Switch>
   </div>

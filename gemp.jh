@@ -6,6 +6,7 @@ entity Despliegue {
 }
 
 entity Segmento {
+<<<<<<< HEAD
   Id  Long required,
   descripcion String
 }
@@ -43,6 +44,107 @@ entity TipoEmp {
   Id  Long required,
   descripcion  String
   valor String
+=======
+  Id  Long required,
+  descripcion String
+}
+
+entity Tecnologia {
+  Id  Long required,
+  descripcion String
+}
+
+entity Competencia {
+  Id  Long required,
+  descripcion String
+}
+
+entity Estado {
+  Id  Long required,
+  descripcion String
+}
+
+entity NSE {
+  Id  Long required,
+  descripcion String,
+  activo Boolean,
+}
+
+entity TipoObra {
+  Id  Long required,
+  descripcion String
+}
+
+entity Obra {
+  Id Long required,
+  descripcion String,
+  habilitada Boolean,
+  fechaFinObra LocalDate,
+}
+
+entity TipoEmp {
+  Id  Long required,
+  descripcion  String
+  valor String
+}
+
+entity EjecCuentas {
+  Id  Long required,
+  telefono String,
+  apellido String,
+  celular String,
+  mail String,
+  nombre String,
+  repcom1 String,
+  repcom2 String,
+
+}
+
+entity Direccion {
+  Id Long required,
+  pais String,
+  provincia String,
+  partido String,
+  localidad String,
+  calle String,
+  altura Long,
+  region String,
+  subregion String,
+  hub String,
+  barriosEspeciales String,
+  codigoPostal String,
+  tipoCalle String,
+}
+
+entity Emprendimiento {
+  Id Long required,
+  contacto String,
+  provincia String,
+
+}
+relationship ManyToOne {
+	TipoObra{Segmento(descripcion)} to Segmento,
+	EjecCuentas{Segmento(descripcion)} to Segmento,
+    Emprendimiento{Obra(descripcion)} to Obra,
+    Emprendimiento{TipoObra(descripcion)} to TipoObra,
+    Emprendimiento{TipoEmp(descripcion)} to TipoEmp,
+    Emprendimiento{Estado(descripcion)} to Estado,
+    Emprendimiento{Competencia(descripcion)} to Competencia,
+    Emprendimiento{Despliegue(descripcion)} to Despliegue,
+    Emprendimiento{NSE(descripcion)} to NSE,
+    Emprendimiento{Segmento(descripcion)} to Segmento,
+    Emprendimiento{Tecnologia(descripcion)} to Tecnologia,
+    Emprendimiento{EjecCuentas(nombre)} to EjecCuentas,
+    Emprendimiento{Direccion(calle)} to Direccion,
+
+
+
+    
+}
+
+relationship ManyToOne {
+	Obra{TipoObra(descripcion)} to TipoObra
+>>>>>>> c3b58557939589934f3a33dc62831ec582cc85e0
 }
 
 relationship ManyToOne {
