@@ -62,7 +62,7 @@ entity EjecCuentas {
 }
 
 entity Direccion {
-  Id Long required,
+  Id String required,
   pais String,
   provincia String,
   partido String,
