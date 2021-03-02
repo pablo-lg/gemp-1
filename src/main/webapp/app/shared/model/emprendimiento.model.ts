@@ -1,3 +1,4 @@
+import { Moment } from 'moment';
 import { IObra } from 'app/shared/model/obra.model';
 import { ITipoObra } from 'app/shared/model/tipo-obra.model';
 import { ITipoEmp } from 'app/shared/model/tipo-emp.model';
@@ -12,8 +13,41 @@ import { IDireccion } from 'app/shared/model/direccion.model';
 
 export interface IEmprendimiento {
   id?: number;
+  nombre?: string;
   contacto?: string;
-  provincia?: string;
+  fechaFinObra?: string;
+  elementosDeRed?: string;
+  clientesCatv?: string;
+  clientesFibertel?: string;
+  clientesFibertelLite?: string;
+  clientesFlow?: string;
+  clientesCombo?: string;
+  lineasVoz?: string;
+  mesesDeFinalizado?: string;
+  altasBC?: string;
+  penetracionVivLot?: string;
+  penetracionBC?: string;
+  demanda1?: string;
+  demanda2?: string;
+  demanda3?: string;
+  demanda4?: string;
+  lotes?: string;
+  viviendas?: string;
+  comProf?: string;
+  habitaciones?: string;
+  manzanas?: string;
+  demanda?: string;
+  fechaDeRelevamiento?: string;
+  telefono?: string;
+  anoPriorizacion?: string;
+  contratoOpen?: string;
+  negociacion?: boolean;
+  estadoBC?: string;
+  fecha?: string;
+  codigoDeFirma?: string;
+  fechaFirma?: string;
+  observaciones?: string;
+  comentario?: string;
   obra?: IObra;
   tipoObra?: ITipoObra;
   tipoEmp?: ITipoEmp;
@@ -27,4 +61,6 @@ export interface IEmprendimiento {
   direccion?: IDireccion;
 }
 
-export const defaultValue: Readonly<IEmprendimiento> = {};
+export const defaultValue: Readonly<IEmprendimiento> = {
+  negociacion: false,
+};

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { Link, RouteComponentProps } from 'react-router-dom';
 import { Button, Col, Row, Table } from 'reactstrap';
-import { ICrudGetAllAction } from 'react-jhipster';
+import { ICrudGetAllAction, TextFormat } from 'react-jhipster';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import { IRootState } from 'app/shared/reducers';
@@ -33,8 +33,41 @@ export const Emprendimiento = (props: IEmprendimientoProps) => {
             <thead>
               <tr>
                 <th>ID</th>
+                <th>Nombre</th>
                 <th>Contacto</th>
-                <th>Provincia</th>
+                <th>Fecha Fin Obra</th>
+                <th>Elementos De Red</th>
+                <th>Clientes Catv</th>
+                <th>Clientes Fibertel</th>
+                <th>Clientes Fibertel Lite</th>
+                <th>Clientes Flow</th>
+                <th>Clientes Combo</th>
+                <th>Lineas Voz</th>
+                <th>Meses De Finalizado</th>
+                <th>Altas BC</th>
+                <th>Penetracion Viv Lot</th>
+                <th>Penetracion BC</th>
+                <th>Demanda 1</th>
+                <th>Demanda 2</th>
+                <th>Demanda 3</th>
+                <th>Demanda 4</th>
+                <th>Lotes</th>
+                <th>Viviendas</th>
+                <th>Com Prof</th>
+                <th>Habitaciones</th>
+                <th>Manzanas</th>
+                <th>Demanda</th>
+                <th>Fecha De Relevamiento</th>
+                <th>Telefono</th>
+                <th>Ano Priorizacion</th>
+                <th>Contrato Open</th>
+                <th>Negociacion</th>
+                <th>Estado BC</th>
+                <th>Fecha</th>
+                <th>Codigo De Firma</th>
+                <th>Fecha Firma</th>
+                <th>Observaciones</th>
+                <th>Comentario</th>
                 <th>Obra</th>
                 <th>Tipo Obra</th>
                 <th>Tipo Emp</th>
@@ -57,8 +90,59 @@ export const Emprendimiento = (props: IEmprendimientoProps) => {
                       {emprendimiento.id}
                     </Button>
                   </td>
+                  <td>{emprendimiento.nombre}</td>
                   <td>{emprendimiento.contacto}</td>
-                  <td>{emprendimiento.provincia}</td>
+                  <td>
+                    {emprendimiento.fechaFinObra ? (
+                      <TextFormat type="date" value={emprendimiento.fechaFinObra} format={APP_LOCAL_DATE_FORMAT} />
+                    ) : null}
+                  </td>
+                  <td>{emprendimiento.elementosDeRed}</td>
+                  <td>{emprendimiento.clientesCatv}</td>
+                  <td>{emprendimiento.clientesFibertel}</td>
+                  <td>{emprendimiento.clientesFibertelLite}</td>
+                  <td>{emprendimiento.clientesFlow}</td>
+                  <td>{emprendimiento.clientesCombo}</td>
+                  <td>{emprendimiento.lineasVoz}</td>
+                  <td>{emprendimiento.mesesDeFinalizado}</td>
+                  <td>{emprendimiento.altasBC}</td>
+                  <td>{emprendimiento.penetracionVivLot}</td>
+                  <td>{emprendimiento.penetracionBC}</td>
+                  <td>{emprendimiento.demanda1}</td>
+                  <td>{emprendimiento.demanda2}</td>
+                  <td>{emprendimiento.demanda3}</td>
+                  <td>{emprendimiento.demanda4}</td>
+                  <td>{emprendimiento.lotes}</td>
+                  <td>{emprendimiento.viviendas}</td>
+                  <td>{emprendimiento.comProf}</td>
+                  <td>{emprendimiento.habitaciones}</td>
+                  <td>{emprendimiento.manzanas}</td>
+                  <td>{emprendimiento.demanda}</td>
+                  <td>
+                    {emprendimiento.fechaDeRelevamiento ? (
+                      <TextFormat type="date" value={emprendimiento.fechaDeRelevamiento} format={APP_LOCAL_DATE_FORMAT} />
+                    ) : null}
+                  </td>
+                  <td>{emprendimiento.telefono}</td>
+                  <td>
+                    {emprendimiento.anoPriorizacion ? (
+                      <TextFormat type="date" value={emprendimiento.anoPriorizacion} format={APP_LOCAL_DATE_FORMAT} />
+                    ) : null}
+                  </td>
+                  <td>{emprendimiento.contratoOpen}</td>
+                  <td>{emprendimiento.negociacion ? 'true' : 'false'}</td>
+                  <td>{emprendimiento.estadoBC}</td>
+                  <td>
+                    {emprendimiento.fecha ? <TextFormat type="date" value={emprendimiento.fecha} format={APP_LOCAL_DATE_FORMAT} /> : null}
+                  </td>
+                  <td>{emprendimiento.codigoDeFirma}</td>
+                  <td>
+                    {emprendimiento.fechaFirma ? (
+                      <TextFormat type="date" value={emprendimiento.fechaFirma} format={APP_LOCAL_DATE_FORMAT} />
+                    ) : null}
+                  </td>
+                  <td>{emprendimiento.observaciones}</td>
+                  <td>{emprendimiento.comentario}</td>
                   <td>{emprendimiento.obra ? <Link to={`obra/${emprendimiento.obra.id}`}>{emprendimiento.obra.descripcion}</Link> : ''}</td>
                   <td>
                     {emprendimiento.tipoObra ? (

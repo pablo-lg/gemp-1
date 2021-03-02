@@ -1,5 +1,6 @@
 export interface IDireccion {
   id?: number;
+  identification?: string;
   pais?: string;
   provincia?: string;
   partido?: string;
@@ -12,6 +13,12 @@ export interface IDireccion {
   barriosEspeciales?: string;
   codigoPostal?: string;
   tipoCalle?: string;
+  zonaCompetencia?: string;
+  intersectionLeft?: string;
+  intersectionRight?: string;
+  streetType?: string;
+  latitud?: string;
+  longitud?: string;
 }
 
 export const defaultValue: Readonly<IDireccion> = {};

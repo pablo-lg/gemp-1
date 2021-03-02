@@ -26,6 +26,10 @@ export const DireccionDetail = (props: IDireccionDetailProps) => {
         </h2>
         <dl className="jh-entity-details">
           <dt>
+            <span id="identification">Identification</span>
+          </dt>
+          <dd>{direccionEntity.identification}</dd>
+          <dt>
             <span id="pais">Pais</span>
           </dt>
           <dd>{direccionEntity.pais}</dd>
@@ -73,6 +77,30 @@ export const DireccionDetail = (props: IDireccionDetailProps) => {
             <span id="tipoCalle">Tipo Calle</span>
           </dt>
           <dd>{direccionEntity.tipoCalle}</dd>
+          <dt>
+            <span id="zonaCompetencia">Zona Competencia</span>
+          </dt>
+          <dd>{direccionEntity.zonaCompetencia}</dd>
+          <dt>
+            <span id="intersectionLeft">Intersection Left</span>
+          </dt>
+          <dd>{direccionEntity.intersectionLeft}</dd>
+          <dt>
+            <span id="intersectionRight">Intersection Right</span>
+          </dt>
+          <dd>{direccionEntity.intersectionRight}</dd>
+          <dt>
+            <span id="streetType">Street Type</span>
+          </dt>
+          <dd>{direccionEntity.streetType}</dd>
+          <dt>
+            <span id="latitud">Latitud</span>
+          </dt>
+          <dd>{direccionEntity.latitud}</dd>
+          <dt>
+            <span id="longitud">Longitud</span>
+          </dt>
+          <dd>{direccionEntity.longitud}</dd>
         </dl>
         <Button tag={Link} to="/direccion" replace color="info">
           <FontAwesomeIcon icon="arrow-left" /> <span className="d-none d-md-inline">Back</span>
