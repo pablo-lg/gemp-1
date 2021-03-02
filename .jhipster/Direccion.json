@@ -2,28 +2,53 @@
   "name": "Direccion",
   "fields": [
     {
+      "fieldName": "identification",
+      "fieldType": "String",
+      "fieldValidateRules": [
+        "unique"
+      ]
+    },
+    {
       "fieldName": "pais",
-      "fieldType": "String"
+      "fieldType": "String",
+      "fieldValidateRules": [
+        "required"
+      ]
     },
     {
       "fieldName": "provincia",
-      "fieldType": "String"
+      "fieldType": "String",
+      "fieldValidateRules": [
+        "required"
+      ]
     },
     {
       "fieldName": "partido",
-      "fieldType": "String"
+      "fieldType": "String",
+      "fieldValidateRules": [
+        "required"
+      ]
     },
     {
       "fieldName": "localidad",
-      "fieldType": "String"
+      "fieldType": "String",
+      "fieldValidateRules": [
+        "required"
+      ]
     },
     {
       "fieldName": "calle",
-      "fieldType": "String"
+      "fieldType": "String",
+      "fieldValidateRules": [
+        "required"
+      ]
     },
     {
       "fieldName": "altura",
-      "fieldType": "Long"
+      "fieldType": "Long",
+      "fieldValidateRules": [
+        "required"
+      ]
     },
     {
       "fieldName": "region",
@@ -47,6 +72,30 @@
     },
     {
       "fieldName": "tipoCalle",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "zonaCompetencia",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "intersectionLeft",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "intersectionRight",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "streetType",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "latitud",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "longitud",
       "fieldType": "String"
     }
   ],

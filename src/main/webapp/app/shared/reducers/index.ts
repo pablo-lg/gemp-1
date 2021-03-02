@@ -61,9 +61,14 @@ import direccion, {
 import emprendimiento, {
   EmprendimientoState
 } from 'app/entities/emprendimiento/emprendimiento.reducer';
+<<<<<<< HEAD
 import mu, {
   MuState
 } from 'app/modules/direcciones/mu.reducer';
+=======
+/* jhipster-needle-add-reducer-import - JHipster will add reducer here */
+
+>>>>>>> 6d51f103989848ecb039b909cf98b33e6a5b9a7e
 export interface IRootState {
   readonly authentication: AuthenticationState;
   readonly applicationProfile: ApplicationProfileState;

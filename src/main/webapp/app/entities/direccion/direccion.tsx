@@ -33,6 +33,7 @@ export const Direccion = (props: IDireccionProps) => {
             <thead>
               <tr>
                 <th>ID</th>
+                <th>Identification</th>
                 <th>Pais</th>
                 <th>Provincia</th>
                 <th>Partido</th>
@@ -45,6 +46,12 @@ export const Direccion = (props: IDireccionProps) => {
                 <th>Barrios Especiales</th>
                 <th>Codigo Postal</th>
                 <th>Tipo Calle</th>
+                <th>Zona Competencia</th>
+                <th>Intersection Left</th>
+                <th>Intersection Right</th>
+                <th>Street Type</th>
+                <th>Latitud</th>
+                <th>Longitud</th>
                 <th />
               </tr>
             </thead>
@@ -56,6 +63,7 @@ export const Direccion = (props: IDireccionProps) => {
                       {direccion.id}
                     </Button>
                   </td>
+                  <td>{direccion.identification}</td>
                   <td>{direccion.pais}</td>
                   <td>{direccion.provincia}</td>
                   <td>{direccion.partido}</td>
@@ -68,6 +76,12 @@ export const Direccion = (props: IDireccionProps) => {
                   <td>{direccion.barriosEspeciales}</td>
                   <td>{direccion.codigoPostal}</td>
                   <td>{direccion.tipoCalle}</td>
+                  <td>{direccion.zonaCompetencia}</td>
+                  <td>{direccion.intersectionLeft}</td>
+                  <td>{direccion.intersectionRight}</td>
+                  <td>{direccion.streetType}</td>
+                  <td>{direccion.latitud}</td>
+                  <td>{direccion.longitud}</td>
                   <td className="text-right">
                     <div className="btn-group flex-btn-group-container">
                       <Button tag={Link} to={`${match.url}/${direccion.id}`} color="info" size="sm">
