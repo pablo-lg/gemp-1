@@ -9,6 +9,8 @@ import { IDireccion, defaultValue } from 'app/shared/model/direccion.model';
 export const ACTION_TYPES = {
   FETCH_DIRECCION_LIST: 'direccion/FETCH_DIRECCION_LIST',
   FETCH_DIRECCION: 'direccion/FETCH_DIRECCION',
+  FETCH_DIRECCION_DIR: 'direccion/FETCH_DIRECCION_DIR',
+
   CREATE_DIRECCION: 'direccion/CREATE_DIRECCION',
   UPDATE_DIRECCION: 'direccion/UPDATE_DIRECCION',
   DELETE_DIRECCION: 'direccion/DELETE_DIRECCION',
@@ -38,6 +40,13 @@ export default (state: DireccionState = initialState, action): DireccionState =>
         updateSuccess: false,
         loading: true,
       };
+    case REQUEST(ACTION_TYPES.FETCH_DIRECCION_DIR):
+        return {
+          ...state,
+          errorMessage: null,
+          updateSuccess: false,
+          loading: true,
+        };
     case REQUEST(ACTION_TYPES.CREATE_DIRECCION):
     case REQUEST(ACTION_TYPES.UPDATE_DIRECCION):
     case REQUEST(ACTION_TYPES.DELETE_DIRECCION):
@@ -49,6 +58,7 @@ export default (state: DireccionState = initialState, action): DireccionState =>
       };
     case FAILURE(ACTION_TYPES.FETCH_DIRECCION_LIST):
     case FAILURE(ACTION_TYPES.FETCH_DIRECCION):
+    case FAILURE(ACTION_TYPES.FETCH_DIRECCION_DIR):
     case FAILURE(ACTION_TYPES.CREATE_DIRECCION):
     case FAILURE(ACTION_TYPES.UPDATE_DIRECCION):
     case FAILURE(ACTION_TYPES.DELETE_DIRECCION):
@@ -71,6 +81,12 @@ export default (state: DireccionState = initialState, action): DireccionState =>
         loading: false,
         entity: action.payload.data,
       };
+      case SUCCESS(ACTION_TYPES.FETCH_DIRECCION_DIR):
+        return {
+          ...state,
+          loading: false,
+          entity: action.payload.data,
+        };
     case SUCCESS(ACTION_TYPES.CREATE_DIRECCION):
     case SUCCESS(ACTION_TYPES.UPDATE_DIRECCION):
       return {
@@ -108,6 +124,14 @@ export const getEntity: ICrudGetAction<IDireccion> = id => {
   const requestUrl = `${apiUrl}/${id}`;
   return {
     type: ACTION_TYPES.FETCH_DIRECCION,
+    payload: axios.get<IDireccion>(requestUrl),
+  };
+};
+
+export const getEntityDireccion = ( pais, provincia, partido, localidad, calle, altura) => {
+  const requestUrl = `${apiUrl}` + '/direccion?altura='+altura+'&calle='+calle+'&localidad='+localidad+'&pais='+pais+'&partido='+partido+'&provincia='+provincia;
+  return {
+    type: ACTION_TYPES.FETCH_DIRECCION_DIR,
     payload: axios.get<IDireccion>(requestUrl),
   };
 };

@@ -64,7 +64,6 @@ import emprendimiento, {
 import mu, {
   MuState
 } from 'app/modules/direcciones/mu.reducer';
-/* jhipster-needle-add-reducer-import - JHipster will add reducer here */
 export interface IRootState {
   readonly authentication: AuthenticationState;
   readonly applicationProfile: ApplicationProfileState;
@@ -89,7 +88,6 @@ export interface IRootState {
   readonly ejecCuentas: EjecCuentasState;
   readonly direccion: DireccionState;
   readonly emprendimiento: EmprendimientoState;
-  /* jhipster-needle-add-reducer-type - JHipster will add reducer type here */
   readonly loadingBar: any;
 }
 const rootReducer = combineReducers<IRootState>({
@@ -116,7 +114,6 @@ const rootReducer = combineReducers<IRootState>({
   ejecCuentas,
   direccion,
   emprendimiento,
-  /* jhipster-needle-add-reducer-combine - JHipster will add reducer here */
   loadingBar,
 });
 

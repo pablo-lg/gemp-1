@@ -59,7 +59,7 @@ const edit = (record: ITipoObra) => {
   let registro = null;
   registro = {...record};
   registro.segmento = registro.segmento.id;
-  //record.segmento = record.segmento.id;
+  // record.segmento = record.segmento.id;
   form.setFieldsValue({ ...registro });
   setEditingId(registro.id);
 };

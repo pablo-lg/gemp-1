@@ -1,4 +1,7 @@
-import { RouteComponentProps } from 'react-router-dom';
+import { Redirect, RouteComponentProps } from 'react-router-dom';
+import { useHistory } from "react-router-dom";
+
+
 import { connect } from 'react-redux';
 import { IRootState } from 'app/shared/reducers';
 import React, { useState, useEffect } from 'react';
@@ -7,6 +10,10 @@ import {
   getProvincias, getLocalidades, getPartidos, getCalles, getGeographic,
   getTechnical, getCompetencia, resetPartidos, resetCalles, resetLocalidades, setDomicilio
 } from './mu.reducer';
+import { getEntities, updateEntity, deleteEntity, createEntity, getEntityDireccion, reset as resetDireccion } from '../../entities/direccion/direccion.reducer';
+import {  getEntityDireccion as getEmprendimiento, reset as resetEmprendimiento, createEntity as createEntityEmprendimiento } from '../../entities/emprendimiento/emprendimiento.reducer';
+
+
 
 import {
   Form,
@@ -16,7 +23,7 @@ import {
   notification,
   Tabs,
   Tooltip,
-  Descriptions,
+  Spin ,
 } from 'antd';
 import { SearchOutlined } from '@ant-design/icons';
 import DatosCerta from './datosCerta';
@@ -25,12 +32,17 @@ import { ErrorMessage } from 'formik';
 export interface IDireccionesProps extends StateProps, DispatchProps, RouteComponentProps<{ url: string }> { }
 export const Direcciones = (props) => {
 
+  console.error("direcciones...")
+  console.error(props);
+
   const [isLoading, setIsLoading] = useState(false);
-  const [pais, setPais] = useState("Argentina");
+  const [pais, setPais] = useState("ARGENTINA");
   const [provincia, setProvincia] = useState(null);
   const [form] = Form.useForm();
   const [prevQuery, setPrevQuery] = useState('0');
   const { TabPane } = Tabs;
+
+  const history = useHistory();
 
   let rangoAltura = null;
 
@@ -48,6 +60,35 @@ export const Direcciones = (props) => {
   useEffect(() => {
     openNotification
   }, []);
+
+  // useEffect(() => {
+  //   if (props.zonaCompetencia){ 
+  //     props.getCompetencia(props.zonaCompetencia)
+  //   }
+  // }, [props.zonaCompetencia])
+  const handleClose = () => {
+    props.history.push('/emprendimiento/'+props.emprendimientoEntity.id);
+  };
+  useEffect(() => {
+    if (props.emprendimientoUpdateSuccess) {
+      handleClose();
+    }
+  }, [props.emprendimientoUpdateSuccess]);
+
+  useEffect(() => {
+
+    if (props.direccionUpdateSuccess) {
+
+      const entity = {
+        direccion: {
+                    id: props.direccionEntity.id,
+        },
+        contacto: 'contacto'
+      }
+
+      props.createEntityEmprendimiento(entity);
+    }
+  }, [props.direccionUpdateSuccess])
 
   useEffect(() => {
     props.getProvincias(pais)
@@ -71,6 +112,8 @@ export const Direcciones = (props) => {
 
   const handleSelectProvincia = () => {
     props.getPartidos(pais, form.getFieldValue('provincia'))
+    props.resetDireccion();
+    props.resetEmprendimiento();
   }
   const handleSelectPartido = () => {
     props.getLocalidades(pais, form.getFieldValue('provincia'), form.getFieldValue('partido'))
@@ -128,20 +171,70 @@ export const Direcciones = (props) => {
     ) : null
   );
 
-  const onFinish = values => {
-    props.setDomicilio(pais, values.provincia, values.partido, values.localidad, values.calle, values.altura);
-    console.error('Received values of form: ', values);
-    
-  };
-
+  
+  const buscarDireccion =  () => {
+    props.getEntityDireccion(pais, form.getFieldValue('provincia'), form.getFieldValue('partido'), 
+    form.getFieldValue('localidad'), form.getFieldValue('calle'), form.getFieldValue('altura'))
+  }
+  
+  const buscarEmprendimiento = () => {
+    props.getEmprendimiento(pais, form.getFieldValue('provincia'), form.getFieldValue('partido'), 
+    form.getFieldValue('localidad'), form.getFieldValue('calle'), form.getFieldValue('altura'))
+  }
+  
+  const buscarDomicilio =  () => {
+    props.resetDireccion();
+    props.resetEmprendimiento();
+    buscarDireccion();
+    buscarEmprendimiento();
+  }
   const consultaCerta = () => {
     props.getGeographic(pais, form.getFieldValue('provincia'), form.getFieldValue('partido'), 
           form.getFieldValue('localidad'), form.getFieldValue('calle'), form.getFieldValue('altura'));
     props.getTechnical(pais, form.getFieldValue('provincia'), form.getFieldValue('partido'), 
           form.getFieldValue('localidad'), form.getFieldValue('calle'), form.getFieldValue('altura'));
+    buscarDomicilio();
 
-    props.getCompetencia(props.zonaCompetencia);
+
+    // props.getCompetencia(props.zonaCompetencia);
   }
+
+  const consutlarEmprendimiento = () => {
+    handleClose();
+  }
+
+  const onFinish =   values => {
+
+    const valores = props.muValores
+    const dir = {
+      pais:'ARGENTINA',
+      ...valores,
+      ...values,
+    };
+    const entity = {
+      direccion: {
+                  id: props.direccionEntity.id,
+                
+      },
+      contacto: 'contacto'
+    }
+    // consultaCerta;
+    // buscarDomicilio();
+    // buscarEmprendimiento();
+
+    // props.setDomicilio(pais, values.provincia, values.partido, values.localidad, values.calle, values.altura);
+    console.error('Received values of form: ', values);
+
+    props.createEntity(dir)
+   
+   
+    // history.push('/emprendimiento')
+
+   
+    
+  };
+
+
 
   const { provincias, localidades, partidos, calles} = props;
 
@@ -150,6 +243,9 @@ export const Direcciones = (props) => {
   return (
 
     <div>
+      <Spin tip="Buscando en certa geo...." spinning={props.loadingGeograpchic} >
+      <Spin tip="Buscando en certa tech...." spinning={props.loadingTechnical} >
+      
       <Form
         id="DireccionesForm"
         form={form}
@@ -196,33 +292,63 @@ export const Direcciones = (props) => {
             </Select>
           </Form.Item>
             <Tooltip title={rangoAltura}>
-          <Form.Item name="altura" label="Altura" rules={[{ required: true }]} style={{ display: 'inline-block', width: 'calc(17% - 4px)', margin: '1px 4px 0 0' }}>
+          <Form.Item name="altura" label="Altura" rules={[{ required: true }]} style={{ display: 'inline-block', width: 'calc(15% - 4px)', margin: '1px 4px 0 0' }}>
               <InputNumber placeholder="Altura" />
           </Form.Item>
             </Tooltip>
+            <Form.Item name="buscar" label="Consultar"  style={{ display: 'inline-block', width: 'calc(18% - 4px)', margin: '1px 1px 0 0' }}>
+            <Button type="primary" icon={<SearchOutlined />} onClick={() => consultaCerta()}>
+             Consultar
+            </Button>
+          </Form.Item>
         </Form.Item>
         <Form.Item >
-          <Button type="primary" icon={<SearchOutlined />} htmlType="submit">
-            Seleccionar
+        {props.emprendimientoEntity.id ?
+              null
+            :  <Button type="primary" icon={<SearchOutlined />} htmlType="submit">
+            Crear emprendimiento
+            </Button>}
+
+      {/* <Button type="primary" icon={<SearchOutlined />} onClick={() => buscarDomicilio()}>
+             buscar domicilio
+            </Button> */}
+            {props.direccionEntity ?
+            <div> direccion encontrada: {props.direccionEntity.id}</div>
+              : null}
+
+            {props.emprendimientoEntity ?
+            <div><div>Emprendimiento encontrado: {props.emprendimientoEntity.id}</div>
+            <Button type="primary" icon={<SearchOutlined />} onClick={() => consutlarEmprendimiento()}>
+              ver emprendimiento
             </Button>
-            <Button type="primary" icon={<SearchOutlined />} onClick={() => consultaCerta()}>
-             Consultar datos
-            </Button>
+               </div>
+              : null}
+
+
         </Form.Item>
       </Form>
+      </Spin >
+      </Spin >
+      {props.successGeographic ?
       <DatosCerta />
+      : null
+    }
     </div>
   );
 };
 
-const mapStateToProps = ({ mu }: IRootState) => ({
+const mapStateToProps = ({ mu, direccion, emprendimiento }: IRootState) => ({
+  muValores: mu,
   provincias: mu.provincias,
   partidos: mu.partidos,
   localidades: mu.localidades,
   calles: mu.calles,
   loading: mu.loading,
   errorMessage: mu.errorMessage,
+  successGeographic: mu.successGeographic,
+  loadingGeograpchic: mu.loadingGeograpchic,
   geographic: mu.geographic,
+  loadingTechnical: mu.loadingTechnical,
   technial: mu.technical,
   zonas: mu.zonas,
   geoX: mu.geoX,
@@ -235,6 +361,17 @@ const mapStateToProps = ({ mu }: IRootState) => ({
   streetType: mu.streetType,
   intersectionLeft: mu.intersectionLeft,
   intersectionRight: mu.intersectionRight,
+
+  direccionEntity: direccion.entity,
+  direccionLoading: direccion.loading,
+  direccionUpdating: direccion.updating,
+  direccionUpdateSuccess: direccion.updateSuccess,
+  direccionError: direccion.errorMessage,
+
+  emprendimientoEntity: emprendimiento.entity,
+  emprendimientoLoading: emprendimiento.loading,
+  emprendimientoUpdating: emprendimiento.updating,
+  emprendimientoUpdateSuccess: emprendimiento.updateSuccess,
 });
 
 const mapDispatchToProps = {
@@ -249,6 +386,15 @@ const mapDispatchToProps = {
   resetLocalidades,
   resetCalles,
   setDomicilio,
+  getEntities, 
+  updateEntity,
+  deleteEntity,
+  createEntity,
+  getEntityDireccion,
+  resetDireccion,
+  getEmprendimiento,
+  createEntityEmprendimiento,
+  resetEmprendimiento,
 };
 
 type StateProps = ReturnType<typeof mapStateToProps>;

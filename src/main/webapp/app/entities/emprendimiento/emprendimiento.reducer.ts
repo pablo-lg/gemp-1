@@ -9,6 +9,7 @@ import { IEmprendimiento, defaultValue } from 'app/shared/model/emprendimiento.m
 export const ACTION_TYPES = {
   FETCH_EMPRENDIMIENTO_LIST: 'emprendimiento/FETCH_EMPRENDIMIENTO_LIST',
   FETCH_EMPRENDIMIENTO: 'emprendimiento/FETCH_EMPRENDIMIENTO',
+  FETCH_EMPRENDIMIENTO_DIR:  'emprendimiento/FETCH_EMPRENDIMIENTO_DIR',
   CREATE_EMPRENDIMIENTO: 'emprendimiento/CREATE_EMPRENDIMIENTO',
   UPDATE_EMPRENDIMIENTO: 'emprendimiento/UPDATE_EMPRENDIMIENTO',
   DELETE_EMPRENDIMIENTO: 'emprendimiento/DELETE_EMPRENDIMIENTO',
@@ -38,6 +39,13 @@ export default (state: EmprendimientoState = initialState, action): Emprendimien
         updateSuccess: false,
         loading: true,
       };
+    case REQUEST(ACTION_TYPES.FETCH_EMPRENDIMIENTO_DIR):
+      return {
+        ...state,
+        errorMessage: null,
+        updateSuccess: false,
+        loading: true,
+      };
     case REQUEST(ACTION_TYPES.CREATE_EMPRENDIMIENTO):
     case REQUEST(ACTION_TYPES.UPDATE_EMPRENDIMIENTO):
     case REQUEST(ACTION_TYPES.DELETE_EMPRENDIMIENTO):
@@ -49,6 +57,7 @@ export default (state: EmprendimientoState = initialState, action): Emprendimien
       };
     case FAILURE(ACTION_TYPES.FETCH_EMPRENDIMIENTO_LIST):
     case FAILURE(ACTION_TYPES.FETCH_EMPRENDIMIENTO):
+    case FAILURE(ACTION_TYPES.FETCH_EMPRENDIMIENTO_DIR):
     case FAILURE(ACTION_TYPES.CREATE_EMPRENDIMIENTO):
     case FAILURE(ACTION_TYPES.UPDATE_EMPRENDIMIENTO):
     case FAILURE(ACTION_TYPES.DELETE_EMPRENDIMIENTO):
@@ -66,6 +75,12 @@ export default (state: EmprendimientoState = initialState, action): Emprendimien
         entities: action.payload.data,
       };
     case SUCCESS(ACTION_TYPES.FETCH_EMPRENDIMIENTO):
+      return {
+        ...state,
+        loading: false,
+        entity: action.payload.data,
+      };
+    case SUCCESS(ACTION_TYPES.FETCH_EMPRENDIMIENTO_DIR):
       return {
         ...state,
         loading: false,
@@ -108,6 +123,14 @@ export const getEntity: ICrudGetAction<IEmprendimiento> = id => {
   const requestUrl = `${apiUrl}/${id}`;
   return {
     type: ACTION_TYPES.FETCH_EMPRENDIMIENTO,
+    payload: axios.get<IEmprendimiento>(requestUrl),
+  };
+};
+
+export const getEntityDireccion = ( pais, provincia, partido, localidad, calle, altura) => {
+  const requestUrl = `${apiUrl}` + '/direccion?altura='+altura+'&calle='+calle+'&localidad='+localidad+'&pais='+pais+'&partido='+partido+'&provincia='+provincia;
+  return {
+    type: ACTION_TYPES.FETCH_EMPRENDIMIENTO_DIR,
     payload: axios.get<IEmprendimiento>(requestUrl),
   };
 };

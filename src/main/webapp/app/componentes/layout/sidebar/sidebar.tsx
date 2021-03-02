@@ -60,9 +60,9 @@ const Sidebar = (props) => {
         <Menu.Item key="14" icon={<TableOutlined />}>
           <Link to="/tipo-obra">Tipo-Obras</Link>
         </Menu.Item>
-        <Menu.Item key="15" icon={<TableOutlined />}>
+        {/* <Menu.Item key="15" icon={<TableOutlined />}>
           <Link to="/competencia">Competencia</Link>
-        </Menu.Item>
+        </Menu.Item> */}
         <Menu.Item key="16" icon={<TableOutlined />}>
           <Link to="/tecnologia">Tecnologia</Link>
         </Menu.Item>
@@ -72,7 +72,14 @@ const Sidebar = (props) => {
         <Menu.Item key="18" icon={<TableOutlined />}>
           <Link to="/obra">Obra</Link>
         </Menu.Item>
+        <Menu.Item key="19" icon={<TableOutlined />}>
+          <Link to="/nse">Nse</Link>
+        </Menu.Item>
+        <Menu.Item key="20" icon={<TableOutlined />}>
+          <Link to="/ejec-cuentas">Ejecutivos</Link>
+        </Menu.Item>
       </SubMenu>
+
       {props.isAuthenticated && props.isAdmin && (
           <SubMenu key="sub2" title='Admin' icon={<TableOutlined />}>
             <Menu.Item key="1" >

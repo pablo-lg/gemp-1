@@ -115,4 +115,17 @@ public class EmprendimientoResource {
         emprendimientoRepository.deleteById(id);
         return ResponseEntity.noContent().headers(HeaderUtil.createEntityDeletionAlert(applicationName, false, ENTITY_NAME, id.toString())).build();
     }
+
+    @GetMapping("/emprendimientos/direccion")
+    public ResponseEntity<Emprendimiento> getEmprendimiento(
+                @RequestParam("pais") String pais, 
+                @RequestParam("provincia") String provincia, 
+                @RequestParam("partido") String partido,
+                @RequestParam("localidad") String localidad, 
+                @RequestParam("calle") String calle, 
+                @RequestParam("altura") Long altura) {
+        log.debug("REST request to get Emprendimiento by direccion : {}");
+        Optional<Emprendimiento> emprendimiento = emprendimientoRepository.findByDireccionPaisAndDireccionProvinciaAndDireccionPartidoAndDireccionLocalidadAndDireccionCalleAndDireccionAltura(pais, provincia, partido, localidad, calle, altura);
+        return ResponseUtil.wrapOrNotFound(emprendimiento);
+    }
 }

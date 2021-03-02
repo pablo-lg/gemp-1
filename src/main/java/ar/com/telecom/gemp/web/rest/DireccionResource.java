@@ -115,4 +115,17 @@ public class DireccionResource {
         direccionRepository.deleteById(id);
         return ResponseEntity.noContent().headers(HeaderUtil.createEntityDeletionAlert(applicationName, false, ENTITY_NAME, id.toString())).build();
     }
+
+    @GetMapping("/direccions/direccion")
+    public ResponseEntity<Direccion> getDireccion(
+        @RequestParam("pais") String pais, 
+        @RequestParam("provincia") String provincia, 
+        @RequestParam("partido") String partido,
+        @RequestParam("localidad") String localidad, 
+        @RequestParam("calle") String calle, 
+        @RequestParam("altura") Long altura) {
+        log.debug("REST request to get Direccion by direccion : {}");
+        Optional<Direccion> direccion = direccionRepository.findByPaisAndProvinciaAndPartidoAndLocalidadAndCalleAndAltura(pais, provincia, partido, localidad, calle, altura);
+        return ResponseUtil.wrapOrNotFound(direccion);
+    }
 }

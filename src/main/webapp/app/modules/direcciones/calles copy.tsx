@@ -12,7 +12,6 @@ import {getEntities as getEntitiesEjecCuentas} from '../../entities/ejec-cuentas
 import {getEntities as getEntitiesCompetencia} from '../../entities/competencia/competencia.reducer';
 import {getEntities as getEntitiesNse} from '../../entities/nse/nse.reducer';
 import { createEntity, getEntityDireccion } from '../../entities/direccion/direccion.reducer';
-import {getEntity as getEmprendimiento, updateEntity as updateEmprendimiento, reset as resetEmprendimiento} from '../../entities/emprendimiento/emprendimiento.reducer';
 
 
 
@@ -48,8 +47,6 @@ const { TextArea } = Input;
 export const Calles = (props) => {
   const [formEmprendimiento] = Form.useForm();
 
-
-
   useEffect(() => {
     props.getEntitiesEmp();
   }, []);
@@ -79,10 +76,7 @@ export const Calles = (props) => {
     props.getEntitiesEjecCuentas();
   }, []);
   
-  useEffect(() => {
-    props.getEmprendimiento(props.emprendimientoEntity.id)
-    console.error('emprendimiento entity: '+ props.emprendimientoEntity.direccion.partido)
-  },[]);
+  
 
   const [editForm, setEditForm] = useState(true);
   const [negociacion, setNegociacion] = useState(false)
@@ -105,35 +99,16 @@ export const Calles = (props) => {
   useEffect(() => {
     openNotification
   },[]);
-  const idDecorator = param => {
-    const respuesta = {id: param}
-    return respuesta
-  }
-  const guardarEmprendimiento = () => {
-    const entity = {  ...props.emprendimientoEntity, 
-                      segmento: {id: formEmprendimiento.getFieldValue('segmento')},
-                      despliegue: {id: formEmprendimiento.getFieldValue('despliegue')},
-                      ejecCuentas: {id: formEmprendimiento.getFieldValue('ejecCuentas')},
-                      estado: {id: formEmprendimiento.getFieldValue('estado')},
-                      nse: {id: formEmprendimiento.getFieldValue('nse')},
-                      obra: {id: formEmprendimiento.getFieldValue('obra')},
-                      tecnologia: {id: formEmprendimiento.getFieldValue('tecnologia')},
-                      tipoObra: {id: formEmprendimiento.getFieldValue('tipoObra')},
-                      tipoEmp: {id: formEmprendimiento.getFieldValue('tipoEmp')},                                                                     
-                    }
-    console.error("guardar emprendimientos: " + entity)
-    props.updateEmprendimiento(entity)
-  }
 
   const selectTipoObra = () => {
-    <Form.Item label="Tipo de Obra" name="tipoObra"
+    <Form.Item label="Tipo de Obra" name="tipoDeObra"
     style={{ display: 'inline-block', width: 'calc(30% - 4px)', margin: '0 4px 0 0' }}>
     <Select allowClear showSearch
       loading={props.loadingObra}
       placeholder="Tipo de obra"
       defaultValue={null}>
       {props.tipoObraList ? props.tipoObraList.map(otherEntity => (
-        <Select.Option value={otherEntity.id} key={otherEntity.descripcion}>
+        <Select.Option value={otherEntity.descripcion} key={otherEntity.descripcion}>
           {otherEntity.descripcion}
         </Select.Option>
       ))
@@ -399,8 +374,7 @@ export const Calles = (props) => {
       labelCol={{ span: 4 }}
       wrapperCol={{ span: 20 }}
       layout="vertical"
-      initialValues={...props.emprendimientoEntity }
-    
+      initialValues={{ size: componentSize }}
       onValuesChange={onFormLayoutChange}
     >
       <Divider orientation="left">Datos comerciales</Divider>
@@ -600,7 +574,7 @@ export const Calles = (props) => {
         labelCol={{ span: 4 }}
         wrapperCol={{ span: 20 }}
         layout="vertical"
-        initialValues={...props.emprendimientoEntity.direccion }
+        initialValues={{ size: componentSize }}
         onValuesChange={onFormLayoutChange}
       >
         <Divider orientation="left">Datos de emprendimiento</Divider>
@@ -619,7 +593,7 @@ export const Calles = (props) => {
                 : null}
             </Select>
           </Form.Item>
-          <Form.Item label="Tipo de Obra" name="tipoObra"
+          <Form.Item label="Tipo de Obra" name="tipoDeObra"
             style={{ display: 'inline-block', width: 'calc(33% - 4px)', margin: '0 4px 0 0' }}>
             <Select allowClear showSearch
               loading={props.loadingObra}
@@ -640,7 +614,7 @@ export const Calles = (props) => {
               placeholder="Segmento"
               defaultValue={null}>
               {props.segmentoList ? props.segmentoList.map(otherEntity => (
-                <Select.Option value={otherEntity.id} key={otherEntity.descripcion}>
+                <Select.Option value={otherEntity.descripcion} key={otherEntity.descripcion}>
                   {otherEntity.descripcion}
                 </Select.Option>
               ))
@@ -687,7 +661,7 @@ export const Calles = (props) => {
           </Form.Item>
           <Form.Item label="Partido" name="partido"
           style={{ display: 'inline-block', width: 'calc(20% - 4px)', margin: '0 4px 0 0' }}>
-            <Input readOnly placeholder="Partido" />
+            <Input readOnly value={props.city} placeholder="Partido" />
           </Form.Item>
           <Form.Item label="Localidad" name="localidad"
           style={{ display: 'inline-block', width: 'calc(60% - 4px)', margin: '0 4px 0 0' }}>
@@ -703,7 +677,7 @@ export const Calles = (props) => {
           style={{ display: 'inline-block', width: 'calc(17% - 4px)', margin: '1px 4px 0 0' }}>
             <Input readOnly value={props.streetNr} placeholder="Altura" />
           </Form.Item>
-          <Form.Item label="C. P." name="codigoPostal"
+          <Form.Item label="C. P." name="cp"
           style={{ display: 'inline-block', width: 'calc(17% - 4px)', margin: '1px  4px 0 0' }}>
             <Input readOnly value={props.codigoPostal} placeholder="C. P." />
           </Form.Item>
@@ -726,11 +700,11 @@ export const Calles = (props) => {
           style={{ display: 'inline-block', width: 'calc(33% - 4px)', margin: '1px 4px 0 0' }}>
             <Input readOnly value={props.competencia} placeholder="zona de competencia" />
           </Form.Item>
-          <Form.Item label="Hub" name="hub"
+          <Form.Item label="Hubs" name="hubs"
           style={{ display: 'inline-block', width: 'calc(33% - 4px)', margin: '1px  4px 0 0' }}>
             <Input readOnly value={props.hub} placeholder="hubs" />
           </Form.Item>
-          <Form.Item label="Barrio especial" name="barriosEspeciales"
+          <Form.Item label="Barrio especial" name="barrioEspecial"
           style={{ display: 'inline-block', width: 'calc(34% - 4px)', margin: '1px  4px 0 0' }}>
             <Input readOnly value={props.barriosEspeciales} placeholder="barrio especial" />
           </Form.Item>
@@ -761,7 +735,7 @@ export const Calles = (props) => {
 
   return (
     <div>
-      <Header guardarEmprendimiento={guardarEmprendimiento}/>
+      <Header/>
       {drawerDireccion}
       <Tabs  type="card">
         <TabPane tab="Datos generales" key="1">
@@ -785,7 +759,7 @@ export const Calles = (props) => {
 };
 
 const mapStateToProps = ({ tipoObra, tipoEmp, segmento, tecnologia, estado, ejecCuentas, 
-                           nSE, competencia, mu, tipoDesp, emprendimiento }: IRootState) => ({
+                           nSE, competencia, mu, tipoDesp }: IRootState) => ({
   tipoObraList: tipoObra.entities,
   loadingObra: tipoObra.loading,
   errorObra: tipoObra.errorMessage,
@@ -852,12 +826,6 @@ const mapStateToProps = ({ tipoObra, tipoEmp, segmento, tecnologia, estado, ejec
   locality:mu.locality,
   streetName:mu.streetName,
   streetNr:mu.streetNr,
-  muValores: mu,
-
-  emprendimientoEntity: emprendimiento.entity,
-  emprendimientoLoading: emprendimiento.loading,
-  emprendimientoUpdating: emprendimiento.updating,
-  emprendimientoUpdateSuccess: emprendimiento.updateSuccess,
 });
 
 const mapDispatchToProps = {
@@ -883,8 +851,6 @@ const mapDispatchToProps = {
   getCompetencia,
   getEntityDireccion,
   createEntity,
-  getEmprendimiento,
-  updateEmprendimiento,
 
 
 };

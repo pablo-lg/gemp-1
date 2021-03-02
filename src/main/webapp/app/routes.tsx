@@ -44,7 +44,7 @@ const Routes = () => (
 
 
       <ErrorBoundaryRoute exact path={"/logs"} component={Logs} />
-      <ErrorBoundaryRoute path="/emprendimiento"component={Calles}/>
+      {/* <ErrorBoundaryRoute path="/emprendimiento"component={Calles}/> */}
       <ErrorBoundaryRoute path="/direcciones"component={Direcciones}/>
 
       <ErrorBoundaryRoute path="/login" component={Login} />

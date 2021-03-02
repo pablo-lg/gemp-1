@@ -52,7 +52,7 @@ module.exports = (options) => webpackMerge(commonConfig({ env: ENV }), {
         '/geographicAddressManagement/v1',
         '/resourceIventoryManagment/v1/',
       ],
-      target: `http${options.tls ? 's' : ''}://localhost:8080`,
+      target: `http${options.tls ? 's' : ''}://10.76.28.185:8080`,
       secure: false,
       changeOrigin: options.tls
     }],

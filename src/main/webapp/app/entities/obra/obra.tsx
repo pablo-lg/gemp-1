@@ -2,17 +2,13 @@ import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { Link, RouteComponentProps } from 'react-router-dom';
 import { Table, Input, Button, Popconfirm, Form, InputNumber, Space, Row, Tag, Switch  } from 'antd';
-import { ICrudGetAllAction } from 'react-jhipster';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import { IRootState } from 'app/shared/reducers';
 import { getEntities, updateEntity, deleteEntity, createEntity } from './obra.reducer';
-import { ITipoObra } from 'app/shared/model/tipo-obra.model';
 import { IObra } from 'app/shared/model/obra.model';
 import {getEntities as getEntitiesTipoObra} from '../../entities/tipo-obra/tipo-obra.reducer';
-import { APP_DATE_FORMAT, APP_LOCAL_DATE_FORMAT } from 'app/config/constants';
 import {EditableCell} from '../../componentes/table/editableCell'
-import { PlusOutlined , PlusSquareTwoTone , PlusCircleFilled } from '@ant-design/icons';
+import { PlusOutlined  } from '@ant-design/icons';
 
 export interface IObraProps extends StateProps, DispatchProps, RouteComponentProps<{ url: string }> {}
 import moment from 'moment';
@@ -62,7 +58,7 @@ const edit = (record) => {
   registro.fechaFinObra = record.fechaFinObra;
   registro.tipoObra = registro.tipoObra.id;
   registro.fechaFinObra = moment(record.fechaFinObra)
-  //record.tipoObra = record.tipoObra.id;
+  //  record.tipoObra = record.tipoObra.id;
   form.setFieldsValue({ ...registro });
   setEditingId(registro.id);
 };
