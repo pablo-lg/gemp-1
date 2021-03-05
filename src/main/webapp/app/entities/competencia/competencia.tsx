@@ -127,7 +127,7 @@ export const Competencia = (props: ICompetenciaProps) => {
 
     },
     {
-      title: 'operation',
+      title: 'Acciones',
       dataIndex: 'operation',
       render(_: any, record: ICompetencia) {
         const editable = isEditing(record);

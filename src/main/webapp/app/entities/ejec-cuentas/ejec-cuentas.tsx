@@ -128,49 +128,49 @@ const handleAdd = () => {
 const columns = [
 
   {
-    title: 'nombre',
+    title: 'Nombre',
     dataIndex: 'nombre',
     width: '20%',
     editable: true,
 
   },
   {
-    title: 'apellido',
+    title: 'Apellido',
     dataIndex: 'apellido',
     width: '20%',
     editable: true,
     
   },
   {
-    title: 'mail',
+    title: 'Mail',
     dataIndex: 'mail',
     width: '20%',
     editable: true,
 
   },
   {
-    title: 'telefono',
+    title: 'Telefono',
     dataIndex: 'telefono',
     width: '10%',
     editable: true,
 
   },
   {
-    title: 'celular',
+    title: 'Celular',
     dataIndex: 'celular',
     width: '10%',
     editable: true,
 
   },
   {
-    title: 'repcom1',
+    title: 'Repcom1',
     dataIndex: 'repcom1',
     width: '5%',
     editable: true,
 
   },
   {
-    title: 'repcom2',
+    title: 'Repcom2',
     dataIndex: 'repcom2',
     width: '5%',
     editable: true,
@@ -179,7 +179,7 @@ const columns = [
 
 
   {
-    title: 'segmento',
+    title: 'Segmento',
     dataIndex: 'segmento',
     render:(text, record) => (record.segmento ? 
       <div>{record.segmento.descripcion}</div> :
@@ -190,7 +190,7 @@ const columns = [
 
   },
   {
-    title: 'operation',
+    title: 'Acciones',
     dataIndex: 'operation',
     render(_: any, record: IEjecCuentas) {
       const editable = isEditing(record);
@@ -227,7 +227,7 @@ const mergedColumns = columns.map(col => {
     ...col,
     onCell: (record: IEjecCuentas) => ({
       record,
-      inputType: col.title === 'segmento' ? 'select' : col.title === 'mail' ? 'mail' : 'text',
+      inputType: col.dataIndex === 'segmento' ? 'select' : col.dataIndex === 'mail' ? 'mail' : 'text',
       list: props.segmentoList,
       loadingList: props.loadingSeg,
       dataIndex: col.dataIndex,

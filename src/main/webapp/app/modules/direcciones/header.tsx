@@ -8,6 +8,8 @@ import { DownOutlined, UserOutlined } from '@ant-design/icons';
 
 export const Header = (props) => {
 
+  const titulo = props.identificador + ' - ' + props.nombre;
+
     const menu = (
         <Menu onClick={null}>
           <Menu.Item key="1">Avanzar</Menu.Item>
@@ -20,7 +22,7 @@ export const Header = (props) => {
         <>
             <PageHeader
                 // onBack={() => window.history.back()}
-                title="47132 - Prueba modificacion 2020"
+                title={titulo}
                 tags={<Tag color="blue">activo</Tag>}
                 subTitle="prospecto"
                 extra={[

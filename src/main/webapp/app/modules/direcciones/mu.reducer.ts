@@ -17,7 +17,8 @@ export const ACTION_TYPES = {
     RESET_LOCALIDADES: 'mu/RESET_LOCALIDADES',
     RESET_CALLES: 'mu/RESET_CALLES',
     SET_DOMICILIO: 'mu/SET_DOMICILIO',
-    RESET_DOMICILIO: 'mu/RESET_DOMICILIO'
+    RESET_DOMICILIO: 'mu/RESET_DOMICILIO',
+    RESET: 'mu/RESET'
 
 
   };
@@ -270,6 +271,10 @@ export default (state: MuState = initialState, action): MuState => {
               successGeographic:null,
 
             }   
+            case ACTION_TYPES.RESET:
+              return {
+                ...initialState,
+              };
 
       default:
         return state;
@@ -392,4 +397,9 @@ export default (state: MuState = initialState, action): MuState => {
       return {
         type: ACTION_TYPES.RESET_DOMICILIO,
       };
+      
   }
+
+  export const reset = () => ({
+    type: ACTION_TYPES.RESET,
+  });

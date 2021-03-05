@@ -1,248 +1,137 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { Link, RouteComponentProps } from 'react-router-dom';
-import { Button, Col, Row, Table } from 'reactstrap';
 import { ICrudGetAllAction, TextFormat } from 'react-jhipster';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import { IRootState } from 'app/shared/reducers';
-import { getEntities } from './emprendimiento.reducer';
+import { getEntities, } from './emprendimiento.reducer';
 import { IEmprendimiento } from 'app/shared/model/emprendimiento.model';
 import { APP_DATE_FORMAT, APP_LOCAL_DATE_FORMAT } from 'app/config/constants';
+
+import { Table, Input, Button, Popconfirm, Form, InputNumber, Space, Row, Tag, Switch  } from 'antd';
+
+
+import {EditableCell} from '../../componentes/table/editableCell'
+import { PlusOutlined  } from '@ant-design/icons';
+
 
 export interface IEmprendimientoProps extends StateProps, DispatchProps, RouteComponentProps<{ url: string }> {}
 
 export const Emprendimiento = (props: IEmprendimientoProps) => {
+  const [data, setData] = useState([]);
+
   useEffect(() => {
     props.getEntities();
   }, []);
 
-  const { emprendimientoList, match, loading } = props;
+// Busqueda global
+const { Search } = Input;
+const [filter, setFilter] = useState('');
+
+ const filterFn = l => (l.nombre ? l.nombre.toUpperCase().includes(filter.toUpperCase()) : l);
+const changeFilter = evt => setFilter(evt.target.value);
+
+useEffect(() => {
+   setData(props.entityList.filter(filterFn).map(s => s))
+}, [props.entityList, filter]);
+
+
+
+// const handleDelete = id => {
+//   props.deleteEntity(id);
+// };
+
+const ver = record => {
+  props.history.push('/emprendimiento/'+record.id);
+
+}
+
+
+const columns = [
+
+  {
+    title: 'id',
+    dataIndex: 'id',
+    width: '10%',
+    editable: true,
+
+  },
+  {
+    title: 'Nombre',
+    dataIndex: 'nombre',
+    width: '40%',
+    editable: true,
+    
+    //  sorter: (a, b) => a.nombre.localeCompare(b.nombre),
+
+  },
+  {
+    title: 'Segmento',
+    dataIndex: ['segmento', 'descripcion'],
+    width: '40%',
+    editable: true,
+
+  },
+
+  {
+    title: 'Acciones',
+    dataIndex: 'operation',
+    render(_: any, record: IEmprendimiento) {
+      return (
+          <Space size="middle">
+            <a onClick={() => ver(record)}> 
+              ver
+            </a>
+    
+          </Space>
+      )
+        
+    },
+
+  },
+];
+
+
+
+  const { entityList, match, loading } = props;
   return (
-    <div>
-      <h2 id="emprendimiento-heading">
-        Emprendimientos
-        <Link to={`${match.url}/new`} className="btn btn-primary float-right jh-create-entity" id="jh-create-entity">
-          <FontAwesomeIcon icon="plus" />
-          &nbsp; Create new Emprendimiento
-        </Link>
-      </h2>
-      <div className="table-responsive">
-        {emprendimientoList && emprendimientoList.length > 0 ? (
-          <Table responsive>
-            <thead>
-              <tr>
-                <th>ID</th>
-                <th>Nombre</th>
-                <th>Contacto</th>
-                <th>Fecha Fin Obra</th>
-                <th>Elementos De Red</th>
-                <th>Clientes Catv</th>
-                <th>Clientes Fibertel</th>
-                <th>Clientes Fibertel Lite</th>
-                <th>Clientes Flow</th>
-                <th>Clientes Combo</th>
-                <th>Lineas Voz</th>
-                <th>Meses De Finalizado</th>
-                <th>Altas BC</th>
-                <th>Penetracion Viv Lot</th>
-                <th>Penetracion BC</th>
-                <th>Demanda 1</th>
-                <th>Demanda 2</th>
-                <th>Demanda 3</th>
-                <th>Demanda 4</th>
-                <th>Lotes</th>
-                <th>Viviendas</th>
-                <th>Com Prof</th>
-                <th>Habitaciones</th>
-                <th>Manzanas</th>
-                <th>Demanda</th>
-                <th>Fecha De Relevamiento</th>
-                <th>Telefono</th>
-                <th>Ano Priorizacion</th>
-                <th>Contrato Open</th>
-                <th>Negociacion</th>
-                <th>Estado BC</th>
-                <th>Fecha</th>
-                <th>Codigo De Firma</th>
-                <th>Fecha Firma</th>
-                <th>Observaciones</th>
-                <th>Comentario</th>
-                <th>Obra</th>
-                <th>Tipo Obra</th>
-                <th>Tipo Emp</th>
-                <th>Estado</th>
-                <th>Competencia</th>
-                <th>Despliegue</th>
-                <th>N SE</th>
-                <th>Segmento</th>
-                <th>Tecnologia</th>
-                <th>Ejec Cuentas</th>
-                <th>Direccion</th>
-                <th />
-              </tr>
-            </thead>
-            <tbody>
-              {emprendimientoList.map((emprendimiento, i) => (
-                <tr key={`entity-${i}`}>
-                  <td>
-                    <Button tag={Link} to={`${match.url}/${emprendimiento.id}`} color="link" size="sm">
-                      {emprendimiento.id}
-                    </Button>
-                  </td>
-                  <td>{emprendimiento.nombre}</td>
-                  <td>{emprendimiento.contacto}</td>
-                  <td>
-                    {emprendimiento.fechaFinObra ? (
-                      <TextFormat type="date" value={emprendimiento.fechaFinObra} format={APP_LOCAL_DATE_FORMAT} />
-                    ) : null}
-                  </td>
-                  <td>{emprendimiento.elementosDeRed}</td>
-                  <td>{emprendimiento.clientesCatv}</td>
-                  <td>{emprendimiento.clientesFibertel}</td>
-                  <td>{emprendimiento.clientesFibertelLite}</td>
-                  <td>{emprendimiento.clientesFlow}</td>
-                  <td>{emprendimiento.clientesCombo}</td>
-                  <td>{emprendimiento.lineasVoz}</td>
-                  <td>{emprendimiento.mesesDeFinalizado}</td>
-                  <td>{emprendimiento.altasBC}</td>
-                  <td>{emprendimiento.penetracionVivLot}</td>
-                  <td>{emprendimiento.penetracionBC}</td>
-                  <td>{emprendimiento.demanda1}</td>
-                  <td>{emprendimiento.demanda2}</td>
-                  <td>{emprendimiento.demanda3}</td>
-                  <td>{emprendimiento.demanda4}</td>
-                  <td>{emprendimiento.lotes}</td>
-                  <td>{emprendimiento.viviendas}</td>
-                  <td>{emprendimiento.comProf}</td>
-                  <td>{emprendimiento.habitaciones}</td>
-                  <td>{emprendimiento.manzanas}</td>
-                  <td>{emprendimiento.demanda}</td>
-                  <td>
-                    {emprendimiento.fechaDeRelevamiento ? (
-                      <TextFormat type="date" value={emprendimiento.fechaDeRelevamiento} format={APP_LOCAL_DATE_FORMAT} />
-                    ) : null}
-                  </td>
-                  <td>{emprendimiento.telefono}</td>
-                  <td>
-                    {emprendimiento.anoPriorizacion ? (
-                      <TextFormat type="date" value={emprendimiento.anoPriorizacion} format={APP_LOCAL_DATE_FORMAT} />
-                    ) : null}
-                  </td>
-                  <td>{emprendimiento.contratoOpen}</td>
-                  <td>{emprendimiento.negociacion ? 'true' : 'false'}</td>
-                  <td>{emprendimiento.estadoBC}</td>
-                  <td>
-                    {emprendimiento.fecha ? <TextFormat type="date" value={emprendimiento.fecha} format={APP_LOCAL_DATE_FORMAT} /> : null}
-                  </td>
-                  <td>{emprendimiento.codigoDeFirma}</td>
-                  <td>
-                    {emprendimiento.fechaFirma ? (
-                      <TextFormat type="date" value={emprendimiento.fechaFirma} format={APP_LOCAL_DATE_FORMAT} />
-                    ) : null}
-                  </td>
-                  <td>{emprendimiento.observaciones}</td>
-                  <td>{emprendimiento.comentario}</td>
-                  <td>{emprendimiento.obra ? <Link to={`obra/${emprendimiento.obra.id}`}>{emprendimiento.obra.descripcion}</Link> : ''}</td>
-                  <td>
-                    {emprendimiento.tipoObra ? (
-                      <Link to={`tipo-obra/${emprendimiento.tipoObra.id}`}>{emprendimiento.tipoObra.descripcion}</Link>
-                    ) : (
-                      ''
-                    )}
-                  </td>
-                  <td>
-                    {emprendimiento.tipoEmp ? (
-                      <Link to={`tipo-emp/${emprendimiento.tipoEmp.id}`}>{emprendimiento.tipoEmp.descripcion}</Link>
-                    ) : (
-                      ''
-                    )}
-                  </td>
-                  <td>
-                    {emprendimiento.estado ? (
-                      <Link to={`estado/${emprendimiento.estado.id}`}>{emprendimiento.estado.descripcion}</Link>
-                    ) : (
-                      ''
-                    )}
-                  </td>
-                  <td>
-                    {emprendimiento.competencia ? (
-                      <Link to={`competencia/${emprendimiento.competencia.id}`}>{emprendimiento.competencia.descripcion}</Link>
-                    ) : (
-                      ''
-                    )}
-                  </td>
-                  <td>
-                    {emprendimiento.despliegue ? (
-                      <Link to={`despliegue/${emprendimiento.despliegue.id}`}>{emprendimiento.despliegue.descripcion}</Link>
-                    ) : (
-                      ''
-                    )}
-                  </td>
-                  <td>{emprendimiento.nSE ? <Link to={`nse/${emprendimiento.nSE.id}`}>{emprendimiento.nSE.descripcion}</Link> : ''}</td>
-                  <td>
-                    {emprendimiento.segmento ? (
-                      <Link to={`segmento/${emprendimiento.segmento.id}`}>{emprendimiento.segmento.descripcion}</Link>
-                    ) : (
-                      ''
-                    )}
-                  </td>
-                  <td>
-                    {emprendimiento.tecnologia ? (
-                      <Link to={`tecnologia/${emprendimiento.tecnologia.id}`}>{emprendimiento.tecnologia.descripcion}</Link>
-                    ) : (
-                      ''
-                    )}
-                  </td>
-                  <td>
-                    {emprendimiento.ejecCuentas ? (
-                      <Link to={`ejec-cuentas/${emprendimiento.ejecCuentas.id}`}>{emprendimiento.ejecCuentas.nombre}</Link>
-                    ) : (
-                      ''
-                    )}
-                  </td>
-                  <td>
-                    {emprendimiento.direccion ? (
-                      <Link to={`direccion/${emprendimiento.direccion.id}`}>{emprendimiento.direccion.calle}</Link>
-                    ) : (
-                      ''
-                    )}
-                  </td>
-                  <td className="text-right">
-                    <div className="btn-group flex-btn-group-container">
-                      <Button tag={Link} to={`${match.url}/${emprendimiento.id}`} color="info" size="sm">
-                        <FontAwesomeIcon icon="eye" /> <span className="d-none d-md-inline">View</span>
-                      </Button>
-                      <Button tag={Link} to={`${match.url}/${emprendimiento.id}/edit`} color="primary" size="sm">
-                        <FontAwesomeIcon icon="pencil-alt" /> <span className="d-none d-md-inline">Edit</span>
-                      </Button>
-                      <Button tag={Link} to={`${match.url}/${emprendimiento.id}/delete`} color="danger" size="sm">
-                        <FontAwesomeIcon icon="trash" /> <span className="d-none d-md-inline">Delete</span>
-                      </Button>
-                    </div>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </Table>
-        ) : (
-          !loading && <div className="alert alert-warning">No Emprendimientos found</div>
-        )}
-      </div>
+
+    <><div>
+
+      <Search
+        placeholder="input search text"
+        onChange={changeFilter}
+        style={{ width: 200, marginBottom: 16 }} />
     </div>
+      <Table
+
+        bordered
+        loading={props.loading}
+        dataSource={data}
+        columns={columns}
+ /></>
   );
 };
 
 const mapStateToProps = ({ emprendimiento }: IRootState) => ({
-  emprendimientoList: emprendimiento.entities,
+  entityList: emprendimiento.entities,
   loading: emprendimiento.loading,
+  updating: emprendimiento.updating,
+  updateSuccess: emprendimiento.updateSuccess,
+  entity: emprendimiento.entity,
+  
+
+
 });
 
 const mapDispatchToProps = {
   getEntities,
+
 };
 
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;
+
 
 export default connect(mapStateToProps, mapDispatchToProps)(Emprendimiento);

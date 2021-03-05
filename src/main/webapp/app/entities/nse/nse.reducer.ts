@@ -63,7 +63,7 @@ export default (state: NSEState = initialState, action): NSEState => {
       return {
         ...state,
         loading: false,
-        entities: action.payload.data,
+        entities: action.payload.data.sort((a, b) => a.descripcion.localeCompare(b.descripcion)),
       };
     case SUCCESS(ACTION_TYPES.FETCH_NSE):
       return {

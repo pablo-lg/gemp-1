@@ -116,23 +116,24 @@ export const TipoDesp = (props: ITipoDespProps) => {
   const columns = [
 
     {
-      title: 'descripcion',
+      title: 'Descripcion',
       dataIndex: 'descripcion',
       width: '40%',
       editable: true,
+    
   
 
 
     },
     {
-      title: 'valor',
+      title: 'Valor',
       dataIndex: 'valor',
       width: '40%',
       editable: true,
   
     },
     {
-      title: 'operation',
+      title: 'Acciones',
       dataIndex: 'operation',
       render(_: any, record: ITipoEmp) {
         const editable = isEditing(record);

@@ -125,22 +125,25 @@ export const NSE = (props: INSEProps) => {
       dataIndex: 'descripcion',
       width: '80%',
       editable: true,
+      key:'id',
   
 
 
     },
     {
-      title: 'activo',
+      title: 'Activo',
       dataIndex: 'activo',
       render:(text, record) => (
-        <Switch checkedChildren="SI" unCheckedChildren="NO" disabled defaultChecked={record.activo}/>
+        <Switch checkedChildren="SI" unCheckedChildren="NO" disabled defaultChecked={record.activo} key={record.id}/>
         ),
       width: '15%',
       editable: true,
+      key: 'id',
   
     },
     {
-      title: 'operation',
+      title: 'Acciones',
+      key:'id',
       dataIndex: 'operation',
       render(_: any, record: INSE) {
         const editable = isEditing(record);
@@ -178,9 +181,11 @@ export const NSE = (props: INSEProps) => {
       ...col,
       onCell: (record: INSE) => ({
         record,
-        inputType: col.dataIndex === 'id' ? 'number' : col.title === 'activo' ? 'boolean' : 'text',
+        inputType: col.dataIndex === 'id' ? 'number' : col.dataIndex === 'activo' ? 'boolean' : 'text',
         dataIndex: col.dataIndex,
         title: col.title,
+        activo: record.activo,
+        key: col.key,
         editing: isEditing(record),
       }),
     };

@@ -28,7 +28,7 @@ export const Tecnologia = (props: ITecnologiaProps) => {
 
   const [filter, setFilter] = useState('');
 
-  const filterFn = l => (l.descripcion.toUpperCase().includes(filter.toUpperCase()) || l.valor.toUpperCase().includes(filter.toUpperCase()));
+  const filterFn = l => (l.descripcion.toUpperCase().includes(filter.toUpperCase()));
   // const changeFilter = val => setFilter(val);
 
   const changeFilter = evt => setFilter(evt.target.value);
@@ -121,7 +121,7 @@ export const Tecnologia = (props: ITecnologiaProps) => {
   const columns = [
 
     {
-      title: 'descripcion',
+      title: 'Descripcion',
       dataIndex: 'descripcion',
       width: '80%',
       editable: true,
@@ -130,7 +130,7 @@ export const Tecnologia = (props: ITecnologiaProps) => {
 
     },
     {
-      title: 'operation',
+      title: 'Acciones',
       dataIndex: 'operation',
       render(_: any, record: ITecnologia) {
         const editable = isEditing(record);

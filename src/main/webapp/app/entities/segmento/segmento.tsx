@@ -122,7 +122,7 @@ export const Segmento = (props: ISegmentoProps) => {
   const columns = [
 
     {
-      title: 'descripcion',
+      title: 'Descripcion',
       dataIndex: 'descripcion',
       width: '80%',
       editable: true,
@@ -131,7 +131,7 @@ export const Segmento = (props: ISegmentoProps) => {
 
     },
     {
-      title: 'operation',
+      title: 'Acciones',
       dataIndex: 'operation',
       render(_: any, record: ISegmento) {
         const editable = isEditing(record);

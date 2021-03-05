@@ -63,7 +63,7 @@ export default (state: TipoObraState = initialState, action): TipoObraState => {
       return {
         ...state,
         loading: false,
-        entities: action.payload.data,
+        entities: action.payload.data.sort((a, b) => a.descripcion.localeCompare(b.descripcion)),
       };
     case SUCCESS(ACTION_TYPES.FETCH_TIPOOBRA):
       return {

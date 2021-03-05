@@ -11,9 +11,12 @@ interface EditableCellProps extends React.HTMLAttributes<HTMLElement> {
     inputType: 'select' | 'text' | 'date' | 'boolean';
     list: any[],
     loadingList: boolean
+    activo: boolean
+    habilitado: boolean
     idList: any;
     record: any;
     index: number;
+    key: number;
     children: React.ReactNode;
     form: any;
   }
@@ -25,8 +28,11 @@ interface EditableCellProps extends React.HTMLAttributes<HTMLElement> {
     list,
     loadingList,
     idList,
+    activo,
+    habilitado,
     record,
     index,
+    key,
     children,
     form,
     ...restProps
@@ -62,10 +68,10 @@ interface EditableCellProps extends React.HTMLAttributes<HTMLElement> {
         ) 
         } 
         case 'boolean': { 
-          return( <Switch checkedChildren="SI" unCheckedChildren="NO" />)
+          return( <Switch checkedChildren="SI" unCheckedChildren="NO" defaultChecked={activo || habilitado} />)
         } 
         case 'date': { 
-          return( <DatePicker  disabledDate={disabledDate}  />)
+          return( <DatePicker  disabledDate={disabledDate}  format={'DD/MM/YYYY'}/>)
        } 
 
         default: { 

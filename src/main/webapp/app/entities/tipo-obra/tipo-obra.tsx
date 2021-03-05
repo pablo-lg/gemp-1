@@ -115,14 +115,14 @@ const handleAdd = () => {
 const columns = [
 
   {
-    title: 'descripcion',
+    title: 'Descripcion',
     dataIndex: 'descripcion',
     width: '40%',
     editable: true,
 
   },
   {
-    title: 'segmento',
+    title: 'Segmento',
     dataIndex: 'segmento',
     render:(text, record) => (record.segmento ? 
       <div>{record.segmento.descripcion}</div> :
@@ -133,7 +133,7 @@ const columns = [
 
   },
   {
-    title: 'operation',
+    title: 'Acciones',
     dataIndex: 'operation',
     render(_: any, record: ITipoObra) {
       const editable = isEditing(record);
@@ -170,7 +170,7 @@ const mergedColumns = columns.map(col => {
     ...col,
     onCell: (record: ITipoObra) => ({
       record,
-      inputType: col.title === 'segmento' ? 'select' : 'text',
+      inputType: col.dataIndex === 'segmento' ? 'select' : 'text',
       list: props.segmentoList,
       loadingList: props.loadingSeg,
       // idList: record.segmento.id,

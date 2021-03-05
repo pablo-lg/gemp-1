@@ -97,11 +97,11 @@ const Sidebar = (props) => {
 
           </SubMenu>
           )}
-        <Menu.Item key="21" icon={<AimOutlined />}>
-          <Link to="/direcciones">Direcciones</Link>
-        </Menu.Item>
         <Menu.Item key="31" icon={<RocketOutlined />}>
-          <Link to="/emprendimiento">Nuevo emprendimiento</Link>
+          <Link to="/emprendimiento">Emprendimientos</Link>
+        </Menu.Item>
+        <Menu.Item key="21" icon={<AimOutlined />}>
+          <Link to="/direcciones">Nuevo emprendimiento</Link>
         </Menu.Item>
       </Menu>
     </Sider>

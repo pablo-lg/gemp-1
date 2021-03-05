@@ -40,28 +40,46 @@ import {
   Drawer,
   DatePicker,
   Switch ,
+  Spin,
+  ConfigProvider,
 } from 'antd';
-import { UploadOutlined } from '@ant-design/icons';
+import { UploadOutlined, SmileOutlined, WarningTwoTone , WarningOutlined  } from '@ant-design/icons';
 import { Direcciones } from '../../modules/direcciones/direcciones';
 import Header from '../../modules/direcciones/header';
 import TextArea from 'antd/lib/input/TextArea';
+import moment from 'moment';
+
 
 export interface IEmprendimientoDetailProps extends StateProps, DispatchProps, RouteComponentProps<{ id: string }> {}
 
 export const EmprendimientoDetail = (props) => {
   useEffect(() => {
     props.getEmprendimiento(props.match.params.id);
+
+    props.getEntitiesEmp();
+    props.getEntitiesObra();
+    props.getEntitiesSeg();
+    props.getEntitiesDesp();
+    props.getEntitiesTec();
+    props.getEntitiesCompetencia();
+    props.getEntitiesNse();
+    props.getEntitiesEstado();
+    props.getEntitiesEjecCuentas();
   }, []);
 
     const [formEmprendimiento] = Form.useForm();
 
-    const [valoresIniciales, setValoresIniciales] = useState(
-                {partido: '',
-                localidad: ''});
     useEffect(() => {
       if (props.emprendimientoEntity.direccion){
         formEmprendimiento.setFieldsValue(
             {...props.emprendimientoEntity.direccion,
+            ...props.emprendimientoEntity,
+             fechaDeRelevamiento:  props.emprendimientoEntity.fechaDeRelevamiento ? moment(props.emprendimientoEntity.fechaDeRelevamiento) : null,
+             anoPriorizacion: props.emprendimientoEntity.anoPriorizacion ? moment(props.emprendimientoEntity.anoPriorizacion) : null,
+             fechaFirma:  props.emprendimientoEntity.fechaFirma ? moment(props.emprendimientoEntity.fechaFirma) : null,
+             fecha: props.emprendimientoEntity.fecha ? moment(props.emprendimientoEntity.fecha) : null,
+             fechaFinObra: props.emprendimientoEntity.fechaFinObra ? moment(props.emprendimientoEntity.fechaFinObra) : null,
+             
              segmento: props.emprendimientoEntity.segmento ? props.emprendimientoEntity.segmento.id : null,
              tipoEmp:props.emprendimientoEntity.tipoEmp ? props.emprendimientoEntity.tipoEmp.id : null,
              tecnologia: props.emprendimientoEntity.tecnologia ? props.emprendimientoEntity.tecnologia.id : null,
@@ -72,43 +90,18 @@ export const EmprendimientoDetail = (props) => {
              ejecCuentas:props.emprendimientoEntity.ejecCuentas ? props.emprendimientoEntity.ejecCuentas.id : null,
              })
 
-        setValoresIniciales({partido:  props.emprendimientoEntity.direccion.partido,
-                            localidad: props.emprendimientoEntity.direccion.localidad })
-        console.error(valoresIniciales)
       }
-    }, [props.emprendimientoEntity.direccion])
+    }, [props.emprendimientoEntity.direccion]);
   
-  
-  
-    useEffect(() => {
-      props.getEntitiesEmp();
-    }, []);
-  
-    useEffect(() => {
-      props.getEntitiesObra();
-    }, []);
-    useEffect(() => {
-      props.getEntitiesSeg();
-    }, []);
-    useEffect(() => {
-      props.getEntitiesDesp();
-    }, []);
-    useEffect(() => {
-      props.getEntitiesTec();
-    }, []);
-    useEffect(() => {
-      props.getEntitiesCompetencia();
-    }, []);
-    useEffect(() => {
-      props.getEntitiesNse();
-    }, []);
-    useEffect(() => {
-      props.getEntitiesEstado();
-    }, []);
-    useEffect(() => {
-      props.getEntitiesEjecCuentas();
-    }, []);
-    
+  const [filterSegmento, setFilterSegmento] = useState(props.emprendimientoEntity.segmento ? props.emprendimientoEntity.segmento.id : null);
+  // const filterSegmentoFn = l => (i => i.segmento.id === filterSegmento);
+  const changeFilterSegmento = (val, evt) => {
+    setFilterSegmento(val);
+  }
+
+  useEffect (()=> {
+      setFilterSegmento(props.emprendimientoEntity.segmento ? props.emprendimientoEntity.segmento.id : null);
+  }, [props.emprendimientoEntity])
 
   
     const [editForm, setEditForm] = useState(true);
@@ -137,7 +130,10 @@ export const EmprendimientoDetail = (props) => {
       return respuesta
     }
     const guardarEmprendimiento = () => {
-      const entity = {  ...props.emprendimientoEntity, 
+      const entity = {  ...props.emprendimientoEntity,
+                        ...formEmprendimiento.getFieldsValue(), 
+                        comentario: formEmprendimiento.getFieldValue('comentario') ? formEmprendimiento.getFieldValue('comentario') : null,
+                        lotes: formEmprendimiento.getFieldValue('lotes') ? formEmprendimiento.getFieldValue('lotes') : null,
                         segmento: formEmprendimiento.getFieldValue('segmento') ? {id: formEmprendimiento.getFieldValue('segmento')} : null,
                         despliegue: formEmprendimiento.getFieldValue('despliegue') ? {id: formEmprendimiento.getFieldValue('despliegue')} : null,
                         ejecCuentas: formEmprendimiento.getFieldValue('ejecCuentas') ? {id: formEmprendimiento.getFieldValue('ejecCuentas')} : null,
@@ -149,27 +145,43 @@ export const EmprendimientoDetail = (props) => {
                         tipoEmp: formEmprendimiento.getFieldValue('tipoEmp') ? {id: formEmprendimiento.getFieldValue('tipoEmp')} : null,
 
                       }
-      console.error("guardar emprendimientos: " + entity)
+                      const test =  formEmprendimiento.getFieldsValue()
+      console.error("guardar emprendimientos: " + {...formEmprendimiento.getFieldsValue()})
       props.updateEmprendimiento(entity)
     }
+
+    const onFinish =   values => {
+
+      const valores = props.muValores
+      const dir = {
+        pais:'ARGENTINA',
+        ...valores,
+        ...values,
+      };
+      const entity = {
+        direccion: {
+                    id: props.direccionEntity.id,
+                  
+        },
+        contacto: 'contacto'
+      }
+      // consultaCerta;
+      // buscarDomicilio();
+      // buscarEmprendimiento();
   
-    const selectTipoObra = () => {
-      <Form.Item label="Tipo de Obra" name="tipoObra"
-      style={{ display: 'inline-block', width: 'calc(30% - 4px)', margin: '0 4px 0 0' }}>
-      <Select allowClear showSearch
-        loading={props.loadingObra}
-        placeholder="Tipo de obra"
-        defaultValue={null}>
-        {props.tipoObraList ? props.tipoObraList.map(otherEntity => (
-          <Select.Option value={otherEntity.id} key={otherEntity.descripcion}>
-            {otherEntity.descripcion}
-          </Select.Option>
-        ))
-          : null}
-      </Select>
-    </Form.Item>
-    }
+      // props.setDomicilio(pais, values.provincia, values.partido, values.localidad, values.calle, values.altura);
+      console.error('Received values of form: ', values);
   
+      props.createEntity(dir)
+     
+     
+      // history.push('/emprendimiento')
+  
+     
+      
+    };
+  
+
     const propsUpload = {
       name: 'file',
       action: 'https://www.mocky.io/v2/5cc8019d300000980a055e76',
@@ -191,6 +203,20 @@ export const EmprendimientoDetail = (props) => {
       setVisibleDrawer(true);
   
     };
+
+    const customizeRenderEmptySegmento = () => (
+      <div style={{ textAlign: 'center' }}>
+        <WarningOutlined  style={{ fontSize: 40 }} />
+        <p>Debe seleccionar un Segmento</p>
+      </div>
+    );
+
+    const customizeRenderEmpty = () => (
+      <div style={{ textAlign: 'center' }}>
+        <WarningOutlined twoToneColor="red"  style={{ fontSize: 40 }} />
+        <p>No se encontraron datos</p>
+      </div>
+    );
   
     const drawerDireccion = (
       <Drawer
@@ -219,6 +245,8 @@ export const EmprendimientoDetail = (props) => {
     const tabTecnicos = (
       <Form
       form={formEmprendimiento}
+      onFinish={onFinish}
+
         labelCol={{ span: 4 }}
         wrapperCol={{ span: 20 }}
         layout="vertical"
@@ -233,17 +261,21 @@ export const EmprendimientoDetail = (props) => {
           </Form.Item>
           <Form.Item label="Tipo de Obra" name="tipoObra"
               style={{ display: 'inline-block', width: 'calc(33% - 4px)', margin: '0 4px 0 0' }}>
+                 <ConfigProvider renderEmpty={customizeRenderEmptySegmento}>
               <Select allowClear showSearch
                 loading={props.loadingObra}
                 placeholder="Tipo de obra"
-                value={formEmprendimiento.getFieldValue('tipoDeObra')}>
-                {props.tipoObraList ? props.tipoObraList.map(otherEntity => (
+                optionFilterProp="children"
+                filterOption={(input: any, option: any) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
+                value={formEmprendimiento.getFieldValue('tipoObra')}>
+                {props.tipoObraList ? props.tipoObraList.filter(i => i.segmento.id === filterSegmento).map(otherEntity => (
                   <Select.Option value={otherEntity.id} key={otherEntity.descripcion}>
                     {otherEntity.descripcion}
                   </Select.Option>
                 ))
                   : null}
               </Select>
+              </ConfigProvider>
             </Form.Item>
   
             <Form.Item label="Tecnologia" name="tecnologia"
@@ -251,6 +283,8 @@ export const EmprendimientoDetail = (props) => {
               <Select allowClear showSearch
                 loading={props.loadingTec}
                 placeholder="Tecnologia"
+                optionFilterProp="children"
+                filterOption={(input: any, option: any) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
                 defaultValue={null}>
                 {props.tecnologiaList ? props.tecnologiaList.map(otherEntity => (
                   <Select.Option value={otherEntity.id} key={otherEntity.descripcion}>
@@ -267,10 +301,10 @@ export const EmprendimientoDetail = (props) => {
         <Form.Item style={{ marginBottom: 4 }}>
         <Form.Item label="Fecha fin de obra" name="fechaFinObra"
         style={{ display: 'inline-block', width: 'calc(33% - 4px)', margin: '1px 4px 0 0' }}>
-          <DatePicker placeholder="fecha"></DatePicker>
+          <DatePicker placeholder="fecha" format={'DD/MM/YYYY'}></DatePicker>
           </Form.Item>
   
-          <Form.Item label="Hubs" name ="hubs"
+          <Form.Item label="Central/HUB" name ="hub"
           style={{ display: 'inline-block', width: 'calc(33% - 4px)', margin: '1px  4px 0 0' }}>
               <Input readOnly value={props.hub} placeholder="hubs" />
             </Form.Item>
@@ -475,6 +509,8 @@ export const EmprendimientoDetail = (props) => {
               <Select allowClear showSearch
                 loading={props.loadingNse}
                 placeholder="NSE"
+                optionFilterProp="children"
+                filterOption={(input: any, option: any) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
                 defaultValue={null}>
                 {props.nseList ? props.nseList.map(otherEntity => (
                   <Select.Option value={otherEntity.id} key={otherEntity.descripcion}>
@@ -492,7 +528,7 @@ export const EmprendimientoDetail = (props) => {
   
           <Form.Item label="Fecha de Relevamiento" name="fechaDeRelevamiento"
           style={{ display: 'inline-block', width: 'calc(33% - 4px)', margin: '1px 4px 0 0' }}>
-          <DatePicker placeholder="fecha"></DatePicker>
+          <DatePicker placeholder="fecha" format={'DD/MM/YYYY'}></DatePicker>
           </Form.Item>
         </Form.Item>
         <Divider orientation="left">Datos contacto</Divider>
@@ -507,9 +543,9 @@ export const EmprendimientoDetail = (props) => {
           <Input ></Input>
           </Form.Item>
   
-          <Form.Item label="Año Priorización" name="anoPriorizacion"
+          <Form.Item label="Año/Trimestre Priorización" name="anoPriorizacion"
           style={{ display: 'inline-block', width: 'calc(33% - 4px)', margin: '1px 4px 0 0' }}>
-          <DatePicker picker="quarter" placeholder="trimestre"></DatePicker>
+          <DatePicker picker="quarter"   placeholder="trimestre"></DatePicker>
           </Form.Item>
         </Form.Item>
   
@@ -529,8 +565,10 @@ export const EmprendimientoDetail = (props) => {
           <Select allowClear showSearch
                 loading={props.loadingEjecCuentas}
                 placeholder="Ejecutivo de cuentas"
+                optionFilterProp="children"
+                filterOption={(input: any, option: any) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
                 defaultValue={null}>
-                {props.ejecCuentasList ? props.ejecCuentasList.map(otherEntity => (
+                {props.ejecCuentasList ? props.ejecCuentasList.filter(i => i.segmento.id === filterSegmento).map(otherEntity => (
                   <Select.Option value={otherEntity.id} key={otherEntity.id}>
                     {otherEntity.nombre}
                   </Select.Option>
@@ -553,12 +591,12 @@ export const EmprendimientoDetail = (props) => {
   
           <Form.Item label="Requiere Negociación" name="negociacion"
           style={{ display: 'inline-block', width: 'calc(33% - 4px)', margin: '1px 4px 0 0' }}>
-            <Switch checkedChildren="SI" unCheckedChildren="NO" onChange={() => setNegociacion(!negociacion)}/>
+            <Switch defaultChecked={props.emprendimientoEntity.negociacion} checkedChildren="SI" unCheckedChildren="NO" onChange={() => setNegociacion(!negociacion)}/>
           </Form.Item>
   
         </Form.Item>
   
-        {negociacion  ? (
+        {formEmprendimiento.getFieldValue('negociacion')  ? (
   
         <><Form.Item style={{ marginBottom: 4 }}>
             <Form.Item label="Estado BC" name="estadoBC"
@@ -568,13 +606,9 @@ export const EmprendimientoDetail = (props) => {
   
             <Form.Item label="Fecha" name="fecha"
             style={{ display: 'inline-block', width: 'calc(33% - 4px)', margin: '1px 4px 0 0' }}>
-              <DatePicker placeholder="fecha"></DatePicker>
+              <DatePicker placeholder="fecha" format={'DD/MM/YYYY'}></DatePicker>
             </Form.Item>
-  
-            <Form.Item label="Código de Firma Digital" name="codigoDeFirma"
-            style={{ display: 'inline-block', width: 'calc(33% - 4px)', margin: '1px 4px 0 0' }}>
-              <Input></Input>
-            </Form.Item>
+
           </Form.Item><Form.Item style={{ marginBottom: 4 }}>
   
               <Form.Item label="Código de Firma Digital" style={{ display: 'inline-block', width: 'calc(33% - 4px)', margin: '1px 4px 0 0' }}>
@@ -585,6 +619,8 @@ export const EmprendimientoDetail = (props) => {
                 <Select allowClear showSearch
                   loading={props.loadingEstado}
                   placeholder="Estado"
+                  optionFilterProp="children"
+                  filterOption={(input: any, option: any) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
                   defaultValue={null}>
                   {props.estadoList ? props.estadoList.map(otherEntity => (
                     <Select.Option value={otherEntity.id} key={otherEntity.descripcion}>
@@ -597,7 +633,7 @@ export const EmprendimientoDetail = (props) => {
   
               <Form.Item label="Fecha Firma" name="fechaFirma"
               style={{ display: 'inline-block', width: 'calc(33% - 4px)', margin: '1px 4px 0 0' }}>
-                <DatePicker placeholder="fecha"></DatePicker>
+                <DatePicker placeholder="fecha" format={'DD/MM/YYYY'}></DatePicker>
               </Form.Item>
   
   
@@ -605,14 +641,18 @@ export const EmprendimientoDetail = (props) => {
   
             <Form.Item style={{ marginBottom: 4 }}>
   
+            <Form.Item label="Observaciones" name="observaciones"
+              style={{ display: 'inline-block', width: 'calc(66% - 4px)', margin: '1px 4px 0 0' }}>
+              <TextArea rows={3} placeholder="Observaciones..." />
+              </Form.Item>
+
               <Form.Item label="Anexar Archivo Business Case" name="anexarBC"
               style={{ display: 'inline-block', width: 'calc(33% - 4px)', margin: '1px 4px 0 0' }}>
-                <Input></Input>
+              <Upload {...propsUpload}>
+                <Button icon={<UploadOutlined />}>Anexar archivo</Button>
+              </Upload>
               </Form.Item>
-              <Form.Item label="Observaciones" name="observaciones"
-              style={{ display: 'inline-block', width: 'calc(33% - 4px)', margin: '1px 4px 0 0' }}>
-                <Input></Input>
-              </Form.Item>
+
   
             </Form.Item></>
         ) : null }
@@ -633,40 +673,21 @@ export const EmprendimientoDetail = (props) => {
           onValuesChange={onFormLayoutChange}
         >
           <Divider orientation="left">Datos de emprendimiento</Divider>
-          <Form.Item style={{ marginBottom: 4 }}>
-            <Form.Item label="Tipo Emprendimiento" name="tipoEmp"
-              style={{ display: 'inline-block', width: 'calc(33% - 4px)', margin: '0 4px 0 0' }}>
-              <Select allowClear showSearch
-                loading={props.loadingEmp}
-                placeholder="Tipo emprendimiento"
-                defaultValue={null}>
-                {props.tipoEmpList ? props.tipoEmpList.map(otherEntity => (
-                  <Select.Option value={otherEntity.id} key={otherEntity.descripcion}>
-                    {otherEntity.descripcion}
-                  </Select.Option>
-                ))
-                  : null}
-              </Select>
-            </Form.Item>
-            <Form.Item label="Tipo de Obra" name="tipoObra"
-              style={{ display: 'inline-block', width: 'calc(33% - 4px)', margin: '0 4px 0 0' }}>
-              <Select allowClear showSearch
-                loading={props.loadingObra}
-                placeholder="Tipo de obra"
-                defaultValue={null}>
-                {props.tipoObraList ? props.tipoObraList.map(otherEntity => (
-                  <Select.Option value={otherEntity.id} key={otherEntity.descripcion}>
-                    {otherEntity.descripcion}
-                  </Select.Option>
-                ))
-                  : null}
-              </Select>
-            </Form.Item>
-            <Form.Item label="Segmento" name="segmento"
+          <Form.Item style={{ marginBottom: 4}}>
+          <Form.Item label="Nombre" name="nombre"
+              style={{ display: 'inline-block', width: 'calc(33% - 4px)', margin: '1px 4px 0 0' }}>
+                <Input></Input>
+              </Form.Item>
+            
+              <Form.Item label="Segmento" name="segmento"
               style={{ display: 'inline-block', width: 'calc(33% - 4px)', margin: '0 4px 0 0' }}>
               <Select allowClear showSearch
                 loading={props.loadingSeg}
                 placeholder="Segmento"
+                optionFilterProp="children"
+                onSelect={(value, event) => changeFilterSegmento(value, event)}
+
+                filterOption={(input: any, option: any) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
                 // value={props.emprendimientoEntity.segmento ? props.emprendimientoEntity.segmento.descripcion : null}>
                 value="pym">
                 {props.segmentoList ? props.segmentoList.map(otherEntity => (
@@ -677,16 +698,50 @@ export const EmprendimientoDetail = (props) => {
                   : null}
               </Select>
             </Form.Item>
-  
-  
+            <Form.Item label="Tipo de Obra" name="tipoObra"
+              style={{ display: 'inline-block', width: 'calc(33% - 4px)', margin: '0 4px 0 0' }}>
+                <ConfigProvider renderEmpty={customizeRenderEmptySegmento}>
+              <Select allowClear showSearch
+                loading={props.loadingObra}
+                placeholder="Tipo de obra"
+                optionFilterProp="children"
+                filterOption={(input: any, option: any) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
+                value={formEmprendimiento.getFieldValue('tipoObra')}>
+                {props.tipoObraList ? props.tipoObraList.filter(i => i.segmento.id === filterSegmento).map(otherEntity => (
+                  <Select.Option value={otherEntity.id} key={otherEntity.descripcion}>
+                    {otherEntity.descripcion}
+                  </Select.Option>
+                ))
+                  : null}
+              </Select>
+              </ConfigProvider>
+            </Form.Item>
           </Form.Item>
-  
           <Form.Item style={{ marginBottom: 4 }}>
+            <Form.Item label="Tipo Emprendimiento" name="tipoEmp"
+              style={{ display: 'inline-block', width: 'calc(33% - 4px)', margin: '0 4px 0 0' }}>
+              <Select allowClear showSearch
+                loading={props.loadingEmp}
+                placeholder="Tipo emprendimiento"
+                optionFilterProp="children"
+                filterOption={(input: any, option: any) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
+                defaultValue={null}>
+                {props.tipoEmpList ? props.tipoEmpList.map(otherEntity => (
+                  <Select.Option value={otherEntity.id} key={otherEntity.descripcion}>
+                    {otherEntity.descripcion}
+                  </Select.Option>
+                ))
+                  : null}
+              </Select>
+            </Form.Item>
+
             <Form.Item label="Despliegue" name="despliegue"
               style={{ display: 'inline-block', width: 'calc(33% - 4px)', margin: '0 4px 0 0' }}>
               <Select allowClear showSearch
                 loading={props.loadingDesp}
                 placeholder="Tipo Despliegue"
+                optionFilterProp="children"
+                filterOption={(input: any, option: any) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
                 defaultValue={null}>
                 {props.topoDespList ? props.topoDespList.map(otherEntity => (
                   <Select.Option value={otherEntity.id} key={otherEntity.descripcion}>
@@ -696,22 +751,30 @@ export const EmprendimientoDetail = (props) => {
                   : null}
               </Select>
             </Form.Item>
-            <Form.Item label="Comentario" name="comentario"
-             style={{ display: 'inline-block', width: 'calc(33% - 4px)', margin: '1px 4px 0 0' }}>
-              <TextArea rows={4} placeholder="Comentario..." />
-            </Form.Item>
+
             <Form.Item label="Adjuntar" name="adjuntar"
             style={{ display: 'inline-block', width: 'calc(33% - 4px)', margin: '1px  4px 0 0' }}>
               <Upload {...propsUpload}>
-                <Button icon={<UploadOutlined />}>Click to Upload</Button>
+                <Button icon={<UploadOutlined />}>Subir archivo</Button>
               </Upload>
             </Form.Item>
+  
+  
+          </Form.Item>
+  
+          <Form.Item style={{ marginBottom: 4 }}>
+
+            <Form.Item label="Comentario" name="comentario"
+             style={{ display: 'inline-block', width: 'calc(66% - 4px)', margin: '1px 4px 0 0' }}>
+              <TextArea rows={3} placeholder="Comentario..." />
+            </Form.Item>
+
           </Form.Item>
   
           <Divider orientation="left">Datos de domicilio</Divider>
-          <Button onClick={() => setVisibleDrawer(true)}>Actualizar domicilio</Button>
+          {/* <Button onClick={() => setVisibleDrawer(true)}>Actualizar domicilio</Button> */}
           <Form.Item style={{ marginBottom: 4 }}>
-            <Form.Item label="Provincia" name="direccion.provincia"
+            <Form.Item label="Provincia" name="provincia"
             style={{ display: 'inline-block', width: 'calc(20% - 4px)', margin: '0 4px 0 0' }}>
               <Input readOnly value={props.stateOrProvince} placeholder="Provincia" />
             </Form.Item>
@@ -741,11 +804,11 @@ export const EmprendimientoDetail = (props) => {
   
   
           <Form.Item style={{ marginBottom: 4 }}>
-            <Form.Item label="region" name="region"
+            <Form.Item label="Region" name="region"
             style={{ display: 'inline-block', width: 'calc(50% - 4px)', margin: '1px 4px 0 0' }}>
               <Input readOnly value={props.region} placeholder="region" />
             </Form.Item>
-            <Form.Item label="subregion" name="subregion"
+            <Form.Item label="Subregion" name="subregion"
             style={{ display: 'inline-block', width: 'calc(50% - 4px)', margin: '1px  4px 0 0' }}>
               <Input readOnly value={props.subregion} placeholder="subregion" />
             </Form.Item>
@@ -756,9 +819,9 @@ export const EmprendimientoDetail = (props) => {
             style={{ display: 'inline-block', width: 'calc(33% - 4px)', margin: '1px 4px 0 0' }}>
               <Input readOnly value={props.competencia} placeholder="zona de competencia" />
             </Form.Item>
-            <Form.Item label="Hub" name="hub"
+            <Form.Item label="Central/HUB" name="hub"
             style={{ display: 'inline-block', width: 'calc(33% - 4px)', margin: '1px  4px 0 0' }}>
-              <Input readOnly value={props.hub} placeholder="hubs" />
+              <Input readOnly value={props.hub} placeholder="hub" />
             </Form.Item>
             <Form.Item label="Barrio especial" name="barriosEspeciales"
             style={{ display: 'inline-block', width: 'calc(34% - 4px)', margin: '1px  4px 0 0' }}>
@@ -767,11 +830,11 @@ export const EmprendimientoDetail = (props) => {
           </Form.Item>
   
           <Form.Item style={{ marginBottom: 4 }}>
-            <Form.Item label="Calle izquierda" name="calleIzquierda"
+            <Form.Item label="Calle izquierda" name="intersectionLeft"
             style={{ display: 'inline-block', width: 'calc(33% - 4px)', margin: '1px 4px 0 0' }}>
               <Input readOnly value={props.intersectionLeft} placeholder="Calle izquierda" />
             </Form.Item>
-            <Form.Item label="Calle Derecha" name="calleDerecha"
+            <Form.Item label="Calle Derecha" name="intersectionRight"
             style={{ display: 'inline-block', width: 'calc(33% - 4px)', margin: '1px  4px 0 0' }}>
               <Input readOnly value={props.intersectionRight} placeholder="Calle Derecha" />
             </Form.Item>
@@ -791,11 +854,16 @@ export const EmprendimientoDetail = (props) => {
   
     return (
       <div>
-        <Header guardarEmprendimiento={guardarEmprendimiento}/>
+       <Spin tip="Cargando emprendimiento...." spinning={props.emprendimientoLoading} >
+       <Spin tip="Guardando emprendimiento...." spinning={props.emprendimientoUpdating} >
+
+
+        <Header guardarEmprendimiento={guardarEmprendimiento} identificador={props.emprendimientoEntity.id} nombre={props.emprendimientoEntity.nombre}/>
         {drawerDireccion}
+        <ConfigProvider renderEmpty={customizeRenderEmpty}>
+
         <Tabs  type="card">
           <TabPane tab="Datos generales" key="1">
-          <div>{props.emprendimientoEntity.direccion ? props.emprendimientoEntity.direccion.partido : null}</div>
             {tabGeneral}
           </TabPane>
           <TabPane tab="Datos comerciales" key="2">
@@ -811,6 +879,11 @@ export const EmprendimientoDetail = (props) => {
             Content of Tab Pane 3
           </TabPane>
         </Tabs>
+        </ConfigProvider>
+        </Spin >
+        </Spin >
+
+
       </div>
     );
   };

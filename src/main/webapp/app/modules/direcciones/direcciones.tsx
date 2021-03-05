@@ -8,7 +8,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import {
   getProvincias, getLocalidades, getPartidos, getCalles, getGeographic,
-  getTechnical, getCompetencia, resetPartidos, resetCalles, resetLocalidades, setDomicilio
+  getTechnical, getCompetencia, resetPartidos, resetCalles, resetLocalidades, setDomicilio, reset
 } from './mu.reducer';
 import { getEntities, updateEntity, deleteEntity, createEntity, getEntityDireccion, reset as resetDireccion } from '../../entities/direccion/direccion.reducer';
 import {  getEntityDireccion as getEmprendimiento, reset as resetEmprendimiento, createEntity as createEntityEmprendimiento } from '../../entities/emprendimiento/emprendimiento.reducer';
@@ -23,9 +23,10 @@ import {
   notification,
   Tabs,
   Tooltip,
-  Spin ,
+  Spin, 
+  Input,
 } from 'antd';
-import { SearchOutlined } from '@ant-design/icons';
+import { SearchOutlined, PlusOutlined } from '@ant-design/icons';
 import DatosCerta from './datosCerta';
 import { ErrorMessage } from 'formik';
 
@@ -39,6 +40,7 @@ export const Direcciones = (props) => {
   const [pais, setPais] = useState("ARGENTINA");
   const [provincia, setProvincia] = useState(null);
   const [form] = Form.useForm();
+  const [formNuevoEmp] = Form.useForm();
   const [prevQuery, setPrevQuery] = useState('0');
   const { TabPane } = Tabs;
 
@@ -83,7 +85,7 @@ export const Direcciones = (props) => {
         direccion: {
                     id: props.direccionEntity.id,
         },
-        contacto: 'contacto'
+        nombre: form.getFieldValue('nombre'),
       }
 
       props.createEntityEmprendimiento(entity);
@@ -91,6 +93,7 @@ export const Direcciones = (props) => {
   }, [props.direccionUpdateSuccess])
 
   useEffect(() => {
+    props.reset();
     props.getProvincias(pais)
     if (props.errorMessage) {
       openNotification('Error al obtener provincias de MU', props.errorMessage, 'error')
@@ -185,10 +188,11 @@ export const Direcciones = (props) => {
   const buscarDomicilio =  () => {
     props.resetDireccion();
     props.resetEmprendimiento();
-    buscarDireccion();
+   // buscarDireccion();
     buscarEmprendimiento();
   }
   const consultaCerta = () => {
+    props.reset();
     props.getGeographic(pais, form.getFieldValue('provincia'), form.getFieldValue('partido'), 
           form.getFieldValue('localidad'), form.getFieldValue('calle'), form.getFieldValue('altura'));
     props.getTechnical(pais, form.getFieldValue('provincia'), form.getFieldValue('partido'), 
@@ -198,6 +202,11 @@ export const Direcciones = (props) => {
 
     // props.getCompetencia(props.zonaCompetencia);
   }
+
+ 
+  const statusEmprendimiento  = props.emprendimientoError ? props.emprendimientoError.response.status  : 0
+  
+  const statusMu  = props.errorMessage ? props.errorMessage.response.status  : 0
 
   const consutlarEmprendimiento = () => {
     handleClose();
@@ -210,6 +219,9 @@ export const Direcciones = (props) => {
       pais:'ARGENTINA',
       ...valores,
       ...values,
+      latitud: valores.geoX,
+      longitud: valores.geoY,
+      zonaCompetencia: valores.competencia,
     };
     const entity = {
       direccion: {
@@ -303,20 +315,26 @@ export const Direcciones = (props) => {
           </Form.Item>
         </Form.Item>
         <Form.Item >
-        {props.emprendimientoEntity.id ?
+        {statusEmprendimiento === 404 && statusMu === 0 ?
+            <Form.Item>
+            <Form.Item name="nombre" label="Nombre del emprendimiento" rules={[{ required: true }]} style={{ display: 'inline-block', width: 'calc(66% - 4px)', margin: '1px 4px 0 0' }}>
+              <Input placeholder="Nombre" />
+            </Form.Item>         
+            <Form.Item name="finish" label=" "  style={{ display: 'inline-block', width: 'calc(18% - 4px)', margin: '1px 1px 0 0' }}>
+
+
+            <Button type="primary" icon={<PlusOutlined />} htmlType="submit">Crear emprendimiento</Button>
+        </Form.Item>
+        </Form.Item>
+            : 
               null
-            :  <Button type="primary" icon={<SearchOutlined />} htmlType="submit">
-            Crear emprendimiento
-            </Button>}
+}
 
       {/* <Button type="primary" icon={<SearchOutlined />} onClick={() => buscarDomicilio()}>
              buscar domicilio
             </Button> */}
-            {props.direccionEntity ?
-            <div> direccion encontrada: {props.direccionEntity.id}</div>
-              : null}
 
-            {props.emprendimientoEntity ?
+            {props.emprendimientoEntity.id ?
             <div><div>Emprendimiento encontrado: {props.emprendimientoEntity.id}</div>
             <Button type="primary" icon={<SearchOutlined />} onClick={() => consutlarEmprendimiento()}>
               ver emprendimiento
@@ -372,6 +390,7 @@ const mapStateToProps = ({ mu, direccion, emprendimiento }: IRootState) => ({
   emprendimientoLoading: emprendimiento.loading,
   emprendimientoUpdating: emprendimiento.updating,
   emprendimientoUpdateSuccess: emprendimiento.updateSuccess,
+  emprendimientoError: emprendimiento.errorMessage,
 });
 
 const mapDispatchToProps = {
@@ -395,6 +414,7 @@ const mapDispatchToProps = {
   getEmprendimiento,
   createEntityEmprendimiento,
   resetEmprendimiento,
+  reset,
 };
 
 type StateProps = ReturnType<typeof mapStateToProps>;

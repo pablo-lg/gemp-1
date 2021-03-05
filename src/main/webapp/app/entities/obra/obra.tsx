@@ -115,14 +115,14 @@ const handleAdd = () => {
 const columns = [
 
   {
-    title: 'descripcion',
+    title: 'Descripcion',
     dataIndex: 'descripcion',
     width: '30%',
     editable: true,
 
   },
   {
-    title: 'habilitada',
+    title: 'Habilitada',
     dataIndex: 'habilitada',
     // render:(text, record) => (record.habilitada ? 
     //   <Tag color='green' >
@@ -133,21 +133,21 @@ const columns = [
     //     NO
     //   </Tag>
     render:(text, record) => (
-      <Switch checkedChildren="SI" unCheckedChildren="NO" disabled defaultChecked={record.habilitada}/>
+      <Switch checkedChildren="SI" unCheckedChildren="NO" disabled defaultChecked={record.habilitada} key={record.id}/>
       ),
     width: '15%',
     editable: true,
 
   },
   {
-    title: 'fechaFinObra',
+    title: 'Fecha Fin de Obra',
     dataIndex: 'fechaFinObra',
     width: '25%',
     editable: true,
 
   },
   {
-    title: 'tipoObra',
+    title: 'Tipo de Obra',
     dataIndex: 'tipoObra',
     render:(text, record) => (record.tipoObra ? 
       <div>{record.tipoObra.descripcion}</div> :
@@ -158,7 +158,7 @@ const columns = [
 
   },
   {
-    title: 'operation',
+    title: 'Acciones',
     dataIndex: 'operation',
     render(_: any, record: IObra) {
       const editable = isEditing(record);
@@ -195,10 +195,11 @@ const mergedColumns = columns.map(col => {
     ...col,
     onCell: (record: IObra) => ({
       record,
-      inputType: col.title === 'tipoObra' ? 'select' : col.title === 'habilitada' ? 'boolean' : col.title === 'fechaFinObra' ? 'date': 'text',
+      inputType: col.dataIndex === 'tipoObra' ? 'select' : col.dataIndex === 'habilitada' ? 'boolean' : col.dataIndex === 'fechaFinObra' ? 'date': 'text',
       list: props.tipoObraList,
       loadingList: props.loadingSeg,
       dataIndex: col.dataIndex,
+      habilitado: record.habilitada,
       title: col.title,
       editing: isEditing(record),
       form,

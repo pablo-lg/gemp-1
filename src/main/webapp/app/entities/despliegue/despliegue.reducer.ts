@@ -63,7 +63,7 @@ export default (state: DespliegueState = initialState, action): DespliegueState 
       return {
         ...state,
         loading: false,
-        entities: action.payload.data,
+        entities: action.payload.data.sort((a, b) => a.descripcion.localeCompare(b.descripcion)),
       };
     case SUCCESS(ACTION_TYPES.FETCH_DESPLIEGUE):
       return {
