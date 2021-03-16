@@ -1,0 +1,33 @@
+{
+  "name": "Pauta",
+  "fields": [
+    {
+      "fieldName": "anios",
+      "fieldType": "Long"
+    },
+    {
+      "fieldName": "tipoPauta",
+      "fieldType": "String"
+    }
+  ],
+  "relationships": [
+    {
+      "relationshipType": "many-to-one",
+      "otherEntityName": "masterTipoEmp",
+      "otherEntityRelationshipName": "pauta",
+      "relationshipName": "masterTipoEmp",
+      "otherEntityField": "id"
+    }
+  ],
+  "changelogDate": "20210316154645",
+  "entityTableName": "pauta",
+  "dto": "no",
+  "pagination": "no",
+  "service": "no",
+  "jpaMetamodelFiltering": false,
+  "fluentMethods": true,
+  "readOnly": false,
+  "embedded": false,
+  "clientRootFolder": "",
+  "applications": "*"
+}

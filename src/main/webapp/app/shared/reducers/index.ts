@@ -63,6 +63,26 @@ import direccion, {
 import emprendimiento, {
   EmprendimientoState
 } from 'app/entities/emprendimiento/emprendimiento.reducer';
+// prettier-ignore
+import grupoAlarma, {
+  GrupoAlarmaState
+} from 'app/entities/grupo-alarma/grupo-alarma.reducer';
+// prettier-ignore
+import grupoEmprendimiento, {
+  GrupoEmprendimientoState
+} from 'app/entities/grupo-emprendimiento/grupo-emprendimiento.reducer';
+// prettier-ignore
+import grupoUsuario, {
+  GrupoUsuarioState
+} from 'app/entities/grupo-usuario/grupo-usuario.reducer';
+// prettier-ignore
+import pauta, {
+  PautaState
+} from 'app/entities/pauta/pauta.reducer';
+// prettier-ignore
+import masterTipoEmp, {
+  MasterTipoEmpState
+} from 'app/entities/master-tipo-emp/master-tipo-emp.reducer';
 /* jhipster-needle-add-reducer-import - JHipster will add reducer here */
 
 export interface IRootState {
@@ -88,6 +108,11 @@ export interface IRootState {
   readonly ejecCuentas: EjecCuentasState;
   readonly direccion: DireccionState;
   readonly emprendimiento: EmprendimientoState;
+  readonly grupoAlarma: GrupoAlarmaState;
+  readonly grupoEmprendimiento: GrupoEmprendimientoState;
+  readonly grupoUsuario: GrupoUsuarioState;
+  readonly pauta: PautaState;
+  readonly masterTipoEmp: MasterTipoEmpState;
   /* jhipster-needle-add-reducer-type - JHipster will add reducer type here */
   readonly loadingBar: any;
 }
@@ -115,6 +140,11 @@ const rootReducer = combineReducers<IRootState>({
   ejecCuentas,
   direccion,
   emprendimiento,
+  grupoAlarma,
+  grupoEmprendimiento,
+  grupoUsuario,
+  pauta,
+  masterTipoEmp,
   /* jhipster-needle-add-reducer-combine - JHipster will add reducer here */
   loadingBar,
 });

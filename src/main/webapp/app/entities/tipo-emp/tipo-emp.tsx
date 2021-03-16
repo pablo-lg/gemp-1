@@ -35,6 +35,7 @@ export const TipoEmp = (props: ITipoEmpProps) => {
                 <th>ID</th>
                 <th>Descripcion</th>
                 <th>Valor</th>
+                <th>Master Tipo Emp</th>
                 <th />
               </tr>
             </thead>
@@ -48,6 +49,13 @@ export const TipoEmp = (props: ITipoEmpProps) => {
                   </td>
                   <td>{tipoEmp.descripcion}</td>
                   <td>{tipoEmp.valor}</td>
+                  <td>
+                    {tipoEmp.masterTipoEmp ? (
+                      <Link to={`master-tipo-emp/${tipoEmp.masterTipoEmp.id}`}>{tipoEmp.masterTipoEmp.id}</Link>
+                    ) : (
+                      ''
+                    )}
+                  </td>
                   <td className="text-right">
                     <div className="btn-group flex-btn-group-container">
                       <Button tag={Link} to={`${match.url}/${tipoEmp.id}`} color="info" size="sm">

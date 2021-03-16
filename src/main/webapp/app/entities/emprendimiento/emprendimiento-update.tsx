@@ -132,16 +132,220 @@ export const EmprendimientoUpdate = (props: IEmprendimientoUpdateProps) => {
                 </AvGroup>
               ) : null}
               <AvGroup>
+                <Label id="nombreLabel" for="emprendimiento-nombre">
+                  Nombre
+                </Label>
+                <AvField id="emprendimiento-nombre" type="text" name="nombre" />
+              </AvGroup>
+              <AvGroup>
                 <Label id="contactoLabel" for="emprendimiento-contacto">
                   Contacto
                 </Label>
                 <AvField id="emprendimiento-contacto" type="text" name="contacto" />
               </AvGroup>
               <AvGroup>
-                <Label id="provinciaLabel" for="emprendimiento-provincia">
-                  Provincia
+                <Label id="fechaFinObraLabel" for="emprendimiento-fechaFinObra">
+                  Fecha Fin Obra
                 </Label>
-                <AvField id="emprendimiento-provincia" type="text" name="provincia" />
+                <AvField id="emprendimiento-fechaFinObra" type="date" className="form-control" name="fechaFinObra" />
+              </AvGroup>
+              <AvGroup>
+                <Label id="elementosDeRedLabel" for="emprendimiento-elementosDeRed">
+                  Elementos De Red
+                </Label>
+                <AvField id="emprendimiento-elementosDeRed" type="text" name="elementosDeRed" />
+              </AvGroup>
+              <AvGroup>
+                <Label id="clientesCatvLabel" for="emprendimiento-clientesCatv">
+                  Clientes Catv
+                </Label>
+                <AvField id="emprendimiento-clientesCatv" type="text" name="clientesCatv" />
+              </AvGroup>
+              <AvGroup>
+                <Label id="clientesFibertelLabel" for="emprendimiento-clientesFibertel">
+                  Clientes Fibertel
+                </Label>
+                <AvField id="emprendimiento-clientesFibertel" type="text" name="clientesFibertel" />
+              </AvGroup>
+              <AvGroup>
+                <Label id="clientesFibertelLiteLabel" for="emprendimiento-clientesFibertelLite">
+                  Clientes Fibertel Lite
+                </Label>
+                <AvField id="emprendimiento-clientesFibertelLite" type="text" name="clientesFibertelLite" />
+              </AvGroup>
+              <AvGroup>
+                <Label id="clientesFlowLabel" for="emprendimiento-clientesFlow">
+                  Clientes Flow
+                </Label>
+                <AvField id="emprendimiento-clientesFlow" type="text" name="clientesFlow" />
+              </AvGroup>
+              <AvGroup>
+                <Label id="clientesComboLabel" for="emprendimiento-clientesCombo">
+                  Clientes Combo
+                </Label>
+                <AvField id="emprendimiento-clientesCombo" type="text" name="clientesCombo" />
+              </AvGroup>
+              <AvGroup>
+                <Label id="lineasVozLabel" for="emprendimiento-lineasVoz">
+                  Lineas Voz
+                </Label>
+                <AvField id="emprendimiento-lineasVoz" type="text" name="lineasVoz" />
+              </AvGroup>
+              <AvGroup>
+                <Label id="mesesDeFinalizadoLabel" for="emprendimiento-mesesDeFinalizado">
+                  Meses De Finalizado
+                </Label>
+                <AvField id="emprendimiento-mesesDeFinalizado" type="text" name="mesesDeFinalizado" />
+              </AvGroup>
+              <AvGroup>
+                <Label id="altasBCLabel" for="emprendimiento-altasBC">
+                  Altas BC
+                </Label>
+                <AvField id="emprendimiento-altasBC" type="text" name="altasBC" />
+              </AvGroup>
+              <AvGroup>
+                <Label id="penetracionVivLotLabel" for="emprendimiento-penetracionVivLot">
+                  Penetracion Viv Lot
+                </Label>
+                <AvField id="emprendimiento-penetracionVivLot" type="text" name="penetracionVivLot" />
+              </AvGroup>
+              <AvGroup>
+                <Label id="penetracionBCLabel" for="emprendimiento-penetracionBC">
+                  Penetracion BC
+                </Label>
+                <AvField id="emprendimiento-penetracionBC" type="text" name="penetracionBC" />
+              </AvGroup>
+              <AvGroup>
+                <Label id="demanda1Label" for="emprendimiento-demanda1">
+                  Demanda 1
+                </Label>
+                <AvField id="emprendimiento-demanda1" type="text" name="demanda1" />
+              </AvGroup>
+              <AvGroup>
+                <Label id="demanda2Label" for="emprendimiento-demanda2">
+                  Demanda 2
+                </Label>
+                <AvField id="emprendimiento-demanda2" type="text" name="demanda2" />
+              </AvGroup>
+              <AvGroup>
+                <Label id="demanda3Label" for="emprendimiento-demanda3">
+                  Demanda 3
+                </Label>
+                <AvField id="emprendimiento-demanda3" type="text" name="demanda3" />
+              </AvGroup>
+              <AvGroup>
+                <Label id="demanda4Label" for="emprendimiento-demanda4">
+                  Demanda 4
+                </Label>
+                <AvField id="emprendimiento-demanda4" type="text" name="demanda4" />
+              </AvGroup>
+              <AvGroup>
+                <Label id="lotesLabel" for="emprendimiento-lotes">
+                  Lotes
+                </Label>
+                <AvField id="emprendimiento-lotes" type="text" name="lotes" />
+              </AvGroup>
+              <AvGroup>
+                <Label id="viviendasLabel" for="emprendimiento-viviendas">
+                  Viviendas
+                </Label>
+                <AvField id="emprendimiento-viviendas" type="text" name="viviendas" />
+              </AvGroup>
+              <AvGroup>
+                <Label id="comProfLabel" for="emprendimiento-comProf">
+                  Com Prof
+                </Label>
+                <AvField id="emprendimiento-comProf" type="text" name="comProf" />
+              </AvGroup>
+              <AvGroup>
+                <Label id="habitacionesLabel" for="emprendimiento-habitaciones">
+                  Habitaciones
+                </Label>
+                <AvField id="emprendimiento-habitaciones" type="text" name="habitaciones" />
+              </AvGroup>
+              <AvGroup>
+                <Label id="manzanasLabel" for="emprendimiento-manzanas">
+                  Manzanas
+                </Label>
+                <AvField id="emprendimiento-manzanas" type="text" name="manzanas" />
+              </AvGroup>
+              <AvGroup>
+                <Label id="demandaLabel" for="emprendimiento-demanda">
+                  Demanda
+                </Label>
+                <AvField id="emprendimiento-demanda" type="text" name="demanda" />
+              </AvGroup>
+              <AvGroup>
+                <Label id="fechaDeRelevamientoLabel" for="emprendimiento-fechaDeRelevamiento">
+                  Fecha De Relevamiento
+                </Label>
+                <AvField id="emprendimiento-fechaDeRelevamiento" type="date" className="form-control" name="fechaDeRelevamiento" />
+              </AvGroup>
+              <AvGroup>
+                <Label id="telefonoLabel" for="emprendimiento-telefono">
+                  Telefono
+                </Label>
+                <AvField id="emprendimiento-telefono" type="text" name="telefono" />
+              </AvGroup>
+              <AvGroup>
+                <Label id="anoPriorizacionLabel" for="emprendimiento-anoPriorizacion">
+                  Ano Priorizacion
+                </Label>
+                <AvField id="emprendimiento-anoPriorizacion" type="date" className="form-control" name="anoPriorizacion" />
+              </AvGroup>
+              <AvGroup>
+                <Label id="contratoOpenLabel" for="emprendimiento-contratoOpen">
+                  Contrato Open
+                </Label>
+                <AvField id="emprendimiento-contratoOpen" type="text" name="contratoOpen" />
+              </AvGroup>
+              <AvGroup check>
+                <Label id="negociacionLabel">
+                  <AvInput id="emprendimiento-negociacion" type="checkbox" className="form-check-input" name="negociacion" />
+                  Negociacion
+                </Label>
+              </AvGroup>
+              <AvGroup>
+                <Label id="estadoBCLabel" for="emprendimiento-estadoBC">
+                  Estado BC
+                </Label>
+                <AvField id="emprendimiento-estadoBC" type="text" name="estadoBC" />
+              </AvGroup>
+              <AvGroup>
+                <Label id="fechaLabel" for="emprendimiento-fecha">
+                  Fecha
+                </Label>
+                <AvField id="emprendimiento-fecha" type="date" className="form-control" name="fecha" />
+              </AvGroup>
+              <AvGroup>
+                <Label id="codigoDeFirmaLabel" for="emprendimiento-codigoDeFirma">
+                  Codigo De Firma
+                </Label>
+                <AvField id="emprendimiento-codigoDeFirma" type="text" name="codigoDeFirma" />
+              </AvGroup>
+              <AvGroup>
+                <Label id="fechaFirmaLabel" for="emprendimiento-fechaFirma">
+                  Fecha Firma
+                </Label>
+                <AvField id="emprendimiento-fechaFirma" type="date" className="form-control" name="fechaFirma" />
+              </AvGroup>
+              <AvGroup>
+                <Label id="observacionesLabel" for="emprendimiento-observaciones">
+                  Observaciones
+                </Label>
+                <AvField id="emprendimiento-observaciones" type="text" name="observaciones" />
+              </AvGroup>
+              <AvGroup>
+                <Label id="comentarioLabel" for="emprendimiento-comentario">
+                  Comentario
+                </Label>
+                <AvField id="emprendimiento-comentario" type="text" name="comentario" />
+              </AvGroup>
+              <AvGroup>
+                <Label id="estadoFirmaLabel" for="emprendimiento-estadoFirma">
+                  Estado Firma
+                </Label>
+                <AvField id="emprendimiento-estadoFirma" type="text" name="estadoFirma" />
               </AvGroup>
               <AvGroup>
                 <Label for="emprendimiento-obra">Obra</Label>

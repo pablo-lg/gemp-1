@@ -1,0 +1,29 @@
+{
+  "name": "MasterTipoEmp",
+  "fields": [
+    {
+      "fieldName": "descripcion",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "sobreLote",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "sobreVivienda",
+      "fieldType": "String"
+    }
+  ],
+  "relationships": [],
+  "changelogDate": "20210316154745",
+  "entityTableName": "master_tipo_emp",
+  "dto": "no",
+  "pagination": "no",
+  "service": "no",
+  "jpaMetamodelFiltering": false,
+  "fluentMethods": true,
+  "readOnly": false,
+  "embedded": false,
+  "clientRootFolder": "",
+  "applications": "*"
+}

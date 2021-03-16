@@ -72,8 +72,42 @@ class EmprendimientoGatlingTest extends Simulation {
             .headers(headers_http_authenticated)
             .body(StringBody("""{
                 "id":null
+                , "nombre":"SAMPLE_TEXT"
                 , "contacto":"SAMPLE_TEXT"
-                , "provincia":"SAMPLE_TEXT"
+                , "fechaFinObra":"2020-01-01T00:00:00.000Z"
+                , "elementosDeRed":"SAMPLE_TEXT"
+                , "clientesCatv":"SAMPLE_TEXT"
+                , "clientesFibertel":"SAMPLE_TEXT"
+                , "clientesFibertelLite":"SAMPLE_TEXT"
+                , "clientesFlow":"SAMPLE_TEXT"
+                , "clientesCombo":"SAMPLE_TEXT"
+                , "lineasVoz":"SAMPLE_TEXT"
+                , "mesesDeFinalizado":"SAMPLE_TEXT"
+                , "altasBC":"SAMPLE_TEXT"
+                , "penetracionVivLot":"SAMPLE_TEXT"
+                , "penetracionBC":"SAMPLE_TEXT"
+                , "demanda1":"SAMPLE_TEXT"
+                , "demanda2":"SAMPLE_TEXT"
+                , "demanda3":"SAMPLE_TEXT"
+                , "demanda4":"SAMPLE_TEXT"
+                , "lotes":"SAMPLE_TEXT"
+                , "viviendas":"SAMPLE_TEXT"
+                , "comProf":"SAMPLE_TEXT"
+                , "habitaciones":"SAMPLE_TEXT"
+                , "manzanas":"SAMPLE_TEXT"
+                , "demanda":"SAMPLE_TEXT"
+                , "fechaDeRelevamiento":"2020-01-01T00:00:00.000Z"
+                , "telefono":"SAMPLE_TEXT"
+                , "anoPriorizacion":"2020-01-01T00:00:00.000Z"
+                , "contratoOpen":"SAMPLE_TEXT"
+                , "negociacion":null
+                , "estadoBC":"SAMPLE_TEXT"
+                , "fecha":"2020-01-01T00:00:00.000Z"
+                , "codigoDeFirma":"SAMPLE_TEXT"
+                , "fechaFirma":"2020-01-01T00:00:00.000Z"
+                , "observaciones":"SAMPLE_TEXT"
+                , "comentario":"SAMPLE_TEXT"
+                , "estadoFirma":"SAMPLE_TEXT"
                 }""")).asJson
             .check(status.is(201))
             .check(headerRegex("Location", "(.*)").saveAs("new_emprendimiento_url"))).exitHereIfFailed

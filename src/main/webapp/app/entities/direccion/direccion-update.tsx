@@ -72,40 +72,90 @@ export const DireccionUpdate = (props: IDireccionUpdateProps) => {
                 </AvGroup>
               ) : null}
               <AvGroup>
+                <Label id="identificationLabel" for="direccion-identification">
+                  Identification
+                </Label>
+                <AvField id="direccion-identification" type="text" name="identification" validate={{}} />
+              </AvGroup>
+              <AvGroup>
                 <Label id="paisLabel" for="direccion-pais">
                   Pais
                 </Label>
-                <AvField id="direccion-pais" type="text" name="pais" />
+                <AvField
+                  id="direccion-pais"
+                  type="text"
+                  name="pais"
+                  validate={{
+                    required: { value: true, errorMessage: 'This field is required.' },
+                  }}
+                />
               </AvGroup>
               <AvGroup>
                 <Label id="provinciaLabel" for="direccion-provincia">
                   Provincia
                 </Label>
-                <AvField id="direccion-provincia" type="text" name="provincia" />
+                <AvField
+                  id="direccion-provincia"
+                  type="text"
+                  name="provincia"
+                  validate={{
+                    required: { value: true, errorMessage: 'This field is required.' },
+                  }}
+                />
               </AvGroup>
               <AvGroup>
                 <Label id="partidoLabel" for="direccion-partido">
                   Partido
                 </Label>
-                <AvField id="direccion-partido" type="text" name="partido" />
+                <AvField
+                  id="direccion-partido"
+                  type="text"
+                  name="partido"
+                  validate={{
+                    required: { value: true, errorMessage: 'This field is required.' },
+                  }}
+                />
               </AvGroup>
               <AvGroup>
                 <Label id="localidadLabel" for="direccion-localidad">
                   Localidad
                 </Label>
-                <AvField id="direccion-localidad" type="text" name="localidad" />
+                <AvField
+                  id="direccion-localidad"
+                  type="text"
+                  name="localidad"
+                  validate={{
+                    required: { value: true, errorMessage: 'This field is required.' },
+                  }}
+                />
               </AvGroup>
               <AvGroup>
                 <Label id="calleLabel" for="direccion-calle">
                   Calle
                 </Label>
-                <AvField id="direccion-calle" type="text" name="calle" />
+                <AvField
+                  id="direccion-calle"
+                  type="text"
+                  name="calle"
+                  validate={{
+                    required: { value: true, errorMessage: 'This field is required.' },
+                  }}
+                />
               </AvGroup>
               <AvGroup>
                 <Label id="alturaLabel" for="direccion-altura">
                   Altura
                 </Label>
-                <AvField id="direccion-altura" type="string" className="form-control" name="altura" />
+                <AvField
+                  id="direccion-altura"
+                  type="string"
+                  className="form-control"
+                  name="altura"
+                  validate={{
+                    required: { value: true, errorMessage: 'This field is required.' },
+                    number: { value: true, errorMessage: 'This field should be a number.' },
+                  }}
+                />
               </AvGroup>
               <AvGroup>
                 <Label id="regionLabel" for="direccion-region">
@@ -142,6 +192,48 @@ export const DireccionUpdate = (props: IDireccionUpdateProps) => {
                   Tipo Calle
                 </Label>
                 <AvField id="direccion-tipoCalle" type="text" name="tipoCalle" />
+              </AvGroup>
+              <AvGroup>
+                <Label id="zonaCompetenciaLabel" for="direccion-zonaCompetencia">
+                  Zona Competencia
+                </Label>
+                <AvField id="direccion-zonaCompetencia" type="text" name="zonaCompetencia" />
+              </AvGroup>
+              <AvGroup>
+                <Label id="intersectionLeftLabel" for="direccion-intersectionLeft">
+                  Intersection Left
+                </Label>
+                <AvField id="direccion-intersectionLeft" type="text" name="intersectionLeft" />
+              </AvGroup>
+              <AvGroup>
+                <Label id="intersectionRightLabel" for="direccion-intersectionRight">
+                  Intersection Right
+                </Label>
+                <AvField id="direccion-intersectionRight" type="text" name="intersectionRight" />
+              </AvGroup>
+              <AvGroup>
+                <Label id="streetTypeLabel" for="direccion-streetType">
+                  Street Type
+                </Label>
+                <AvField id="direccion-streetType" type="text" name="streetType" />
+              </AvGroup>
+              <AvGroup>
+                <Label id="latitudLabel" for="direccion-latitud">
+                  Latitud
+                </Label>
+                <AvField id="direccion-latitud" type="text" name="latitud" />
+              </AvGroup>
+              <AvGroup>
+                <Label id="longitudLabel" for="direccion-longitud">
+                  Longitud
+                </Label>
+                <AvField id="direccion-longitud" type="text" name="longitud" />
+              </AvGroup>
+              <AvGroup>
+                <Label id="elementosDeRedLabel" for="direccion-elementosDeRed">
+                  Elementos De Red
+                </Label>
+                <AvField id="direccion-elementosDeRed" type="text" name="elementosDeRed" />
               </AvGroup>
               <Button tag={Link} id="cancel-save" to="/direccion" replace color="info">
                 <FontAwesomeIcon icon="arrow-left" />

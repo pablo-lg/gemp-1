@@ -29,6 +29,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WithMockUser
 public class DireccionResourceIT {
 
+    private static final String DEFAULT_IDENTIFICATION = "AAAAAAAAAA";
+    private static final String UPDATED_IDENTIFICATION = "BBBBBBBBBB";
+
     private static final String DEFAULT_PAIS = "AAAAAAAAAA";
     private static final String UPDATED_PAIS = "BBBBBBBBBB";
 
@@ -65,6 +68,27 @@ public class DireccionResourceIT {
     private static final String DEFAULT_TIPO_CALLE = "AAAAAAAAAA";
     private static final String UPDATED_TIPO_CALLE = "BBBBBBBBBB";
 
+    private static final String DEFAULT_ZONA_COMPETENCIA = "AAAAAAAAAA";
+    private static final String UPDATED_ZONA_COMPETENCIA = "BBBBBBBBBB";
+
+    private static final String DEFAULT_INTERSECTION_LEFT = "AAAAAAAAAA";
+    private static final String UPDATED_INTERSECTION_LEFT = "BBBBBBBBBB";
+
+    private static final String DEFAULT_INTERSECTION_RIGHT = "AAAAAAAAAA";
+    private static final String UPDATED_INTERSECTION_RIGHT = "BBBBBBBBBB";
+
+    private static final String DEFAULT_STREET_TYPE = "AAAAAAAAAA";
+    private static final String UPDATED_STREET_TYPE = "BBBBBBBBBB";
+
+    private static final String DEFAULT_LATITUD = "AAAAAAAAAA";
+    private static final String UPDATED_LATITUD = "BBBBBBBBBB";
+
+    private static final String DEFAULT_LONGITUD = "AAAAAAAAAA";
+    private static final String UPDATED_LONGITUD = "BBBBBBBBBB";
+
+    private static final String DEFAULT_ELEMENTOS_DE_RED = "AAAAAAAAAA";
+    private static final String UPDATED_ELEMENTOS_DE_RED = "BBBBBBBBBB";
+
     @Autowired
     private DireccionRepository direccionRepository;
 
@@ -84,6 +108,7 @@ public class DireccionResourceIT {
      */
     public static Direccion createEntity(EntityManager em) {
         Direccion direccion = new Direccion()
+            .identification(DEFAULT_IDENTIFICATION)
             .pais(DEFAULT_PAIS)
             .provincia(DEFAULT_PROVINCIA)
             .partido(DEFAULT_PARTIDO)
@@ -95,7 +120,14 @@ public class DireccionResourceIT {
             .hub(DEFAULT_HUB)
             .barriosEspeciales(DEFAULT_BARRIOS_ESPECIALES)
             .codigoPostal(DEFAULT_CODIGO_POSTAL)
-            .tipoCalle(DEFAULT_TIPO_CALLE);
+            .tipoCalle(DEFAULT_TIPO_CALLE)
+            .zonaCompetencia(DEFAULT_ZONA_COMPETENCIA)
+            .intersectionLeft(DEFAULT_INTERSECTION_LEFT)
+            .intersectionRight(DEFAULT_INTERSECTION_RIGHT)
+            .streetType(DEFAULT_STREET_TYPE)
+            .latitud(DEFAULT_LATITUD)
+            .longitud(DEFAULT_LONGITUD)
+            .elementosDeRed(DEFAULT_ELEMENTOS_DE_RED);
         return direccion;
     }
     /**
@@ -106,6 +138,7 @@ public class DireccionResourceIT {
      */
     public static Direccion createUpdatedEntity(EntityManager em) {
         Direccion direccion = new Direccion()
+            .identification(UPDATED_IDENTIFICATION)
             .pais(UPDATED_PAIS)
             .provincia(UPDATED_PROVINCIA)
             .partido(UPDATED_PARTIDO)
@@ -117,7 +150,14 @@ public class DireccionResourceIT {
             .hub(UPDATED_HUB)
             .barriosEspeciales(UPDATED_BARRIOS_ESPECIALES)
             .codigoPostal(UPDATED_CODIGO_POSTAL)
-            .tipoCalle(UPDATED_TIPO_CALLE);
+            .tipoCalle(UPDATED_TIPO_CALLE)
+            .zonaCompetencia(UPDATED_ZONA_COMPETENCIA)
+            .intersectionLeft(UPDATED_INTERSECTION_LEFT)
+            .intersectionRight(UPDATED_INTERSECTION_RIGHT)
+            .streetType(UPDATED_STREET_TYPE)
+            .latitud(UPDATED_LATITUD)
+            .longitud(UPDATED_LONGITUD)
+            .elementosDeRed(UPDATED_ELEMENTOS_DE_RED);
         return direccion;
     }
 
@@ -140,6 +180,7 @@ public class DireccionResourceIT {
         List<Direccion> direccionList = direccionRepository.findAll();
         assertThat(direccionList).hasSize(databaseSizeBeforeCreate + 1);
         Direccion testDireccion = direccionList.get(direccionList.size() - 1);
+        assertThat(testDireccion.getIdentification()).isEqualTo(DEFAULT_IDENTIFICATION);
         assertThat(testDireccion.getPais()).isEqualTo(DEFAULT_PAIS);
         assertThat(testDireccion.getProvincia()).isEqualTo(DEFAULT_PROVINCIA);
         assertThat(testDireccion.getPartido()).isEqualTo(DEFAULT_PARTIDO);
@@ -152,6 +193,13 @@ public class DireccionResourceIT {
         assertThat(testDireccion.getBarriosEspeciales()).isEqualTo(DEFAULT_BARRIOS_ESPECIALES);
         assertThat(testDireccion.getCodigoPostal()).isEqualTo(DEFAULT_CODIGO_POSTAL);
         assertThat(testDireccion.getTipoCalle()).isEqualTo(DEFAULT_TIPO_CALLE);
+        assertThat(testDireccion.getZonaCompetencia()).isEqualTo(DEFAULT_ZONA_COMPETENCIA);
+        assertThat(testDireccion.getIntersectionLeft()).isEqualTo(DEFAULT_INTERSECTION_LEFT);
+        assertThat(testDireccion.getIntersectionRight()).isEqualTo(DEFAULT_INTERSECTION_RIGHT);
+        assertThat(testDireccion.getStreetType()).isEqualTo(DEFAULT_STREET_TYPE);
+        assertThat(testDireccion.getLatitud()).isEqualTo(DEFAULT_LATITUD);
+        assertThat(testDireccion.getLongitud()).isEqualTo(DEFAULT_LONGITUD);
+        assertThat(testDireccion.getElementosDeRed()).isEqualTo(DEFAULT_ELEMENTOS_DE_RED);
     }
 
     @Test
@@ -176,6 +224,120 @@ public class DireccionResourceIT {
 
     @Test
     @Transactional
+    public void checkPaisIsRequired() throws Exception {
+        int databaseSizeBeforeTest = direccionRepository.findAll().size();
+        // set the field null
+        direccion.setPais(null);
+
+        // Create the Direccion, which fails.
+
+
+        restDireccionMockMvc.perform(post("/api/direccions")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(TestUtil.convertObjectToJsonBytes(direccion)))
+            .andExpect(status().isBadRequest());
+
+        List<Direccion> direccionList = direccionRepository.findAll();
+        assertThat(direccionList).hasSize(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
+    public void checkProvinciaIsRequired() throws Exception {
+        int databaseSizeBeforeTest = direccionRepository.findAll().size();
+        // set the field null
+        direccion.setProvincia(null);
+
+        // Create the Direccion, which fails.
+
+
+        restDireccionMockMvc.perform(post("/api/direccions")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(TestUtil.convertObjectToJsonBytes(direccion)))
+            .andExpect(status().isBadRequest());
+
+        List<Direccion> direccionList = direccionRepository.findAll();
+        assertThat(direccionList).hasSize(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
+    public void checkPartidoIsRequired() throws Exception {
+        int databaseSizeBeforeTest = direccionRepository.findAll().size();
+        // set the field null
+        direccion.setPartido(null);
+
+        // Create the Direccion, which fails.
+
+
+        restDireccionMockMvc.perform(post("/api/direccions")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(TestUtil.convertObjectToJsonBytes(direccion)))
+            .andExpect(status().isBadRequest());
+
+        List<Direccion> direccionList = direccionRepository.findAll();
+        assertThat(direccionList).hasSize(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
+    public void checkLocalidadIsRequired() throws Exception {
+        int databaseSizeBeforeTest = direccionRepository.findAll().size();
+        // set the field null
+        direccion.setLocalidad(null);
+
+        // Create the Direccion, which fails.
+
+
+        restDireccionMockMvc.perform(post("/api/direccions")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(TestUtil.convertObjectToJsonBytes(direccion)))
+            .andExpect(status().isBadRequest());
+
+        List<Direccion> direccionList = direccionRepository.findAll();
+        assertThat(direccionList).hasSize(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
+    public void checkCalleIsRequired() throws Exception {
+        int databaseSizeBeforeTest = direccionRepository.findAll().size();
+        // set the field null
+        direccion.setCalle(null);
+
+        // Create the Direccion, which fails.
+
+
+        restDireccionMockMvc.perform(post("/api/direccions")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(TestUtil.convertObjectToJsonBytes(direccion)))
+            .andExpect(status().isBadRequest());
+
+        List<Direccion> direccionList = direccionRepository.findAll();
+        assertThat(direccionList).hasSize(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
+    public void checkAlturaIsRequired() throws Exception {
+        int databaseSizeBeforeTest = direccionRepository.findAll().size();
+        // set the field null
+        direccion.setAltura(null);
+
+        // Create the Direccion, which fails.
+
+
+        restDireccionMockMvc.perform(post("/api/direccions")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(TestUtil.convertObjectToJsonBytes(direccion)))
+            .andExpect(status().isBadRequest());
+
+        List<Direccion> direccionList = direccionRepository.findAll();
+        assertThat(direccionList).hasSize(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
     public void getAllDireccions() throws Exception {
         // Initialize the database
         direccionRepository.saveAndFlush(direccion);
@@ -185,6 +347,7 @@ public class DireccionResourceIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(direccion.getId().intValue())))
+            .andExpect(jsonPath("$.[*].identification").value(hasItem(DEFAULT_IDENTIFICATION)))
             .andExpect(jsonPath("$.[*].pais").value(hasItem(DEFAULT_PAIS)))
             .andExpect(jsonPath("$.[*].provincia").value(hasItem(DEFAULT_PROVINCIA)))
             .andExpect(jsonPath("$.[*].partido").value(hasItem(DEFAULT_PARTIDO)))
@@ -196,7 +359,14 @@ public class DireccionResourceIT {
             .andExpect(jsonPath("$.[*].hub").value(hasItem(DEFAULT_HUB)))
             .andExpect(jsonPath("$.[*].barriosEspeciales").value(hasItem(DEFAULT_BARRIOS_ESPECIALES)))
             .andExpect(jsonPath("$.[*].codigoPostal").value(hasItem(DEFAULT_CODIGO_POSTAL)))
-            .andExpect(jsonPath("$.[*].tipoCalle").value(hasItem(DEFAULT_TIPO_CALLE)));
+            .andExpect(jsonPath("$.[*].tipoCalle").value(hasItem(DEFAULT_TIPO_CALLE)))
+            .andExpect(jsonPath("$.[*].zonaCompetencia").value(hasItem(DEFAULT_ZONA_COMPETENCIA)))
+            .andExpect(jsonPath("$.[*].intersectionLeft").value(hasItem(DEFAULT_INTERSECTION_LEFT)))
+            .andExpect(jsonPath("$.[*].intersectionRight").value(hasItem(DEFAULT_INTERSECTION_RIGHT)))
+            .andExpect(jsonPath("$.[*].streetType").value(hasItem(DEFAULT_STREET_TYPE)))
+            .andExpect(jsonPath("$.[*].latitud").value(hasItem(DEFAULT_LATITUD)))
+            .andExpect(jsonPath("$.[*].longitud").value(hasItem(DEFAULT_LONGITUD)))
+            .andExpect(jsonPath("$.[*].elementosDeRed").value(hasItem(DEFAULT_ELEMENTOS_DE_RED)));
     }
     
     @Test
@@ -210,6 +380,7 @@ public class DireccionResourceIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.id").value(direccion.getId().intValue()))
+            .andExpect(jsonPath("$.identification").value(DEFAULT_IDENTIFICATION))
             .andExpect(jsonPath("$.pais").value(DEFAULT_PAIS))
             .andExpect(jsonPath("$.provincia").value(DEFAULT_PROVINCIA))
             .andExpect(jsonPath("$.partido").value(DEFAULT_PARTIDO))
@@ -221,7 +392,14 @@ public class DireccionResourceIT {
             .andExpect(jsonPath("$.hub").value(DEFAULT_HUB))
             .andExpect(jsonPath("$.barriosEspeciales").value(DEFAULT_BARRIOS_ESPECIALES))
             .andExpect(jsonPath("$.codigoPostal").value(DEFAULT_CODIGO_POSTAL))
-            .andExpect(jsonPath("$.tipoCalle").value(DEFAULT_TIPO_CALLE));
+            .andExpect(jsonPath("$.tipoCalle").value(DEFAULT_TIPO_CALLE))
+            .andExpect(jsonPath("$.zonaCompetencia").value(DEFAULT_ZONA_COMPETENCIA))
+            .andExpect(jsonPath("$.intersectionLeft").value(DEFAULT_INTERSECTION_LEFT))
+            .andExpect(jsonPath("$.intersectionRight").value(DEFAULT_INTERSECTION_RIGHT))
+            .andExpect(jsonPath("$.streetType").value(DEFAULT_STREET_TYPE))
+            .andExpect(jsonPath("$.latitud").value(DEFAULT_LATITUD))
+            .andExpect(jsonPath("$.longitud").value(DEFAULT_LONGITUD))
+            .andExpect(jsonPath("$.elementosDeRed").value(DEFAULT_ELEMENTOS_DE_RED));
     }
     @Test
     @Transactional
@@ -244,6 +422,7 @@ public class DireccionResourceIT {
         // Disconnect from session so that the updates on updatedDireccion are not directly saved in db
         em.detach(updatedDireccion);
         updatedDireccion
+            .identification(UPDATED_IDENTIFICATION)
             .pais(UPDATED_PAIS)
             .provincia(UPDATED_PROVINCIA)
             .partido(UPDATED_PARTIDO)
@@ -255,7 +434,14 @@ public class DireccionResourceIT {
             .hub(UPDATED_HUB)
             .barriosEspeciales(UPDATED_BARRIOS_ESPECIALES)
             .codigoPostal(UPDATED_CODIGO_POSTAL)
-            .tipoCalle(UPDATED_TIPO_CALLE);
+            .tipoCalle(UPDATED_TIPO_CALLE)
+            .zonaCompetencia(UPDATED_ZONA_COMPETENCIA)
+            .intersectionLeft(UPDATED_INTERSECTION_LEFT)
+            .intersectionRight(UPDATED_INTERSECTION_RIGHT)
+            .streetType(UPDATED_STREET_TYPE)
+            .latitud(UPDATED_LATITUD)
+            .longitud(UPDATED_LONGITUD)
+            .elementosDeRed(UPDATED_ELEMENTOS_DE_RED);
 
         restDireccionMockMvc.perform(put("/api/direccions")
             .contentType(MediaType.APPLICATION_JSON)
@@ -266,6 +452,7 @@ public class DireccionResourceIT {
         List<Direccion> direccionList = direccionRepository.findAll();
         assertThat(direccionList).hasSize(databaseSizeBeforeUpdate);
         Direccion testDireccion = direccionList.get(direccionList.size() - 1);
+        assertThat(testDireccion.getIdentification()).isEqualTo(UPDATED_IDENTIFICATION);
         assertThat(testDireccion.getPais()).isEqualTo(UPDATED_PAIS);
         assertThat(testDireccion.getProvincia()).isEqualTo(UPDATED_PROVINCIA);
         assertThat(testDireccion.getPartido()).isEqualTo(UPDATED_PARTIDO);
@@ -278,6 +465,13 @@ public class DireccionResourceIT {
         assertThat(testDireccion.getBarriosEspeciales()).isEqualTo(UPDATED_BARRIOS_ESPECIALES);
         assertThat(testDireccion.getCodigoPostal()).isEqualTo(UPDATED_CODIGO_POSTAL);
         assertThat(testDireccion.getTipoCalle()).isEqualTo(UPDATED_TIPO_CALLE);
+        assertThat(testDireccion.getZonaCompetencia()).isEqualTo(UPDATED_ZONA_COMPETENCIA);
+        assertThat(testDireccion.getIntersectionLeft()).isEqualTo(UPDATED_INTERSECTION_LEFT);
+        assertThat(testDireccion.getIntersectionRight()).isEqualTo(UPDATED_INTERSECTION_RIGHT);
+        assertThat(testDireccion.getStreetType()).isEqualTo(UPDATED_STREET_TYPE);
+        assertThat(testDireccion.getLatitud()).isEqualTo(UPDATED_LATITUD);
+        assertThat(testDireccion.getLongitud()).isEqualTo(UPDATED_LONGITUD);
+        assertThat(testDireccion.getElementosDeRed()).isEqualTo(UPDATED_ELEMENTOS_DE_RED);
     }
 
     @Test

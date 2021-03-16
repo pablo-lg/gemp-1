@@ -72,6 +72,7 @@ class DireccionGatlingTest extends Simulation {
             .headers(headers_http_authenticated)
             .body(StringBody("""{
                 "id":null
+                , "identification":"SAMPLE_TEXT"
                 , "pais":"SAMPLE_TEXT"
                 , "provincia":"SAMPLE_TEXT"
                 , "partido":"SAMPLE_TEXT"
@@ -84,6 +85,13 @@ class DireccionGatlingTest extends Simulation {
                 , "barriosEspeciales":"SAMPLE_TEXT"
                 , "codigoPostal":"SAMPLE_TEXT"
                 , "tipoCalle":"SAMPLE_TEXT"
+                , "zonaCompetencia":"SAMPLE_TEXT"
+                , "intersectionLeft":"SAMPLE_TEXT"
+                , "intersectionRight":"SAMPLE_TEXT"
+                , "streetType":"SAMPLE_TEXT"
+                , "latitud":"SAMPLE_TEXT"
+                , "longitud":"SAMPLE_TEXT"
+                , "elementosDeRed":"SAMPLE_TEXT"
                 }""")).asJson
             .check(status.is(201))
             .check(headerRegex("Location", "(.*)").saveAs("new_direccion_url"))).exitHereIfFailed

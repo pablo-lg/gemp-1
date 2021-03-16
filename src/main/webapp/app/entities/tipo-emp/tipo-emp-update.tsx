@@ -7,6 +7,8 @@ import { ICrudGetAction, ICrudGetAllAction, ICrudPutAction } from 'react-jhipste
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { IRootState } from 'app/shared/reducers';
 
+import { IMasterTipoEmp } from 'app/shared/model/master-tipo-emp.model';
+import { getEntities as getMasterTipoEmps } from 'app/entities/master-tipo-emp/master-tipo-emp.reducer';
 import { getEntity, updateEntity, createEntity, reset } from './tipo-emp.reducer';
 import { ITipoEmp } from 'app/shared/model/tipo-emp.model';
 import { convertDateTimeFromServer, convertDateTimeToServer, displayDefaultDateTime } from 'app/shared/util/date-utils';
@@ -15,9 +17,10 @@ import { mapIdList } from 'app/shared/util/entity-utils';
 export interface ITipoEmpUpdateProps extends StateProps, DispatchProps, RouteComponentProps<{ id: string }> {}
 
 export const TipoEmpUpdate = (props: ITipoEmpUpdateProps) => {
+  const [masterTipoEmpId, setMasterTipoEmpId] = useState('0');
   const [isNew, setIsNew] = useState(!props.match.params || !props.match.params.id);
 
-  const { tipoEmpEntity, loading, updating } = props;
+  const { tipoEmpEntity, masterTipoEmps, loading, updating } = props;
 
   const handleClose = () => {
     props.history.push('/tipo-emp');
@@ -29,6 +32,8 @@ export const TipoEmpUpdate = (props: ITipoEmpUpdateProps) => {
     } else {
       props.getEntity(props.match.params.id);
     }
+
+    props.getMasterTipoEmps();
   }, []);
 
   useEffect(() => {
@@ -83,6 +88,19 @@ export const TipoEmpUpdate = (props: ITipoEmpUpdateProps) => {
                 </Label>
                 <AvField id="tipo-emp-valor" type="text" name="valor" />
               </AvGroup>
+              <AvGroup>
+                <Label for="tipo-emp-masterTipoEmp">Master Tipo Emp</Label>
+                <AvInput id="tipo-emp-masterTipoEmp" type="select" className="form-control" name="masterTipoEmp.id">
+                  <option value="" key="0" />
+                  {masterTipoEmps
+                    ? masterTipoEmps.map(otherEntity => (
+                        <option value={otherEntity.id} key={otherEntity.id}>
+                          {otherEntity.id}
+                        </option>
+                      ))
+                    : null}
+                </AvInput>
+              </AvGroup>
               <Button tag={Link} id="cancel-save" to="/tipo-emp" replace color="info">
                 <FontAwesomeIcon icon="arrow-left" />
                 &nbsp;
@@ -102,6 +120,7 @@ export const TipoEmpUpdate = (props: ITipoEmpUpdateProps) => {
 };
 
 const mapStateToProps = (storeState: IRootState) => ({
+  masterTipoEmps: storeState.masterTipoEmp.entities,
   tipoEmpEntity: storeState.tipoEmp.entity,
   loading: storeState.tipoEmp.loading,
   updating: storeState.tipoEmp.updating,
@@ -109,6 +128,7 @@ const mapStateToProps = (storeState: IRootState) => ({
 });
 
 const mapDispatchToProps = {
+  getMasterTipoEmps,
   getEntity,
   updateEntity,
   createEntity,

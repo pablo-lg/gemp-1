@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.9.xsd">
+    <!--
+        Added the constraints for entity GrupoAlarma.
+    -->
+    <changeSet id="20210316154345-2" author="jhipster">
+        
+        <addForeignKeyConstraint baseColumnNames="grupo_emprendimiento_id"
+                                 baseTableName="grupo_alarma"
+                                 constraintName="grupo_alarma_grupo_emprendi_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="grupo_emprendimiento"/>
+
+        <addForeignKeyConstraint baseColumnNames="grupo_usuario_id"
+                                 baseTableName="grupo_alarma"
+                                 constraintName="grupo_alarma_grupo_usuario_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="grupo_usuario"/>
+
+    </changeSet>
+</databaseChangeLog>

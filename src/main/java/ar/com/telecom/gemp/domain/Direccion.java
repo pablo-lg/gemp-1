@@ -2,6 +2,7 @@ package ar.com.telecom.gemp.domain;
 
 
 import javax.persistence.*;
+import javax.validation.constraints.*;
 
 import java.io.Serializable;
 
@@ -19,22 +20,32 @@ public class Direccion implements Serializable {
     @SequenceGenerator(name = "sequenceGenerator")
     private Long id;
 
-    @Column(name = "pais")
+    
+    @Column(name = "identification", unique = true)
+    private String identification;
+
+    @NotNull
+    @Column(name = "pais", nullable = false)
     private String pais;
 
-    @Column(name = "provincia")
+    @NotNull
+    @Column(name = "provincia", nullable = false)
     private String provincia;
 
-    @Column(name = "partido")
+    @NotNull
+    @Column(name = "partido", nullable = false)
     private String partido;
 
-    @Column(name = "localidad")
+    @NotNull
+    @Column(name = "localidad", nullable = false)
     private String localidad;
 
-    @Column(name = "calle")
+    @NotNull
+    @Column(name = "calle", nullable = false)
     private String calle;
 
-    @Column(name = "altura")
+    @NotNull
+    @Column(name = "altura", nullable = false)
     private Long altura;
 
     @Column(name = "region")
@@ -55,6 +66,27 @@ public class Direccion implements Serializable {
     @Column(name = "tipo_calle")
     private String tipoCalle;
 
+    @Column(name = "zona_competencia")
+    private String zonaCompetencia;
+
+    @Column(name = "intersection_left")
+    private String intersectionLeft;
+
+    @Column(name = "intersection_right")
+    private String intersectionRight;
+
+    @Column(name = "street_type")
+    private String streetType;
+
+    @Column(name = "latitud")
+    private String latitud;
+
+    @Column(name = "longitud")
+    private String longitud;
+
+    @Column(name = "elementos_de_red")
+    private String elementosDeRed;
+
     // jhipster-needle-entity-add-field - JHipster will add fields here
     public Long getId() {
         return id;
@@ -62,6 +94,19 @@ public class Direccion implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getIdentification() {
+        return identification;
+    }
+
+    public Direccion identification(String identification) {
+        this.identification = identification;
+        return this;
+    }
+
+    public void setIdentification(String identification) {
+        this.identification = identification;
     }
 
     public String getPais() {
@@ -219,6 +264,97 @@ public class Direccion implements Serializable {
     public void setTipoCalle(String tipoCalle) {
         this.tipoCalle = tipoCalle;
     }
+
+    public String getZonaCompetencia() {
+        return zonaCompetencia;
+    }
+
+    public Direccion zonaCompetencia(String zonaCompetencia) {
+        this.zonaCompetencia = zonaCompetencia;
+        return this;
+    }
+
+    public void setZonaCompetencia(String zonaCompetencia) {
+        this.zonaCompetencia = zonaCompetencia;
+    }
+
+    public String getIntersectionLeft() {
+        return intersectionLeft;
+    }
+
+    public Direccion intersectionLeft(String intersectionLeft) {
+        this.intersectionLeft = intersectionLeft;
+        return this;
+    }
+
+    public void setIntersectionLeft(String intersectionLeft) {
+        this.intersectionLeft = intersectionLeft;
+    }
+
+    public String getIntersectionRight() {
+        return intersectionRight;
+    }
+
+    public Direccion intersectionRight(String intersectionRight) {
+        this.intersectionRight = intersectionRight;
+        return this;
+    }
+
+    public void setIntersectionRight(String intersectionRight) {
+        this.intersectionRight = intersectionRight;
+    }
+
+    public String getStreetType() {
+        return streetType;
+    }
+
+    public Direccion streetType(String streetType) {
+        this.streetType = streetType;
+        return this;
+    }
+
+    public void setStreetType(String streetType) {
+        this.streetType = streetType;
+    }
+
+    public String getLatitud() {
+        return latitud;
+    }
+
+    public Direccion latitud(String latitud) {
+        this.latitud = latitud;
+        return this;
+    }
+
+    public void setLatitud(String latitud) {
+        this.latitud = latitud;
+    }
+
+    public String getLongitud() {
+        return longitud;
+    }
+
+    public Direccion longitud(String longitud) {
+        this.longitud = longitud;
+        return this;
+    }
+
+    public void setLongitud(String longitud) {
+        this.longitud = longitud;
+    }
+
+    public String getElementosDeRed() {
+        return elementosDeRed;
+    }
+
+    public Direccion elementosDeRed(String elementosDeRed) {
+        this.elementosDeRed = elementosDeRed;
+        return this;
+    }
+
+    public void setElementosDeRed(String elementosDeRed) {
+        this.elementosDeRed = elementosDeRed;
+    }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
 
     @Override
@@ -242,6 +378,7 @@ public class Direccion implements Serializable {
     public String toString() {
         return "Direccion{" +
             "id=" + getId() +
+            ", identification='" + getIdentification() + "'" +
             ", pais='" + getPais() + "'" +
             ", provincia='" + getProvincia() + "'" +
             ", partido='" + getPartido() + "'" +
@@ -254,6 +391,13 @@ public class Direccion implements Serializable {
             ", barriosEspeciales='" + getBarriosEspeciales() + "'" +
             ", codigoPostal='" + getCodigoPostal() + "'" +
             ", tipoCalle='" + getTipoCalle() + "'" +
+            ", zonaCompetencia='" + getZonaCompetencia() + "'" +
+            ", intersectionLeft='" + getIntersectionLeft() + "'" +
+            ", intersectionRight='" + getIntersectionRight() + "'" +
+            ", streetType='" + getStreetType() + "'" +
+            ", latitud='" + getLatitud() + "'" +
+            ", longitud='" + getLongitud() + "'" +
+            ", elementosDeRed='" + getElementosDeRed() + "'" +
             "}";
     }
 }
