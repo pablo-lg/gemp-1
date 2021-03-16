@@ -21,6 +21,7 @@ export interface IHeaderProps {
   isAuthenticated: boolean;
   isAdmin: boolean;
   ribbonEnv: string;
+  authorities: string;
   isInProduction: boolean;
   isSwaggerEnabled: boolean;
 }

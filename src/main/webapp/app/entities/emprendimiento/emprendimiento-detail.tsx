@@ -184,15 +184,15 @@ export const EmprendimientoDetail = (props) => {
 
     const propsUpload = {
       name: 'file',
-      action: 'https://www.mocky.io/v2/5cc8019d300000980a055e76',
+      action: '/archivosSubidos',
       headers: {
         authorization: 'authorization-text',
       },
       onChange(info) {
-        if (info.file.status !== 'uploading') {
+        if (info.file.status !== 'subiendo') {
           console.error(info.file, info.fileList);
         }
-        if (info.file.status === 'done') {
+        if (info.file.status === 'terminado') {
           message.success(`${info.file.name} archivo subido con exito`);
         } else if (info.file.status === 'error') {
           message.error(`${info.file.name} falla en adjuntar el archivo.`);
@@ -601,7 +601,17 @@ export const EmprendimientoDetail = (props) => {
         <><Form.Item style={{ marginBottom: 4 }}>
             <Form.Item label="Estado BC" name="estadoBC"
               style={{ display: 'inline-block', width: 'calc(33% - 4px)', margin: '0 4px 0 0' }}>
-              <Input></Input>
+                              <Select allowClear showSearch
+                  placeholder="Estado BC"
+                  defaultValue={null}>
+                    <Select.Option value='Aprobado' key='Aprobado'>
+                    Aprobado
+                    </Select.Option>
+                    <Select.Option value='No aprobado' key='No aprobado'>
+                    No aprobado
+                    </Select.Option>
+           
+                </Select>
             </Form.Item>
   
             <Form.Item label="Fecha" name="fecha"
@@ -614,20 +624,21 @@ export const EmprendimientoDetail = (props) => {
               <Form.Item label="Código de Firma Digital" style={{ display: 'inline-block', width: 'calc(33% - 4px)', margin: '1px 4px 0 0' }}>
                 <Input></Input>
               </Form.Item>
-              <Form.Item label="Estado" name="estado"
+              <Form.Item label="Estado" name="estadoFirma"
                 style={{ display: 'inline-block', width: 'calc(33% - 4px)', margin: '0 4px 0 0' }}>
                 <Select allowClear showSearch
-                  loading={props.loadingEstado}
                   placeholder="Estado"
-                  optionFilterProp="children"
-                  filterOption={(input: any, option: any) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
                   defaultValue={null}>
-                  {props.estadoList ? props.estadoList.map(otherEntity => (
-                    <Select.Option value={otherEntity.id} key={otherEntity.descripcion}>
-                      {otherEntity.descripcion}
+                    <Select.Option value='Firmado' key='Firmado'>
+                    Firmado
                     </Select.Option>
-                  ))
-                    : null}
+                    <Select.Option value='No aprobado' key='No aprobado'>
+                    No aprobado
+                    </Select.Option>
+                    <Select.Option value='Aprobado por el CIC' key='Aprobado por el CIC'>
+                    Aprobado por el CIC
+                    </Select.Option>
+           
                 </Select>
               </Form.Item>
   

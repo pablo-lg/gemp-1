@@ -18,6 +18,7 @@ import { OmitProps } from 'antd/lib/transfer/ListBody';
 export interface IHeaderProps {
   isAuthenticated: boolean;
   isAdmin: boolean;
+  authorities: string;
   ribbonEnv: string;
   isInProduction: boolean;
   isSwaggerEnabled: boolean;
@@ -44,6 +45,7 @@ const LayoutPrincipal = (props) => {
         <Topbar
             isAuthenticated={props.isAuthenticated}
             isAdmin={props.isAdmin}
+            authorities={props.authorities}
             ribbonEnv={'true'}
             isInProduction={true}
             isSwaggerEnabled={true}

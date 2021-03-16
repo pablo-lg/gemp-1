@@ -38,6 +38,7 @@ export const App = (props: IAppProps) => {
         {props.isAuthenticated ? <ErrorBoundary>
                                    <LayoutPrincipal isAuthenticated={props.isAuthenticated}
                                         isAdmin={props.isAdmin}
+                                        authorities={props.authorities}
                                         content={<AppRoutes />} />
                                    </ErrorBoundary>
                                : <AppRoutes />}
@@ -49,6 +50,7 @@ export const App = (props: IAppProps) => {
 const mapStateToProps = ({ authentication, applicationProfile }: IRootState) => ({
   isAuthenticated: authentication.isAuthenticated,
   isAdmin: hasAnyAuthority(authentication.account.authorities, [AUTHORITIES.ADMIN]),
+  authorities: authentication.account.authorities,
   ribbonEnv: applicationProfile.ribbonEnv,
   isInProduction: applicationProfile.inProduction,
   isSwaggerEnabled: applicationProfile.isSwaggerEnabled,
