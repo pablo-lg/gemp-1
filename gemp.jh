@@ -62,28 +62,108 @@ entity EjecCuentas {
 }
 
 entity Direccion {
-  Id Long required,
-  pais String,
-  provincia String,
-  partido String,
-  localidad String,
-  calle String,
-  altura Long,
+  Id String required,
+  identification String unique,
+  pais String required,
+  provincia String required,
+  partido String required,
+  localidad String required,
+  calle String required,
+  altura Long required,
   region String,
   subregion String,
   hub String,
   barriosEspeciales String,
   codigoPostal String,
   tipoCalle String,
+  zonaCompetencia String,
+  intersectionLeft String,
+  intersectionRight String,
+  streetType String,
+  latitud String,
+  longitud String,
+  elementosDeRed String,
+  
+  
 }
 
 entity Emprendimiento {
   Id Long required,
+  nombre String,
   contacto String,
-  provincia String,
-
+  fechaFinObra LocalDate,
+  elementosDeRed String,
+  clientesCatv String,
+  clientesFibertel String,
+  clientesFibertelLite String,
+  clientesFlow String,
+  clientesCombo String,
+  lineasVoz String,
+  mesesDeFinalizado String,
+  altasBC String,
+  penetracionVivLot String,
+  penetracionBC String,
+  demanda1 String,
+  demanda2 String,
+  demanda3 String,
+  demanda4 String,
+  lotes String,
+  viviendas String,
+  comProf String,
+  habitaciones String,
+  manzanas String,
+  demanda String,
+  fechaDeRelevamiento LocalDate,
+  telefono String,
+  anoPriorizacion LocalDate,
+  contratoOpen String,
+  negociacion Boolean,
+  estadoBC String,
+  fecha LocalDate,
+  codigoDeFirma String,
+  fechaFirma LocalDate,
+  observaciones String,
+  comentario String,
+  estadoFirma String,
 }
+
+entity GrupoAlarma {
+  Id Long required,
+  nombreGrupo String required,
+  alarmaTiempo Long,
+  alarmaSva Long,
+  alarmaBusinesscase Long,
+}
+
+entity GrupoEmprendimiento {
+ Id Long required,
+ descripcion String,
+ esProtegido Boolean,
+}
+
+entity GrupoUsuario {
+ Id Long required,
+ usuario String,
+}
+
+entity Pauta {
+ Id Long required,
+ anios Long,
+ tipoPauta String,
+}
+
+entity MasterTipoEmp {
+ Id Long required,
+ descripcion String,
+ sobreLote String,
+ sobreVivienda String,
+}
+
 relationship ManyToOne {
+	TipoEmp{masterTipoEmp} to MasterTipoEmp
+    Pauta{masterTipoEmp} to MasterTipoEmp
+	GrupoAlarma{GrupoEmprendimiento(descripcion)} to GrupoEmprendimiento
+  	GrupoAlarma{GrupoUsuario(usuario)} to GrupoUsuario
 	TipoObra{Segmento(descripcion)} to Segmento,
 	EjecCuentas{Segmento(descripcion)} to Segmento,
     Emprendimiento{Obra(descripcion)} to Obra,
