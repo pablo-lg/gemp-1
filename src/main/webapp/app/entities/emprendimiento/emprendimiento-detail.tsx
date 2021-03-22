@@ -17,6 +17,8 @@ import {getEntities as getEntitiesEstado} from '../../entities/estado/estado.red
 import {getEntities as getEntitiesEjecCuentas} from '../../entities/ejec-cuentas/ejec-cuentas.reducer';
 import {getEntities as getEntitiesCompetencia} from '../../entities/competencia/competencia.reducer';
 import {getEntities as getEntitiesNse} from '../../entities/nse/nse.reducer';
+import {getEntities as getEntitiesGrupoEmp} from '../../entities/grupo-emprendimiento/grupo-emprendimiento.reducer';
+
 import { createEntity, getEntityDireccion } from '../../entities/direccion/direccion.reducer';
 import {getEntity as getEmprendimiento, updateEntity as updateEmprendimiento, reset as resetEmprendimiento} from '../../entities/emprendimiento/emprendimiento.reducer';
 
@@ -63,8 +65,10 @@ export const EmprendimientoDetail = (props) => {
     props.getEntitiesTec();
     props.getEntitiesCompetencia();
     props.getEntitiesNse();
+    props.getEntitiesGrupoEmp();
     props.getEntitiesEstado();
     props.getEntitiesEjecCuentas();
+
   }, []);
 
     const [formEmprendimiento] = Form.useForm();
@@ -180,6 +184,28 @@ export const EmprendimientoDetail = (props) => {
      
       
     };
+
+    const handleTecRed = (value, select) => {
+
+      props.getTechnical('ARGENTINA', formEmprendimiento.getFieldValue('provincia'), formEmprendimiento.getFieldValue('partido'), 
+      formEmprendimiento.getFieldValue('localidad'), formEmprendimiento.getFieldValue('calle'), formEmprendimiento.getFieldValue('altura'));
+     
+      const accessType = props.technical.physicalNetworkElements ? props.technical.physicalNetworkElements.filter((a) => a.accessType===select.key) : null
+      let elemento= 'No exixten elementos de red'
+      try {
+         elemento = accessType[0].physicalCharacteristic.filter((a) => a.name==='elementoRed')[0].valuefrom
+        
+         console.error(elemento)
+      } catch (error) {
+        console.error("Error al recuperar el elemento de red: " + error)
+      }
+
+      formEmprendimiento.setFieldsValue({
+        elementosDeRed:elemento,
+      });
+
+    
+    } 
   
 
     const propsUpload = {
@@ -267,7 +293,8 @@ export const EmprendimientoDetail = (props) => {
                 placeholder="Tipo de obra"
                 optionFilterProp="children"
                 filterOption={(input: any, option: any) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
-                value={formEmprendimiento.getFieldValue('tipoObra')}>
+               // value={formEmprendimiento.getFieldValue('tipoObra')}
+                >
                 {props.tipoObraList ? props.tipoObraList.filter(i => i.segmento.id === filterSegmento).map(otherEntity => (
                   <Select.Option value={otherEntity.id} key={otherEntity.descripcion}>
                     {otherEntity.descripcion}
@@ -284,6 +311,7 @@ export const EmprendimientoDetail = (props) => {
                 loading={props.loadingTec}
                 placeholder="Tecnologia"
                 optionFilterProp="children"
+                onSelect={(value, select) => handleTecRed(value, select)}
                 filterOption={(input: any, option: any) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
                 defaultValue={null}>
                 {props.tecnologiaList ? props.tecnologiaList.map(otherEntity => (
@@ -579,7 +607,19 @@ export const EmprendimientoDetail = (props) => {
   
           <Form.Item label="Grupo de Emprendimientos" name="grupoDeEmprendimientos"
             style={{ display: 'inline-block', width: 'calc(33% - 4px)', margin: '0 4px 0 0' }}>
-            <Input ></Input>
+              <Select allowClear showSearch
+                loading={props.loadingNse}
+                placeholder="Grupo de emprendimiento"
+                optionFilterProp="children"
+                filterOption={(input: any, option: any) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
+                defaultValue={null}>
+                {props.grupoEmprendimientoList ? props.grupoEmprendimientoList.map(otherEntity => (
+                  <Select.Option value={otherEntity.id} key={otherEntity.descripcion}>
+                    {otherEntity.descripcion}
+                  </Select.Option>
+                ))
+                  : null}
+              </Select>
           </Form.Item>
         </Form.Item>
   
@@ -700,7 +740,7 @@ export const EmprendimientoDetail = (props) => {
 
                 filterOption={(input: any, option: any) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
                 // value={props.emprendimientoEntity.segmento ? props.emprendimientoEntity.segmento.descripcion : null}>
-                value="pym">
+                >
                 {props.segmentoList ? props.segmentoList.map(otherEntity => (
                   <Select.Option value={otherEntity.id} key={otherEntity.descripcion}>
                     {otherEntity.descripcion}
@@ -716,8 +756,10 @@ export const EmprendimientoDetail = (props) => {
                 loading={props.loadingObra}
                 placeholder="Tipo de obra"
                 optionFilterProp="children"
+              //  onSelect={(value, select) => {formEmprendimiento.setFieldsValue({tipoObra: select.key})}}
                 filterOption={(input: any, option: any) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
-                value={formEmprendimiento.getFieldValue('tipoObra')}>
+              //  value={formEmprendimiento.getFieldValue('tipoObra')}>
+              >
                 {props.tipoObraList ? props.tipoObraList.filter(i => i.segmento.id === filterSegmento).map(otherEntity => (
                   <Select.Option value={otherEntity.id} key={otherEntity.descripcion}>
                     {otherEntity.descripcion}
@@ -900,7 +942,7 @@ export const EmprendimientoDetail = (props) => {
   };
   
   const mapStateToProps = ({ tipoObra, tipoEmp, segmento, tecnologia, estado, ejecCuentas, 
-                             nSE, competencia, mu, tipoDesp, emprendimiento }: IRootState) => ({
+                             nSE, competencia, mu, tipoDesp, emprendimiento, grupoEmprendimiento }: IRootState) => ({
     tipoObraList: tipoObra.entities,
     loadingObra: tipoObra.loading,
     errorObra: tipoObra.errorMessage,
@@ -920,6 +962,10 @@ export const EmprendimientoDetail = (props) => {
     nseList: nSE.entities,
     loadingNse: nSE.loading,
     errorNse: nSE.errorMessage,
+
+    grupoEmprendimientoList: grupoEmprendimiento.entities,
+    loadingGrupoEmp: grupoEmprendimiento.loading,
+    errorGrupoEmp: grupoEmprendimiento.errorMessage,
   
     competenciaList: competencia.entities,
     loadingCompetencia: competencia.loading,
@@ -985,6 +1031,7 @@ export const EmprendimientoDetail = (props) => {
     getEntitiesEjecCuentas,
     getEntitiesCompetencia,
     getEntitiesNse,
+    getEntitiesGrupoEmp,
     getProvincias,
     getPartidos,
     getLocalidades,

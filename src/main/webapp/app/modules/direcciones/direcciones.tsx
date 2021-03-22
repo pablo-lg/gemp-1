@@ -137,11 +137,13 @@ export const Direcciones = (props) => {
   }
 
   const handleSelectCalles = (value, select) => {
+    console.error('value: '+ value)
+    console.error('select: '+  select.value)
     form.setFieldsValue({
       provincia: select.key.split(',')[1],
       partido: select.key.split(',')[2],
       localidad: select.key.split(',')[3],
-      calle: select.key.split(',')[4],
+      calle: select.value,
     });
     rangoAltura = value.numberRanges;
   }
@@ -167,8 +169,8 @@ export const Direcciones = (props) => {
 
   const opcionesSelectIdent = (optSelect) => (
     optSelect ? optSelect.map(otherEntity => (
-      <Select.Option value={otherEntity.identification} key={otherEntity.identification}>
-        {otherEntity.identification.split(',')[4]} {otherEntity.identification.split(',')[3]} , {otherEntity.identification.split(',')[2]} , {otherEntity.identification.split(',')[1]}
+      <Select.Option value={otherEntity.name} key={otherEntity.identification}>
+        {otherEntity.name}, {otherEntity.identification.split(',')[3]} , {otherEntity.identification.split(',')[2]} , {otherEntity.identification.split(',')[1]}
       </Select.Option>
     )
     ) : null

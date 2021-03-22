@@ -1,5 +1,6 @@
 package ar.com.telecom.gemp.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
 
@@ -24,6 +25,10 @@ public class TipoEmp implements Serializable {
 
     @Column(name = "valor")
     private String valor;
+
+    @ManyToOne
+    @JsonIgnoreProperties(value = "tipoEmps", allowSetters = true)
+    private MasterTipoEmp masterTipoEmp;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
     public Long getId() {
@@ -58,6 +63,19 @@ public class TipoEmp implements Serializable {
 
     public void setValor(String valor) {
         this.valor = valor;
+    }
+
+    public MasterTipoEmp getMasterTipoEmp() {
+        return masterTipoEmp;
+    }
+
+    public TipoEmp masterTipoEmp(MasterTipoEmp masterTipoEmp) {
+        this.masterTipoEmp = masterTipoEmp;
+        return this;
+    }
+
+    public void setMasterTipoEmp(MasterTipoEmp masterTipoEmp) {
+        this.masterTipoEmp = masterTipoEmp;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
 

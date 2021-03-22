@@ -17,6 +17,11 @@ import Obra from './obra';
 import EjecCuentas from './ejec-cuentas';
 import Direccion from './direccion';
 import Emprendimiento from './emprendimiento';
+import GrupoEmprendimiento from './grupo-emprendimiento';
+import GrupoAlarma from './grupo-alarma';
+import grupoUsuario from './grupo-usuario';
+import { GrupoUsuario } from './grupo-usuario/grupo-usuario';
+
 /* jhipster-needle-add-route-import - JHipster will add routes here */
 
 const Routes = ({ match }) => (
@@ -36,6 +41,11 @@ const Routes = ({ match }) => (
       <ErrorBoundaryRoute path={`${match.url}ejec-cuentas`} component={EjecCuentas} />
       <ErrorBoundaryRoute path={`${match.url}direccion`} component={Direccion} />
       <ErrorBoundaryRoute path={`${match.url}emprendimiento`} component={Emprendimiento} />
+      <ErrorBoundaryRoute path={`${match.url}grupo-emprendimiento`} component={GrupoEmprendimiento} />
+      <ErrorBoundaryRoute path={`${match.url}grupo-alarma`} component={GrupoAlarma} />
+      <ErrorBoundaryRoute path={`${match.url}grupo-usuario`} component={GrupoUsuario} />
+
+
       {/* jhipster-needle-add-route-path - JHipster will add routes here */}
     </Switch>
   </div>

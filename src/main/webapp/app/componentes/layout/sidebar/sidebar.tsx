@@ -79,6 +79,9 @@ const Sidebar = (props) => {
         <Menu.Item key="20" icon={<TableOutlined />}>
           <Link to="/ejec-cuentas">Ejecutivos</Link>
         </Menu.Item>
+        <Menu.Item key="21" icon={<TableOutlined />}>
+          <Link to="/grupo-emprendimiento">Grupo Emprendimiento</Link>
+        </Menu.Item>
       </SubMenu>
 
       {props.isAuthenticated && props.isAdmin && (

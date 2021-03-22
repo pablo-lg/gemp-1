@@ -61,6 +61,25 @@ import direccion, {
 import emprendimiento, {
   EmprendimientoState
 } from 'app/entities/emprendimiento/emprendimiento.reducer';
+import grupoAlarma, {
+  GrupoAlarmaState
+} from 'app/entities/grupo-alarma/grupo-alarma.reducer';
+// prettier-ignore
+import grupoEmprendimiento, {
+  GrupoEmprendimientoState
+} from 'app/entities/grupo-emprendimiento/grupo-emprendimiento.reducer';
+// prettier-ignore
+import grupoUsuario, {
+  GrupoUsuarioState
+} from 'app/entities/grupo-usuario/grupo-usuario.reducer';
+// prettier-ignore
+import pauta, {
+  PautaState
+} from 'app/entities/pauta/pauta.reducer';
+// prettier-ignore
+import masterTipoEmp, {
+  MasterTipoEmpState
+} from 'app/entities/master-tipo-emp/master-tipo-emp.reducer';
 import mu, {
   MuState
 } from 'app/modules/direcciones/mu.reducer';
@@ -88,6 +107,11 @@ export interface IRootState {
   readonly ejecCuentas: EjecCuentasState;
   readonly direccion: DireccionState;
   readonly emprendimiento: EmprendimientoState;
+  readonly grupoAlarma: GrupoAlarmaState;
+  readonly grupoEmprendimiento: GrupoEmprendimientoState;
+  readonly grupoUsuario: GrupoUsuarioState;
+  readonly pauta: PautaState;
+  readonly masterTipoEmp: MasterTipoEmpState;
   readonly loadingBar: any;
 }
 const rootReducer = combineReducers<IRootState>({
@@ -114,6 +138,11 @@ const rootReducer = combineReducers<IRootState>({
   ejecCuentas,
   direccion,
   emprendimiento,
+  grupoAlarma,
+  grupoEmprendimiento,
+  grupoUsuario,
+  pauta,
+  masterTipoEmp,
   loadingBar,
 });
 
