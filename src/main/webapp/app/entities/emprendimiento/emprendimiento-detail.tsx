@@ -2,6 +2,7 @@ import { connect } from 'react-redux';
 import { Link, RouteComponentProps } from 'react-router-dom';
 import { ICrudGetAction } from 'react-jhipster';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { getBasePath, Storage } from 'react-jhipster';
 
 import { IRootState } from 'app/shared/reducers';
 import { IEmprendimiento } from 'app/shared/model/emprendimiento.model';
@@ -44,12 +45,14 @@ import {
   Switch ,
   Spin,
   ConfigProvider,
+  Skeleton,
 } from 'antd';
 import { UploadOutlined, SmileOutlined, WarningTwoTone , WarningOutlined  } from '@ant-design/icons';
 import { Direcciones } from '../../modules/direcciones/direcciones';
 import Header from '../../modules/direcciones/header';
 import TextArea from 'antd/lib/input/TextArea';
 import moment from 'moment';
+import axios from 'axios';
 
 
 export interface IEmprendimientoDetailProps extends StateProps, DispatchProps, RouteComponentProps<{ id: string }> {}
@@ -70,6 +73,79 @@ export const EmprendimientoDetail = (props) => {
     props.getEntitiesEjecCuentas();
 
   }, []);
+
+  let fileleList = [];
+
+
+
+  const [filesBC, setFilesBC] = useState([]);
+  const [filesDG, setFilesDG] = useState([]);
+
+  const [loadingFilesBC, setLoadingFilesBC] = useState(false);
+  const [loadingFilesDG, setLoadingFilesDG] = useState(false);
+
+
+  useEffect(() => {
+
+    setLoadingFilesBC(true);
+    setLoadingFilesDG(true);
+
+ 
+    const fetchDataBC = async () => {
+      const result = await axios.get(
+        'api/allFiles', { 'headers': { 'emprendimiento': props.match.params.id+"/BC" } }
+      );
+
+      fileleList =result.data.map((m) => ({name: m, uid:m, status: 'done',url: 'api/downloadFile/'+m,
+    }));
+      setFilesBC(fileleList)
+      setLoadingFilesBC(false);
+    };
+    
+    const fetchDataDG = async () => {
+      const result = await axios.get(
+        'api/allFiles', { 'headers': { 'emprendimiento': props.match.params.id+"/DG" } }
+      );
+
+      fileleList =result.data.map((m) => ({name: m, uid:m, status: 'done',url: 'api/downloadFile/'+m,
+    }));
+      setFilesDG(fileleList)
+      setLoadingFilesDG(false);
+    };
+    console.error(fileleList)
+
+
+ 
+    fetchDataBC().catch(() => {setLoadingFilesBC(false)});
+    fetchDataDG().catch(() => {setLoadingFilesDG(false)});
+
+    
+  }, []);
+  const fetchFile = async (name, carpeta) => {
+    const result = await axios.get(
+      'api/downloadFile/'+name, { 'headers': { 'emprendimiento': props.match.params.id+"/"+carpeta }, responseType: 'blob' }
+    ).then(({ data }) => {
+      const downloadUrl = window.URL.createObjectURL(new Blob([data]));
+      const link = document.createElement('a');
+      link.href = downloadUrl;
+      link.setAttribute('download', name); //  any other extension
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+    })
+
+  };
+
+  const removeFile = async (name, carpeta) => {
+    const result = await axios.delete(
+      'api/deleteFile', { 'headers': { 'emprendimiento': props.match.params.id+"/"+carpeta }, 'params': { 'file': name } }
+    ).then(({ data }) => {
+    
+    })
+
+  };
+
+
 
     const [formEmprendimiento] = Form.useForm();
 
@@ -101,6 +177,16 @@ export const EmprendimientoDetail = (props) => {
   // const filterSegmentoFn = l => (i => i.segmento.id === filterSegmento);
   const changeFilterSegmento = (val, evt) => {
     setFilterSegmento(val);
+    // borrar los valores de tipo obra y ejecutivo cuenta
+    formEmprendimiento.setFieldsValue(
+      {
+        ejecCuentas: null,
+        tipoObra: null
+      }
+
+    )
+
+
   }
 
   useEffect (()=> {
@@ -207,13 +293,47 @@ export const EmprendimientoDetail = (props) => {
     
     } 
   
+    const token = Storage.local.get('jhi-authenticationToken') || Storage.session.get('jhi-authenticationToken');
+    if (token) {
+      const headersAuth = `Bearer ${token}`;
+    }
 
-    const propsUpload = {
+
+    const propsUploadBC = {
       name: 'file',
-      action: '/archivosSubidos',
+      dir: 'empre',
+      action: 'api/uploadFile',
       headers: {
-        authorization: 'authorization-text',
+        Authorization: `Bearer ${token}`,
+        emprendimiento: `${props.emprendimientoEntity.id}/BC`
       },
+      defaultFileList:[...filesBC],
+      onPreview : (f) => fetchFile(f.name, "BC"),
+      onRemove: (f) => removeFile(f.name, "BC"),
+      onChange(info) {
+        if (info.file.status !== 'subiendo') {
+          console.error(info.file, info.fileList);
+        }
+        if (info.file.status === 'terminado') {
+          message.success(`${info.file.name} archivo subido con exito`);
+        } else if (info.file.status === 'error') {
+          message.error(`${info.file.name} falla en adjuntar el archivo.`);
+        }
+      },
+    };
+    
+
+    const propsUploadDG = {
+      name: 'file',
+      dir: 'empre',
+      action: 'api/uploadFile',
+      headers: {
+        Authorization: `Bearer ${token}`,
+        emprendimiento: `${props.emprendimientoEntity.id}/DG`
+      },
+      defaultFileList:[...filesDG],
+      onPreview : (f) => fetchFile(f.name, "DG"),
+      onRemove: (f) => removeFile(f.name, "DG"),
       onChange(info) {
         if (info.file.status !== 'subiendo') {
           console.error(info.file, info.fileList);
@@ -243,7 +363,26 @@ export const EmprendimientoDetail = (props) => {
         <p>No se encontraron datos</p>
       </div>
     );
-  
+  const viewTipoObra = (
+    <Form.Item label="Tipo de Obra" name="tipoObra"
+               style={{ display: 'inline-block', width: 'calc(33% - 4px)', margin: '0 4px 0 0' }}>
+       {/* <ConfigProvider renderEmpty={customizeRenderEmptySegmento}> */}
+          <Select allowClear showSearch
+                  loading={props.loadingObra}
+                  placeholder="Tipo de obra"
+                  optionFilterProp="children"
+                  filterOption={(input: any, option: any) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
+                  >
+            {props.tipoObraList ? props.tipoObraList.filter(i => i.segmento.id === filterSegmento).map(otherEntity => (
+              <Select.Option value={otherEntity.id} key={otherEntity.descripcion}>
+                {otherEntity.descripcion}
+              </Select.Option>
+                ))
+            : null}
+          </Select>
+        {/* </ConfigProvider> */}
+    </Form.Item>
+  )
     const drawerDireccion = (
       <Drawer
       title="Seleccionar domicilio"
@@ -284,26 +423,9 @@ export const EmprendimientoDetail = (props) => {
           <Form.Item label="Codigo de obra" name="codObra"
             style={{ display: 'inline-block', width: 'calc(33% - 4px)', margin: '0 4px 0 0' }}>
             <Input ></Input>
-          </Form.Item>
-          <Form.Item label="Tipo de Obra" name="tipoObra"
-              style={{ display: 'inline-block', width: 'calc(33% - 4px)', margin: '0 4px 0 0' }}>
-                 <ConfigProvider renderEmpty={customizeRenderEmptySegmento}>
-              <Select allowClear showSearch
-                loading={props.loadingObra}
-                placeholder="Tipo de obra"
-                optionFilterProp="children"
-                filterOption={(input: any, option: any) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
-               // value={formEmprendimiento.getFieldValue('tipoObra')}
-                >
-                {props.tipoObraList ? props.tipoObraList.filter(i => i.segmento.id === filterSegmento).map(otherEntity => (
-                  <Select.Option value={otherEntity.id} key={otherEntity.descripcion}>
-                    {otherEntity.descripcion}
-                  </Select.Option>
-                ))
-                  : null}
-              </Select>
-              </ConfigProvider>
-            </Form.Item>
+          </Form.Item>  
+
+              {viewTipoObra}
   
             <Form.Item label="Tecnologia" name="tecnologia"
               style={{ display: 'inline-block', width: 'calc(33% - 4px)', margin: '0 4px 0 0' }}>
@@ -335,7 +457,7 @@ export const EmprendimientoDetail = (props) => {
           <Form.Item label="Central/HUB" name ="hub"
           style={{ display: 'inline-block', width: 'calc(33% - 4px)', margin: '1px  4px 0 0' }}>
               <Input readOnly value={props.hub} placeholder="hubs" />
-            </Form.Item>
+          </Form.Item>
   
           <Form.Item label="Elementos de Red"  name="elementosDeRed"
           style={{ display: 'inline-block', width: 'calc(33% - 4px)', margin: '1px 4px 0 0' }}>
@@ -598,7 +720,7 @@ export const EmprendimientoDetail = (props) => {
                 defaultValue={null}>
                 {props.ejecCuentasList ? props.ejecCuentasList.filter(i => i.segmento.id === filterSegmento).map(otherEntity => (
                   <Select.Option value={otherEntity.id} key={otherEntity.id}>
-                    {otherEntity.nombre}
+                    {otherEntity.nombre ? otherEntity.nombre : null }
                   </Select.Option>
                 ))
                   : null}
@@ -699,7 +821,7 @@ export const EmprendimientoDetail = (props) => {
 
               <Form.Item label="Anexar Archivo Business Case" name="anexarBC"
               style={{ display: 'inline-block', width: 'calc(33% - 4px)', margin: '1px 4px 0 0' }}>
-              <Upload {...propsUpload}>
+              <Upload {...propsUploadBC}>
                 <Button icon={<UploadOutlined />}>Anexar archivo</Button>
               </Upload>
               </Form.Item>
@@ -749,26 +871,9 @@ export const EmprendimientoDetail = (props) => {
                   : null}
               </Select>
             </Form.Item>
-            <Form.Item label="Tipo de Obra" name="tipoObra"
-              style={{ display: 'inline-block', width: 'calc(33% - 4px)', margin: '0 4px 0 0' }}>
-                <ConfigProvider renderEmpty={customizeRenderEmptySegmento}>
-              <Select allowClear showSearch
-                loading={props.loadingObra}
-                placeholder="Tipo de obra"
-                optionFilterProp="children"
-              //  onSelect={(value, select) => {formEmprendimiento.setFieldsValue({tipoObra: select.key})}}
-                filterOption={(input: any, option: any) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
-              //  value={formEmprendimiento.getFieldValue('tipoObra')}>
-              >
-                {props.tipoObraList ? props.tipoObraList.filter(i => i.segmento.id === filterSegmento).map(otherEntity => (
-                  <Select.Option value={otherEntity.id} key={otherEntity.descripcion}>
-                    {otherEntity.descripcion}
-                  </Select.Option>
-                ))
-                  : null}
-              </Select>
-              </ConfigProvider>
-            </Form.Item>
+
+            {viewTipoObra}
+
           </Form.Item>
           <Form.Item style={{ marginBottom: 4 }}>
             <Form.Item label="Tipo Emprendimiento" name="tipoEmp"
@@ -807,9 +912,11 @@ export const EmprendimientoDetail = (props) => {
 
             <Form.Item label="Adjuntar" name="adjuntar"
             style={{ display: 'inline-block', width: 'calc(33% - 4px)', margin: '1px  4px 0 0' }}>
-              <Upload {...propsUpload}>
+             { !loadingFilesDG ? <Upload {...propsUploadDG} >
                 <Button icon={<UploadOutlined />}>Subir archivo</Button>
               </Upload>
+              : null
+}
             </Form.Item>
   
   
@@ -907,8 +1014,11 @@ export const EmprendimientoDetail = (props) => {
   
     return (
       <div>
-       <Spin tip="Cargando emprendimiento...." spinning={props.emprendimientoLoading} >
+        { props.emprendimientoLoading || loadingFilesBC || loadingFilesDG ? <Skeleton active />
+        :
+       <Spin tip="Cargando emprendimiento...." spinning={props.emprendimientoLoading || loadingFilesBC} >
        <Spin tip="Guardando emprendimiento...." spinning={props.emprendimientoUpdating} >
+         
 
 
         <Header guardarEmprendimiento={guardarEmprendimiento} identificador={props.emprendimientoEntity.id} nombre={props.emprendimientoEntity.nombre}/>
@@ -936,7 +1046,7 @@ export const EmprendimientoDetail = (props) => {
         </Spin >
         </Spin >
 
-
+        }
       </div>
     );
   };
