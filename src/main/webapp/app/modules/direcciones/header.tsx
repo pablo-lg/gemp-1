@@ -12,7 +12,7 @@ export const Header = (props) => {
 
     const menu = (
         <Menu onClick={null}>
-          <Menu.Item key="1">Avanzar</Menu.Item>
+          <Menu.Item key="1" onClick={() => props.avanzarEmprendimiento()}>Avanzar</Menu.Item>
           <Menu.Item key="2">Pausar</Menu.Item>
           <Menu.Item key="3">Cancelar</Menu.Item>
         </Menu>
