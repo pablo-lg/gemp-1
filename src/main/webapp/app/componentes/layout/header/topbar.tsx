@@ -19,6 +19,7 @@ import { IRootState } from 'app/shared/reducers';
 export interface IHeaderProps {
   isAuthenticated: boolean;
   isAdmin: boolean;
+  isGestionOperativa: boolean;
   ribbonEnv: string;
   authorities: string;
   isInProduction: boolean;

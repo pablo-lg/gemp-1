@@ -33,11 +33,13 @@ export const App = (props: IAppProps) => {
 
   return (
     <Router basename={baseHref}>
-        <ToastContainer position={toast.POSITION.TOP_RIGHT} className="toastify-container" toastClassName="toastify-toast" />
+      {/* Descomentar esta linea para mostar las notificaciones */}
+        {/* <ToastContainer position={toast.POSITION.TOP_RIGHT} className="toastify-container" toastClassName="toastify-toast" /> */}
         
         {props.isAuthenticated ? <ErrorBoundary>
                                    <LayoutPrincipal isAuthenticated={props.isAuthenticated}
                                         isAdmin={props.isAdmin}
+                                        isGestionOperativa={props.isGestionOperativa}
                                         authorities={props.authorities}
                                         content={<AppRoutes />} />
                                    </ErrorBoundary>
@@ -50,6 +52,7 @@ export const App = (props: IAppProps) => {
 const mapStateToProps = ({ authentication, applicationProfile }: IRootState) => ({
   isAuthenticated: authentication.isAuthenticated,
   isAdmin: hasAnyAuthority(authentication.account.authorities, [AUTHORITIES.ADMIN]),
+  isGestionOperativa: hasAnyAuthority(authentication.account.authorities, [AUTHORITIES.GESTION_OPERATIVA]),
   authorities: authentication.account.authorities,
   ribbonEnv: applicationProfile.ribbonEnv,
   isInProduction: applicationProfile.inProduction,

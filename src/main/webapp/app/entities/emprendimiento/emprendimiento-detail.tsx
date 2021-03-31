@@ -353,12 +353,14 @@ export const EmprendimientoDetail = (props) => {
   const rulesProspecto = [{ required: true, message: 'Dato obligatorio para avanzar de estado' }]
   // rulesProspecto = []
 
-  const inputForm = (label, name, width = 'calc(33% - 4px)', rules=[]) => {
+  const inputForm = (label, name, width = 'calc(33% - 4px)', rules=[], readOnly=false) => {
+    width = width? width : 'calc(33% - 4px)';
+  
     const style = { display: 'inline-block', width, margin: '0 4px 0 0' }
     return (
       <Form.Item label={label} name={name} rules={rules}
         style={style}>
-        <Input ></Input>
+        <Input readOnly={readOnly}></Input>
       </Form.Item>
     )
   }
@@ -403,10 +405,9 @@ export const EmprendimientoDetail = (props) => {
           <DatePicker placeholder="fecha" format={'DD/MM/YYYY'}></DatePicker>
         </Form.Item>
 
-        <Form.Item label="Central/HUB" name="hub"
-          style={{ display: 'inline-block', width: 'calc(33% - 4px)', margin: '1px  4px 0 0' }}>
-          <Input readOnly value={props.hub} placeholder="hub" />
-        </Form.Item>
+ 
+        {inputForm('Central/HUB', 'hub', null,null, true)}
+
         {inputForm('Elementos de Red', 'elementosDeRed')}
       </Form.Item>
     </Form>
@@ -503,10 +504,9 @@ export const EmprendimientoDetail = (props) => {
               : null}
           </Select>
         </Form.Item>
-        <Form.Item label="Zona competencia" name="zonaCompetencia"
-          style={{ display: 'inline-block', width: 'calc(33% - 4px)', margin: '1px 4px 0 0' }}>
-          <Input readOnly value={props.competencia} placeholder="zona de competencia" />
-        </Form.Item>
+
+        {inputForm('Zona competencia', 'zonaCompetencia', null,null, true)}
+
         <Form.Item label="Fecha de Relevamiento" name="fechaDeRelevamiento"
           style={{ display: 'inline-block', width: 'calc(33% - 4px)', margin: '1px 4px 0 0' }}>
           <DatePicker placeholder="fecha" format={'DD/MM/YYYY'}></DatePicker>
@@ -651,10 +651,7 @@ export const EmprendimientoDetail = (props) => {
             placeholder="Segmento"
             optionFilterProp="children"
             onSelect={(value, event) => changeFilterSegmento(value, event)}
-
-            filterOption={(input: any, option: any) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
-          // value={props.emprendimientoEntity.segmento ? props.emprendimientoEntity.segmento.descripcion : null}>
-          >
+            filterOption={(input: any, option: any) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}>
             {props.segmentoList ? props.segmentoList.map(otherEntity => (
               <Select.Option value={otherEntity.id} key={otherEntity.descripcion}>
                 {otherEntity.descripcion}
@@ -721,78 +718,29 @@ export const EmprendimientoDetail = (props) => {
 
       <Divider orientation="left">Datos de domicilio</Divider>
       <Form.Item style={{ marginBottom: 4 }}>
-        <Form.Item label="Provincia" name="provincia"
-          style={{ display: 'inline-block', width: 'calc(20% - 4px)', margin: '0 4px 0 0' }}>
-          <Input readOnly value={props.stateOrProvince} placeholder="Provincia" />
-        </Form.Item>
-        <Form.Item label="Partido" name="partido"
-          style={{ display: 'inline-block', width: 'calc(20% - 4px)', margin: '0 4px 0 0' }}>
-          <Input value={props.emprendimientoEntity.direccion ? props.emprendimientoEntity.direccion.partido : null} readOnly placeholder="Partido" />
-        </Form.Item>
-        <Form.Item label="Localidad" name="localidad"
-          style={{ display: 'inline-block', width: 'calc(60% - 4px)', margin: '0 4px 0 0' }}>
-          <Input readOnly placeholder="Localidad" />
-        </Form.Item>
+        {inputForm('Provincia', 'provincia', 'calc(20% - 4px)',null, true)}
+        {inputForm('Partido', 'partido', 'calc(20% - 4px)',null, true)}
+        {inputForm('Localidad', 'localidad', 'calc(60% - 4px)',null, true)}
       </Form.Item>
       <Form.Item style={{ marginBottom: 4 }}>
-        <Form.Item label="Calle" name="calle"
-          style={{ display: 'inline-block', width: 'calc(66% - 4px)', margin: '1px 4px 0 0' }}>
-          <Input readOnly value={props.streetName} placeholder="Calle" />
-        </Form.Item>
-        <Form.Item label="Altura" name="altura"
-          style={{ display: 'inline-block', width: 'calc(17% - 4px)', margin: '1px 4px 0 0' }}>
-          <Input readOnly value={props.streetNr} placeholder="Altura" />
-        </Form.Item>
-        <Form.Item label="C. P." name="codigoPostal"
-          style={{ display: 'inline-block', width: 'calc(17% - 4px)', margin: '1px  4px 0 0' }}>
-          <Input readOnly value={props.codigoPostal} placeholder="C. P." />
-        </Form.Item>
+        {inputForm('Calle', 'calle', 'calc(66% - 4px)',null, true)}
+        {inputForm('Altura', 'altura', 'calc(17% - 4px)',null, true)}
+        {inputForm('C. P.', 'codigoPostal', 'calc(17% - 4px)',null, true)}
       </Form.Item>
-
-
       <Form.Item style={{ marginBottom: 4 }}>
-        <Form.Item label="Region" name="region"
-          style={{ display: 'inline-block', width: 'calc(50% - 4px)', margin: '1px 4px 0 0' }}>
-          <Input readOnly value={props.region} placeholder="region" />
-        </Form.Item>
-        <Form.Item label="Subregion" name="subregion"
-          style={{ display: 'inline-block', width: 'calc(50% - 4px)', margin: '1px  4px 0 0' }}>
-          <Input readOnly value={props.subregion} placeholder="subregion" />
-        </Form.Item>
+        {inputForm('Region', 'region', 'calc(50% - 4px)',null, true)}
+        {inputForm('Subregion', 'subregion', 'calc(50% - 4px)',null, true)}
       </Form.Item>
-
       <Form.Item style={{ marginBottom: 4 }}>
-        <Form.Item label="Zona competencia" name="zonaCompetencia"
-          style={{ display: 'inline-block', width: 'calc(33% - 4px)', margin: '1px 4px 0 0' }}>
-          <Input readOnly value={props.competencia} placeholder="zona de competencia" />
-        </Form.Item>
-        <Form.Item label="Central/HUB" name="hub"
-          style={{ display: 'inline-block', width: 'calc(33% - 4px)', margin: '1px  4px 0 0' }}>
-          <Input readOnly value={props.hub} placeholder="hub" />
-        </Form.Item>
-        <Form.Item label="Barrio especial" name="barriosEspeciales"
-          style={{ display: 'inline-block', width: 'calc(34% - 4px)', margin: '1px  4px 0 0' }}>
-          <Input readOnly value={props.barriosEspeciales} placeholder="barrio especial" />
-        </Form.Item>
+        {inputForm('Zona competencia', 'zonaCompetencia', null,null, true)}
+        {inputForm('Central/HUB', 'hub', null,null, true)}
+        {inputForm('Barrio especial', 'barriosEspeciales', 'calc(34% - 4px)',null, true)}
       </Form.Item>
-
       <Form.Item style={{ marginBottom: 4 }}>
-        <Form.Item label="Calle izquierda" name="intersectionLeft"
-          style={{ display: 'inline-block', width: 'calc(33% - 4px)', margin: '1px 4px 0 0' }}>
-          <Input readOnly value={props.intersectionLeft} placeholder="Calle izquierda" />
-        </Form.Item>
-        <Form.Item label="Calle Derecha" name="intersectionRight"
-          style={{ display: 'inline-block', width: 'calc(33% - 4px)', margin: '1px  4px 0 0' }}>
-          <Input readOnly value={props.intersectionRight} placeholder="Calle Derecha" />
-        </Form.Item>
-        <Form.Item label="Latitud" name="latitud"
-          style={{ display: 'inline-block', width: 'calc(17% - 4px)', margin: '1px  4px 0 0' }}>
-          <Input readOnly value={props.geoX} placeholder="Latitud" />
-        </Form.Item>
-        <Form.Item label="Longitud" name="longitud"
-          style={{ display: 'inline-block', width: 'calc(17% - 4px)', margin: '1px  4px 0 0' }}>
-          <Input readOnly value={props.geoY} placeholder="Longitud" />
-        </Form.Item>
+        {inputForm('Calle izquierda', 'intersectionLeft', null,null, true)}
+        {inputForm('Calle Derecha', 'intersectionRight', null,null, true)}
+        {inputForm('Latitud', 'latitud', 'calc(17% - 4px)',null, true)}
+        {inputForm('Longitud', 'longitud', 'calc(17% - 4px)',null, true)}
       </Form.Item>
     </Form>
   )

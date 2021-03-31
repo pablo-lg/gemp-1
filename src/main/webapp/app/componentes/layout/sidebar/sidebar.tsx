@@ -20,6 +20,7 @@ import { MailOutlined, AimOutlined , TableOutlined ,RocketOutlined} from '@ant-d
 export interface IHeaderProps {
   isAuthenticated: boolean;
   isAdmin: boolean;
+  isGestionOperativa: boolean;
   ribbonEnv: string;
   authorities: string;
   isInProduction: boolean;
@@ -84,7 +85,7 @@ const Sidebar = (props) => {
         </Menu.Item>
       </SubMenu>
 
-      {props.isAuthenticated && props.isAdmin && (
+      {props.isAuthenticated && props.isGestionOperativa && (
           <SubMenu key="sub2" title='Admin' icon={<TableOutlined />}>
             <Menu.Item key="1" >
               <Link to="/docs">API</Link>
@@ -118,6 +119,8 @@ const Sidebar = (props) => {
 const mapStateToProps = ({ authentication, applicationProfile }: IRootState) => ({
   isAuthenticated: authentication.isAuthenticated,
   isAdmin: hasAnyAuthority(authentication.account.authorities, [AUTHORITIES.ADMIN]),
+  isGestionOperativa: hasAnyAuthority(authentication.account.authorities, [AUTHORITIES.GESTION_OPERATIVA]),
+
  
 });
 

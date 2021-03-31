@@ -5,6 +5,7 @@ package ar.com.telecom.gemp.security;
  */
 public final class AuthoritiesConstants {
     public static final String ADMIN = "AD";
+    public static final String GESTION_OPERATIVA = "GO";
 
     public static final String USER = "ROLE_USER";
 
