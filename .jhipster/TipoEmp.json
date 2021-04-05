@@ -2,6 +2,11 @@
   "name": "TipoEmp",
   "fields": [
     {
+      "fieldName": "id",
+      "fieldType": "Long",
+      "fieldValidateRules": ["required"]
+    },
+    {
       "fieldName": "descripcion",
       "fieldType": "String"
     },
@@ -10,12 +15,19 @@
       "fieldType": "String"
     }
   ],
-  "relationships": [],
+  "relationships": [
+    {
+      "relationshipType": "many-to-one",
+      "otherEntityName": "masterTipoEmp",
+      "otherEntityRelationshipName": "tipoEmp",
+      "relationshipName": "masterTipoEmp"
+    }
+  ],
   "changelogDate": "20200819173209",
   "entityTableName": "tipo_emp",
   "dto": "no",
   "pagination": "no",
-  "service": "serviceImpl",
+  "service": "no",
   "jpaMetamodelFiltering": false,
   "fluentMethods": true,
   "readOnly": false,

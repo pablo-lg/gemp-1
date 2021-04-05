@@ -11,6 +11,7 @@ export const ACTION_TYPES = {
   FETCH_TIPOEMP: 'tipoEmp/FETCH_TIPOEMP',
   CREATE_TIPOEMP: 'tipoEmp/CREATE_TIPOEMP',
   UPDATE_TIPOEMP: 'tipoEmp/UPDATE_TIPOEMP',
+  PARTIAL_UPDATE_TIPOEMP: 'tipoEmp/PARTIAL_UPDATE_TIPOEMP',
   DELETE_TIPOEMP: 'tipoEmp/DELETE_TIPOEMP',
   RESET: 'tipoEmp/RESET',
 };
@@ -41,6 +42,7 @@ export default (state: TipoEmpState = initialState, action): TipoEmpState => {
     case REQUEST(ACTION_TYPES.CREATE_TIPOEMP):
     case REQUEST(ACTION_TYPES.UPDATE_TIPOEMP):
     case REQUEST(ACTION_TYPES.DELETE_TIPOEMP):
+    case REQUEST(ACTION_TYPES.PARTIAL_UPDATE_TIPOEMP):
       return {
         ...state,
         errorMessage: null,
@@ -51,6 +53,7 @@ export default (state: TipoEmpState = initialState, action): TipoEmpState => {
     case FAILURE(ACTION_TYPES.FETCH_TIPOEMP):
     case FAILURE(ACTION_TYPES.CREATE_TIPOEMP):
     case FAILURE(ACTION_TYPES.UPDATE_TIPOEMP):
+    case FAILURE(ACTION_TYPES.PARTIAL_UPDATE_TIPOEMP):
     case FAILURE(ACTION_TYPES.DELETE_TIPOEMP):
       return {
         ...state,
@@ -73,6 +76,7 @@ export default (state: TipoEmpState = initialState, action): TipoEmpState => {
       };
     case SUCCESS(ACTION_TYPES.CREATE_TIPOEMP):
     case SUCCESS(ACTION_TYPES.UPDATE_TIPOEMP):
+    case SUCCESS(ACTION_TYPES.PARTIAL_UPDATE_TIPOEMP):
       return {
         ...state,
         updating: false,
@@ -124,7 +128,15 @@ export const createEntity: ICrudPutAction<ITipoEmp> = entity => async dispatch =
 export const updateEntity: ICrudPutAction<ITipoEmp> = entity => async dispatch => {
   const result = await dispatch({
     type: ACTION_TYPES.UPDATE_TIPOEMP,
-    payload: axios.put(apiUrl, cleanEntity(entity)),
+    payload: axios.put(`${apiUrl}/${entity.id}`, cleanEntity(entity)),
+  });
+  return result;
+};
+
+export const partialUpdate: ICrudPutAction<ITipoEmp> = entity => async dispatch => {
+  const result = await dispatch({
+    type: ACTION_TYPES.PARTIAL_UPDATE_TIPOEMP,
+    payload: axios.patch(`${apiUrl}/${entity.id}`, cleanEntity(entity)),
   });
   return result;
 };

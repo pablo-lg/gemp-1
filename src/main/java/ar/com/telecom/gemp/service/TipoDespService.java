@@ -1,7 +1,6 @@
 package ar.com.telecom.gemp.service;
 
 import ar.com.telecom.gemp.domain.TipoDesp;
-
 import java.util.List;
 import java.util.Optional;
 
@@ -9,7 +8,6 @@ import java.util.Optional;
  * Service Interface for managing {@link TipoDesp}.
  */
 public interface TipoDespService {
-
     /**
      * Save a tipoDesp.
      *
@@ -19,12 +17,19 @@ public interface TipoDespService {
     TipoDesp save(TipoDesp tipoDesp);
 
     /**
+     * Partially updates a tipoDesp.
+     *
+     * @param tipoDesp the entity to update partially.
+     * @return the persisted entity.
+     */
+    Optional<TipoDesp> partialUpdate(TipoDesp tipoDesp);
+
+    /**
      * Get all the tipoDesps.
      *
      * @return the list of entities.
      */
     List<TipoDesp> findAll();
-
 
     /**
      * Get the "id" tipoDesp.

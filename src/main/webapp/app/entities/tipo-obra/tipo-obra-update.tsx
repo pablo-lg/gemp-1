@@ -3,10 +3,12 @@ import { connect } from 'react-redux';
 import { Link, RouteComponentProps } from 'react-router-dom';
 import { Button, Row, Col, Label } from 'reactstrap';
 import { AvFeedback, AvForm, AvGroup, AvInput, AvField } from 'availity-reactstrap-validation';
-import { ICrudGetAction, ICrudGetAllAction, ICrudPutAction } from 'react-jhipster';
+import { translate } from 'react-jhipster';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { IRootState } from 'app/shared/reducers';
 
+import { ISegmento } from 'app/shared/model/segmento.model';
+import { getEntities as getSegmentos } from 'app/entities/segmento/segmento.reducer';
 import { getEntity, updateEntity, createEntity, reset } from './tipo-obra.reducer';
 import { ITipoObra } from 'app/shared/model/tipo-obra.model';
 import { convertDateTimeFromServer, convertDateTimeToServer, displayDefaultDateTime } from 'app/shared/util/date-utils';
@@ -15,9 +17,9 @@ import { mapIdList } from 'app/shared/util/entity-utils';
 export interface ITipoObraUpdateProps extends StateProps, DispatchProps, RouteComponentProps<{ id: string }> {}
 
 export const TipoObraUpdate = (props: ITipoObraUpdateProps) => {
-  const [isNew, setIsNew] = useState(!props.match.params || !props.match.params.id);
+  const [isNew] = useState(!props.match.params || !props.match.params.id);
 
-  const { tipoObraEntity, loading, updating } = props;
+  const { tipoObraEntity, segmentos, loading, updating } = props;
 
   const handleClose = () => {
     props.history.push('/tipo-obra');
@@ -29,6 +31,8 @@ export const TipoObraUpdate = (props: ITipoObraUpdateProps) => {
     } else {
       props.getEntity(props.match.params.id);
     }
+
+    props.getSegmentos();
   }, []);
 
   useEffect(() => {
@@ -42,6 +46,7 @@ export const TipoObraUpdate = (props: ITipoObraUpdateProps) => {
       const entity = {
         ...tipoObraEntity,
         ...values,
+        segmento: segmentos.find(it => it.id.toString() === values.segmentoId.toString()),
       };
 
       if (isNew) {
@@ -56,7 +61,9 @@ export const TipoObraUpdate = (props: ITipoObraUpdateProps) => {
     <div>
       <Row className="justify-content-center">
         <Col md="8">
-          <h2 id="gempApp.tipoObra.home.createOrEditLabel">Create or edit a TipoObra</h2>
+          <h2 id="gempApp.tipoObra.home.createOrEditLabel" data-cy="TipoObraCreateUpdateHeading">
+            Create or edit a TipoObra
+          </h2>
         </Col>
       </Row>
       <Row className="justify-content-center">
@@ -67,7 +74,7 @@ export const TipoObraUpdate = (props: ITipoObraUpdateProps) => {
             <AvForm model={isNew ? {} : tipoObraEntity} onSubmit={saveEntity}>
               {!isNew ? (
                 <AvGroup>
-                  <Label for="tipo-obra-id">ID</Label>
+                  <Label for="tipo-obra-id">Id</Label>
                   <AvInput id="tipo-obra-id" type="text" className="form-control" name="id" required readOnly />
                 </AvGroup>
               ) : null}
@@ -75,13 +82,20 @@ export const TipoObraUpdate = (props: ITipoObraUpdateProps) => {
                 <Label id="descripcionLabel" for="tipo-obra-descripcion">
                   Descripcion
                 </Label>
-                <AvField id="tipo-obra-descripcion" type="text" name="descripcion" />
+                <AvField id="tipo-obra-descripcion" data-cy="descripcion" type="text" name="descripcion" />
               </AvGroup>
               <AvGroup>
-                <Label id="valorLabel" for="tipo-obra-valor">
-                  Valor
-                </Label>
-                <AvField id="tipo-obra-valor" type="text" name="valor" />
+                <Label for="tipo-obra-segmento">Segmento</Label>
+                <AvInput id="tipo-obra-segmento" data-cy="segmento" type="select" className="form-control" name="segmentoId">
+                  <option value="" key="0" />
+                  {segmentos
+                    ? segmentos.map(otherEntity => (
+                        <option value={otherEntity.id} key={otherEntity.id}>
+                          {otherEntity.descripcion}
+                        </option>
+                      ))
+                    : null}
+                </AvInput>
               </AvGroup>
               <Button tag={Link} id="cancel-save" to="/tipo-obra" replace color="info">
                 <FontAwesomeIcon icon="arrow-left" />
@@ -89,7 +103,7 @@ export const TipoObraUpdate = (props: ITipoObraUpdateProps) => {
                 <span className="d-none d-md-inline">Back</span>
               </Button>
               &nbsp;
-              <Button color="primary" id="save-entity" type="submit" disabled={updating}>
+              <Button color="primary" id="save-entity" data-cy="entityCreateSaveButton" type="submit" disabled={updating}>
                 <FontAwesomeIcon icon="save" />
                 &nbsp; Save
               </Button>
@@ -102,6 +116,7 @@ export const TipoObraUpdate = (props: ITipoObraUpdateProps) => {
 };
 
 const mapStateToProps = (storeState: IRootState) => ({
+  segmentos: storeState.segmento.entities,
   tipoObraEntity: storeState.tipoObra.entity,
   loading: storeState.tipoObra.loading,
   updating: storeState.tipoObra.updating,
@@ -109,6 +124,7 @@ const mapStateToProps = (storeState: IRootState) => ({
 });
 
 const mapDispatchToProps = {
+  getSegmentos,
   getEntity,
   updateEntity,
   createEntity,

@@ -1,7 +1,6 @@
 export interface ISegmento {
   id?: number;
-  descripcion?: string;
-  valor?: string;
+  descripcion?: string | null;
 }
 
 export const defaultValue: Readonly<ISegmento> = {};

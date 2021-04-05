@@ -2,11 +2,12 @@
   "name": "Segmento",
   "fields": [
     {
-      "fieldName": "descripcion",
-      "fieldType": "String"
+      "fieldName": "id",
+      "fieldType": "Long",
+      "fieldValidateRules": ["required"]
     },
     {
-      "fieldName": "valor",
+      "fieldName": "descripcion",
       "fieldType": "String"
     }
   ],
@@ -15,7 +16,7 @@
   "entityTableName": "segmento",
   "dto": "no",
   "pagination": "no",
-  "service": "serviceImpl",
+  "service": "no",
   "jpaMetamodelFiltering": false,
   "fluentMethods": true,
   "readOnly": false,

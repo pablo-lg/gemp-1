@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { Link, RouteComponentProps } from 'react-router-dom';
 import { Button, Row, Col, Label } from 'reactstrap';
 import { AvFeedback, AvForm, AvGroup, AvInput, AvField } from 'availity-reactstrap-validation';
-import { ICrudGetAction, ICrudGetAllAction, ICrudPutAction } from 'react-jhipster';
+import { translate } from 'react-jhipster';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { IRootState } from 'app/shared/reducers';
 
@@ -15,7 +15,7 @@ import { mapIdList } from 'app/shared/util/entity-utils';
 export interface ITipoDespUpdateProps extends StateProps, DispatchProps, RouteComponentProps<{ id: string }> {}
 
 export const TipoDespUpdate = (props: ITipoDespUpdateProps) => {
-  const [isNew, setIsNew] = useState(!props.match.params || !props.match.params.id);
+  const [isNew] = useState(!props.match.params || !props.match.params.id);
 
   const { tipoDespEntity, loading, updating } = props;
 
@@ -56,7 +56,9 @@ export const TipoDespUpdate = (props: ITipoDespUpdateProps) => {
     <div>
       <Row className="justify-content-center">
         <Col md="8">
-          <h2 id="gempApp.tipoDesp.home.createOrEditLabel">Create or edit a TipoDesp</h2>
+          <h2 id="gempApp.tipoDesp.home.createOrEditLabel" data-cy="TipoDespCreateUpdateHeading">
+            Create or edit a TipoDesp
+          </h2>
         </Col>
       </Row>
       <Row className="justify-content-center">
@@ -75,13 +77,13 @@ export const TipoDespUpdate = (props: ITipoDespUpdateProps) => {
                 <Label id="descripcionLabel" for="tipo-desp-descripcion">
                   Descripcion
                 </Label>
-                <AvField id="tipo-desp-descripcion" type="text" name="descripcion" />
+                <AvField id="tipo-desp-descripcion" data-cy="descripcion" type="text" name="descripcion" />
               </AvGroup>
               <AvGroup>
                 <Label id="valorLabel" for="tipo-desp-valor">
                   Valor
                 </Label>
-                <AvField id="tipo-desp-valor" type="text" name="valor" />
+                <AvField id="tipo-desp-valor" data-cy="valor" type="text" name="valor" />
               </AvGroup>
               <Button tag={Link} id="cancel-save" to="/tipo-desp" replace color="info">
                 <FontAwesomeIcon icon="arrow-left" />
@@ -89,7 +91,7 @@ export const TipoDespUpdate = (props: ITipoDespUpdateProps) => {
                 <span className="d-none d-md-inline">Back</span>
               </Button>
               &nbsp;
-              <Button color="primary" id="save-entity" type="submit" disabled={updating}>
+              <Button color="primary" id="save-entity" data-cy="entityCreateSaveButton" type="submit" disabled={updating}>
                 <FontAwesomeIcon icon="save" />
                 &nbsp; Save
               </Button>

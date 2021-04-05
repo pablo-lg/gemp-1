@@ -2,12 +2,11 @@ import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { Link, RouteComponentProps } from 'react-router-dom';
 import { Button, Row, Col } from 'reactstrap';
-import { ICrudGetAction } from 'react-jhipster';
+import {} from 'react-jhipster';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import { IRootState } from 'app/shared/reducers';
 import { getEntity } from './tipo-obra.reducer';
-import { ITipoObra } from 'app/shared/model/tipo-obra.model';
 import { APP_DATE_FORMAT, APP_LOCAL_DATE_FORMAT } from 'app/config/constants';
 
 export interface ITipoObraDetailProps extends StateProps, DispatchProps, RouteComponentProps<{ id: string }> {}
@@ -21,20 +20,20 @@ export const TipoObraDetail = (props: ITipoObraDetailProps) => {
   return (
     <Row>
       <Col md="8">
-        <h2>
-          TipoObra [<b>{tipoObraEntity.id}</b>]
-        </h2>
+        <h2 data-cy="tipoObraDetailsHeading">TipoObra</h2>
         <dl className="jh-entity-details">
+          <dt>
+            <span id="id">Id</span>
+          </dt>
+          <dd>{tipoObraEntity.id}</dd>
           <dt>
             <span id="descripcion">Descripcion</span>
           </dt>
           <dd>{tipoObraEntity.descripcion}</dd>
-          <dt>
-            <span id="valor">Valor</span>
-          </dt>
-          <dd>{tipoObraEntity.valor}</dd>
+          <dt>Segmento</dt>
+          <dd>{tipoObraEntity.segmento ? tipoObraEntity.segmento.descripcion : ''}</dd>
         </dl>
-        <Button tag={Link} to="/tipo-obra" replace color="info">
+        <Button tag={Link} to="/tipo-obra" replace color="info" data-cy="entityDetailsBackButton">
           <FontAwesomeIcon icon="arrow-left" /> <span className="d-none d-md-inline">Back</span>
         </Button>
         &nbsp;

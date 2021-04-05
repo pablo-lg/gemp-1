@@ -2,10 +2,9 @@ import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { RouteComponentProps } from 'react-router-dom';
 import { Modal, ModalHeader, ModalBody, ModalFooter, Button } from 'reactstrap';
-import { ICrudGetAction, ICrudDeleteAction } from 'react-jhipster';
+
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-import { ITipoEmp } from 'app/shared/model/tipo-emp.model';
 import { IRootState } from 'app/shared/reducers';
 import { getEntity, deleteEntity } from './tipo-emp.reducer';
 
@@ -33,14 +32,16 @@ export const TipoEmpDeleteDialog = (props: ITipoEmpDeleteDialogProps) => {
   const { tipoEmpEntity } = props;
   return (
     <Modal isOpen toggle={handleClose}>
-      <ModalHeader toggle={handleClose}>Confirm delete operation</ModalHeader>
+      <ModalHeader toggle={handleClose} data-cy="tipoEmpDeleteDialogHeading">
+        Confirm delete operation
+      </ModalHeader>
       <ModalBody id="gempApp.tipoEmp.delete.question">Are you sure you want to delete this TipoEmp?</ModalBody>
       <ModalFooter>
         <Button color="secondary" onClick={handleClose}>
           <FontAwesomeIcon icon="ban" />
           &nbsp; Cancel
         </Button>
-        <Button id="jhi-confirm-delete-tipoEmp" color="danger" onClick={confirmDelete}>
+        <Button id="jhi-confirm-delete-tipoEmp" data-cy="entityConfirmDeleteButton" color="danger" onClick={confirmDelete}>
           <FontAwesomeIcon icon="trash" />
           &nbsp; Delete
         </Button>

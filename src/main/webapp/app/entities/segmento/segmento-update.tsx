@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { Link, RouteComponentProps } from 'react-router-dom';
 import { Button, Row, Col, Label } from 'reactstrap';
 import { AvFeedback, AvForm, AvGroup, AvInput, AvField } from 'availity-reactstrap-validation';
-import { ICrudGetAction, ICrudGetAllAction, ICrudPutAction } from 'react-jhipster';
+import { translate } from 'react-jhipster';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { IRootState } from 'app/shared/reducers';
 
@@ -15,7 +15,7 @@ import { mapIdList } from 'app/shared/util/entity-utils';
 export interface ISegmentoUpdateProps extends StateProps, DispatchProps, RouteComponentProps<{ id: string }> {}
 
 export const SegmentoUpdate = (props: ISegmentoUpdateProps) => {
-  const [isNew, setIsNew] = useState(!props.match.params || !props.match.params.id);
+  const [isNew] = useState(!props.match.params || !props.match.params.id);
 
   const { segmentoEntity, loading, updating } = props;
 
@@ -56,7 +56,9 @@ export const SegmentoUpdate = (props: ISegmentoUpdateProps) => {
     <div>
       <Row className="justify-content-center">
         <Col md="8">
-          <h2 id="gempApp.segmento.home.createOrEditLabel">Create or edit a Segmento</h2>
+          <h2 id="gempApp.segmento.home.createOrEditLabel" data-cy="SegmentoCreateUpdateHeading">
+            Create or edit a Segmento
+          </h2>
         </Col>
       </Row>
       <Row className="justify-content-center">
@@ -67,7 +69,7 @@ export const SegmentoUpdate = (props: ISegmentoUpdateProps) => {
             <AvForm model={isNew ? {} : segmentoEntity} onSubmit={saveEntity}>
               {!isNew ? (
                 <AvGroup>
-                  <Label for="segmento-id">ID</Label>
+                  <Label for="segmento-id">Id</Label>
                   <AvInput id="segmento-id" type="text" className="form-control" name="id" required readOnly />
                 </AvGroup>
               ) : null}
@@ -75,13 +77,7 @@ export const SegmentoUpdate = (props: ISegmentoUpdateProps) => {
                 <Label id="descripcionLabel" for="segmento-descripcion">
                   Descripcion
                 </Label>
-                <AvField id="segmento-descripcion" type="text" name="descripcion" />
-              </AvGroup>
-              <AvGroup>
-                <Label id="valorLabel" for="segmento-valor">
-                  Valor
-                </Label>
-                <AvField id="segmento-valor" type="text" name="valor" />
+                <AvField id="segmento-descripcion" data-cy="descripcion" type="text" name="descripcion" />
               </AvGroup>
               <Button tag={Link} id="cancel-save" to="/segmento" replace color="info">
                 <FontAwesomeIcon icon="arrow-left" />
@@ -89,7 +85,7 @@ export const SegmentoUpdate = (props: ISegmentoUpdateProps) => {
                 <span className="d-none d-md-inline">Back</span>
               </Button>
               &nbsp;
-              <Button color="primary" id="save-entity" type="submit" disabled={updating}>
+              <Button color="primary" id="save-entity" data-cy="entityCreateSaveButton" type="submit" disabled={updating}>
                 <FontAwesomeIcon icon="save" />
                 &nbsp; Save
               </Button>
