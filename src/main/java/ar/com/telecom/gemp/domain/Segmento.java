@@ -1,9 +1,8 @@
 package ar.com.telecom.gemp.domain;
 
-
-import javax.persistence.*;
-
 import java.io.Serializable;
+import javax.persistence.*;
+import javax.validation.constraints.*;
 
 /**
  * A Segmento.
@@ -22,9 +21,6 @@ public class Segmento implements Serializable {
     @Column(name = "descripcion")
     private String descripcion;
 
-    @Column(name = "valor")
-    private String valor;
-
     // jhipster-needle-entity-add-field - JHipster will add fields here
     public Long getId() {
         return id;
@@ -34,8 +30,13 @@ public class Segmento implements Serializable {
         this.id = id;
     }
 
+    public Segmento id(Long id) {
+        this.id = id;
+        return this;
+    }
+
     public String getDescripcion() {
-        return descripcion;
+        return this.descripcion;
     }
 
     public Segmento descripcion(String descripcion) {
@@ -47,18 +48,6 @@ public class Segmento implements Serializable {
         this.descripcion = descripcion;
     }
 
-    public String getValor() {
-        return valor;
-    }
-
-    public Segmento valor(String valor) {
-        this.valor = valor;
-        return this;
-    }
-
-    public void setValor(String valor) {
-        this.valor = valor;
-    }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
 
     @Override
@@ -74,7 +63,8 @@ public class Segmento implements Serializable {
 
     @Override
     public int hashCode() {
-        return 31;
+        // see https://vladmihalcea.com/how-to-implement-equals-and-hashcode-using-the-jpa-entity-identifier/
+        return getClass().hashCode();
     }
 
     // prettier-ignore
@@ -83,7 +73,6 @@ public class Segmento implements Serializable {
         return "Segmento{" +
             "id=" + getId() +
             ", descripcion='" + getDescripcion() + "'" +
-            ", valor='" + getValor() + "'" +
             "}";
     }
 }

@@ -1,233 +1,94 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { Link, RouteComponentProps } from 'react-router-dom';
-import { ICrudGetAllAction } from 'react-jhipster';
+import { Button, Col, Row, Table } from 'reactstrap';
+import { Translate } from 'react-jhipster';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { Table, Input, Button, Popconfirm, Form, InputNumber, Space, Row } from 'antd';
+
 import { IRootState } from 'app/shared/reducers';
-import { getEntities, updateEntity, deleteEntity, createEntity } from './tipo-desp.reducer';
+import { getEntities } from './tipo-desp.reducer';
 import { ITipoDesp } from 'app/shared/model/tipo-desp.model';
 import { APP_DATE_FORMAT, APP_LOCAL_DATE_FORMAT } from 'app/config/constants';
-import { PlusOutlined , PlusSquareTwoTone , PlusCircleFilled } from '@ant-design/icons';
 
-import {EditableCell} from '../../componentes/table/editableCell'
-
-
-export interface ITipoDespProps extends StateProps, DispatchProps, RouteComponentProps<{ url: string }> { }
-
+export interface ITipoDespProps extends StateProps, DispatchProps, RouteComponentProps<{ url: string }> {}
 
 export const TipoDesp = (props: ITipoDespProps) => {
-  const [actualizar, setActualizar] = useState(false);
-  const [data, setData] = useState([]);
   useEffect(() => {
     props.getEntities();
-  }, [actualizar,props.updateSuccess]);
+  }, []);
 
-  const { Search } = Input;
-
-  const [filter, setFilter] = useState('');
-
-  const filterFn = l => (l.descripcion.toUpperCase().includes(filter.toUpperCase()) || l.valor.toUpperCase().includes(filter.toUpperCase()));
-  // const changeFilter = val => setFilter(val);
-
-  const changeFilter = evt => setFilter(evt.target.value);
-
-
-  useEffect(() => {
-    setData(props.entityList.filter(filterFn).map(s => s))
-  }, [props.entityList, filter]);
-
-  const [editingId, setEditingId] = useState(null);
-  const cancel = () => {
-    setData(data.filter(item => item.id !== null))
-    setEditingId(null);
-  };
-  useEffect(() => {
-    if (props.updateSuccess) {
-      cancel();
-    }
-  }, [props.updateSuccess]);
-
-  const [form] = Form.useForm();
-
-
-  const isEditing = (record: ITipoDesp) => record.id === editingId;
-
-  const handleDelete = id => {
-    props.deleteEntity(id);
-    setActualizar(!actualizar);
+  const handleSyncList = () => {
+    props.getEntities();
   };
 
-  const edit = (record: ITipoDesp) => {
-    form.setFieldsValue({ ...record });
-    setEditingId(record.id);
-  };
-
-  const save = async (id: React.Key) => {
-    try {
-      const row = (await form.validateFields()) as ITipoDesp;
-
-      if (id == null) {
-        props.createEntity(row);
-        setEditingId(null);
-        setActualizar(!actualizar);
-      } else {
-        const newData = [...data];
-        const index = newData.findIndex(item => id === item.id);
-        if (index > -1) {
-          const item = newData[index];
-          newData.splice(index, 1, {
-            ...item,
-            ...row,
-          });
-          props.updateEntity(newData[index]);
-          //setEditingId(null);
-          setActualizar(!actualizar);
-        }
-       else {
-        newData.push(row);
-        props.updateEntity(newData[index]);
-        //setEditingId(null);
-        setActualizar(!actualizar);
-      }
-    }
-
-
-    } catch (errInfo) {
-      console.error('Validate Failed:', errInfo);
-    }
-  };
-
-  const handleAdd = () => {
-    const nuevoData = {
-      id:null,
-      descripcion:'',
-      valor:''
-
-    };
-    edit(nuevoData);
-
-
-    setData([nuevoData, ...data])
-
-
-  };
-
-
-
-
-
-  const columns = [
-
-    {
-      title: 'descripcion',
-      dataIndex: 'descripcion',
-      width: '40%',
-      editable: true,
-  
-
-
-    },
-    {
-      title: 'valor',
-      dataIndex: 'valor',
-      width: '40%',
-      editable: true,
-  
-    },
-    {
-      title: 'operation',
-      dataIndex: 'operation',
-      render(_: any, record: ITipoDesp) {
-        const editable = isEditing(record);
-        return editable ? (
-          <span>
-            <Popconfirm title="Guardar?" onConfirm={() => save(record.id)}>
-            <a style={{ marginRight: 8 }}>
-              Guardar
-          </a>
-            </Popconfirm>
-            <a href="javascript:;" onClick={cancel} style={{ marginRight: 8 }}>
-
-                Cancelar</a>
-          </span>
-        ) : (
-            <Space size="middle">
-              <a onClick={() => edit(record)}>
-                Editar
-              </a>
-              <Popconfirm title="Eliminar registro?" onConfirm={() => handleDelete(record.id)}>
-                <a>Eliminar</a>
-              </Popconfirm>
-            </Space>
-          );
-      },
-
-    },
-  ];
-
-  const mergedColumns = columns.map(col => {
-    if (!col.editable) {
-      return col;
-    }
-    return {
-      ...col,
-      onCell: (record: ITipoDesp) => ({
-        record,
-        inputType: col.dataIndex === 'id' ? 'number' : 'text',
-        dataIndex: col.dataIndex,
-        title: col.title,
-        editing: isEditing(record),
-      }),
-    };
-  });
-  const { entityList, match, loading } = props;
+  const { tipoDespList, match, loading } = props;
   return (
-    <Form form={form} component={false}>
-      <div>
-      
-
-      <Button  icon={<PlusOutlined />} onClick={handleAdd}  style={{ marginBottom: 16, marginRight: 8 }}/>
-      
-    
-    <Search 
-      placeholder="input search text"
-      onChange={changeFilter}
-      style={{ width: 200,  marginBottom: 16}}
-    />
+    <div>
+      <h2 id="tipo-desp-heading" data-cy="TipoDespHeading">
+        Tipo Desps
+        <div className="d-flex justify-content-end">
+          <Button className="mr-2" color="info" onClick={handleSyncList} disabled={loading}>
+            <FontAwesomeIcon icon="sync" spin={loading} /> Refresh List
+          </Button>
+          <Link to={`${match.url}/new`} className="btn btn-primary jh-create-entity" id="jh-create-entity" data-cy="entityCreateButton">
+            <FontAwesomeIcon icon="plus" />
+            &nbsp; Create new Tipo Desp
+          </Link>
+        </div>
+      </h2>
+      <div className="table-responsive">
+        {tipoDespList && tipoDespList.length > 0 ? (
+          <Table responsive>
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Descripcion</th>
+                <th>Valor</th>
+                <th />
+              </tr>
+            </thead>
+            <tbody>
+              {tipoDespList.map((tipoDesp, i) => (
+                <tr key={`entity-${i}`} data-cy="entityTable">
+                  <td>
+                    <Button tag={Link} to={`${match.url}/${tipoDesp.id}`} color="link" size="sm">
+                      {tipoDesp.id}
+                    </Button>
+                  </td>
+                  <td>{tipoDesp.descripcion}</td>
+                  <td>{tipoDesp.valor}</td>
+                  <td className="text-right">
+                    <div className="btn-group flex-btn-group-container">
+                      <Button tag={Link} to={`${match.url}/${tipoDesp.id}`} color="info" size="sm" data-cy="entityDetailsButton">
+                        <FontAwesomeIcon icon="eye" /> <span className="d-none d-md-inline">View</span>
+                      </Button>
+                      <Button tag={Link} to={`${match.url}/${tipoDesp.id}/edit`} color="primary" size="sm" data-cy="entityEditButton">
+                        <FontAwesomeIcon icon="pencil-alt" /> <span className="d-none d-md-inline">Edit</span>
+                      </Button>
+                      <Button tag={Link} to={`${match.url}/${tipoDesp.id}/delete`} color="danger" size="sm" data-cy="entityDeleteButton">
+                        <FontAwesomeIcon icon="trash" /> <span className="d-none d-md-inline">Delete</span>
+                      </Button>
+                    </div>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </Table>
+        ) : (
+          !loading && <div className="alert alert-warning">No Tipo Desps found</div>
+        )}
+      </div>
     </div>
-      <Table
-        components={{
-          body: {
-            cell: EditableCell,
-          },
-        }}
-        rowClassName={() => 'editable-row'}
-        bordered
-        
-        dataSource={data}
-        columns={mergedColumns}
-        pagination={{
-          onChange: cancel,
-        }}
-      />
-    </Form>
   );
 };
 
-
 const mapStateToProps = ({ tipoDesp }: IRootState) => ({
-  entityList: tipoDesp.entities,
+  tipoDespList: tipoDesp.entities,
   loading: tipoDesp.loading,
-  updating: tipoDesp.updating,
-  updateSuccess: tipoDesp.updateSuccess,
 });
 
 const mapDispatchToProps = {
-  updateEntity,
   getEntities,
-  deleteEntity,
-  createEntity,
 };
 
 type StateProps = ReturnType<typeof mapStateToProps>;

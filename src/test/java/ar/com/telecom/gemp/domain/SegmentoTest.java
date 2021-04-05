@@ -1,13 +1,14 @@
 package ar.com.telecom.gemp.domain;
 
-import org.junit.jupiter.api.Test;
 import static org.assertj.core.api.Assertions.assertThat;
-import ar.com.telecom.gemp.web.rest.TestUtil;
 
-public class SegmentoTest {
+import ar.com.telecom.gemp.web.rest.TestUtil;
+import org.junit.jupiter.api.Test;
+
+class SegmentoTest {
 
     @Test
-    public void equalsVerifier() throws Exception {
+    void equalsVerifier() throws Exception {
         TestUtil.equalsVerifier(Segmento.class);
         Segmento segmento1 = new Segmento();
         segmento1.setId(1L);

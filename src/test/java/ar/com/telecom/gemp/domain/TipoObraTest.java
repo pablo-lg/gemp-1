@@ -1,13 +1,14 @@
 package ar.com.telecom.gemp.domain;
 
-import org.junit.jupiter.api.Test;
 import static org.assertj.core.api.Assertions.assertThat;
-import ar.com.telecom.gemp.web.rest.TestUtil;
 
-public class TipoObraTest {
+import ar.com.telecom.gemp.web.rest.TestUtil;
+import org.junit.jupiter.api.Test;
+
+class TipoObraTest {
 
     @Test
-    public void equalsVerifier() throws Exception {
+    void equalsVerifier() throws Exception {
         TestUtil.equalsVerifier(TipoObra.class);
         TipoObra tipoObra1 = new TipoObra();
         tipoObra1.setId(1L);

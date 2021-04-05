@@ -2,10 +2,9 @@ import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { RouteComponentProps } from 'react-router-dom';
 import { Modal, ModalHeader, ModalBody, ModalFooter, Button } from 'reactstrap';
-import { ICrudGetAction, ICrudDeleteAction } from 'react-jhipster';
+
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-import { ISegmento } from 'app/shared/model/segmento.model';
 import { IRootState } from 'app/shared/reducers';
 import { getEntity, deleteEntity } from './segmento.reducer';
 
@@ -33,14 +32,16 @@ export const SegmentoDeleteDialog = (props: ISegmentoDeleteDialogProps) => {
   const { segmentoEntity } = props;
   return (
     <Modal isOpen toggle={handleClose}>
-      <ModalHeader toggle={handleClose}>Confirm delete operation</ModalHeader>
+      <ModalHeader toggle={handleClose} data-cy="segmentoDeleteDialogHeading">
+        Confirm delete operation
+      </ModalHeader>
       <ModalBody id="gempApp.segmento.delete.question">Are you sure you want to delete this Segmento?</ModalBody>
       <ModalFooter>
         <Button color="secondary" onClick={handleClose}>
           <FontAwesomeIcon icon="ban" />
           &nbsp; Cancel
         </Button>
-        <Button id="jhi-confirm-delete-segmento" color="danger" onClick={confirmDelete}>
+        <Button id="jhi-confirm-delete-segmento" data-cy="entityConfirmDeleteButton" color="danger" onClick={confirmDelete}>
           <FontAwesomeIcon icon="trash" />
           &nbsp; Delete
         </Button>

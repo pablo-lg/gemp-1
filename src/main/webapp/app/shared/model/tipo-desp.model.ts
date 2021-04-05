@@ -1,7 +1,7 @@
 export interface ITipoDesp {
   id?: number;
-  descripcion?: string;
-  valor?: string;
+  descripcion?: string | null;
+  valor?: string | null;
 }
 
 export const defaultValue: Readonly<ITipoDesp> = {};

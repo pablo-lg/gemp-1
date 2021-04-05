@@ -1,9 +1,8 @@
 package ar.com.telecom.gemp.domain;
 
-
-import javax.persistence.*;
-
 import java.io.Serializable;
+import javax.persistence.*;
+import javax.validation.constraints.*;
 
 /**
  * A TipoEmp.
@@ -25,6 +24,9 @@ public class TipoEmp implements Serializable {
     @Column(name = "valor")
     private String valor;
 
+    @ManyToOne
+    private MasterTipoEmp masterTipoEmp;
+
     // jhipster-needle-entity-add-field - JHipster will add fields here
     public Long getId() {
         return id;
@@ -34,8 +36,13 @@ public class TipoEmp implements Serializable {
         this.id = id;
     }
 
+    public TipoEmp id(Long id) {
+        this.id = id;
+        return this;
+    }
+
     public String getDescripcion() {
-        return descripcion;
+        return this.descripcion;
     }
 
     public TipoEmp descripcion(String descripcion) {
@@ -48,7 +55,7 @@ public class TipoEmp implements Serializable {
     }
 
     public String getValor() {
-        return valor;
+        return this.valor;
     }
 
     public TipoEmp valor(String valor) {
@@ -59,6 +66,20 @@ public class TipoEmp implements Serializable {
     public void setValor(String valor) {
         this.valor = valor;
     }
+
+    public MasterTipoEmp getMasterTipoEmp() {
+        return this.masterTipoEmp;
+    }
+
+    public TipoEmp masterTipoEmp(MasterTipoEmp masterTipoEmp) {
+        this.setMasterTipoEmp(masterTipoEmp);
+        return this;
+    }
+
+    public void setMasterTipoEmp(MasterTipoEmp masterTipoEmp) {
+        this.masterTipoEmp = masterTipoEmp;
+    }
+
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
 
     @Override
@@ -74,7 +95,8 @@ public class TipoEmp implements Serializable {
 
     @Override
     public int hashCode() {
-        return 31;
+        // see https://vladmihalcea.com/how-to-implement-equals-and-hashcode-using-the-jpa-entity-identifier/
+        return getClass().hashCode();
     }
 
     // prettier-ignore

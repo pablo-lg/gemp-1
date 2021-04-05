@@ -1,9 +1,7 @@
 package ar.com.telecom.gemp.domain;
 
-
-import javax.persistence.*;
-
 import java.io.Serializable;
+import javax.persistence.*;
 
 /**
  * A TipoDesp.
@@ -34,8 +32,13 @@ public class TipoDesp implements Serializable {
         this.id = id;
     }
 
+    public TipoDesp id(Long id) {
+        this.id = id;
+        return this;
+    }
+
     public String getDescripcion() {
-        return descripcion;
+        return this.descripcion;
     }
 
     public TipoDesp descripcion(String descripcion) {
@@ -48,7 +51,7 @@ public class TipoDesp implements Serializable {
     }
 
     public String getValor() {
-        return valor;
+        return this.valor;
     }
 
     public TipoDesp valor(String valor) {
@@ -59,6 +62,7 @@ public class TipoDesp implements Serializable {
     public void setValor(String valor) {
         this.valor = valor;
     }
+
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
 
     @Override
@@ -74,7 +78,8 @@ public class TipoDesp implements Serializable {
 
     @Override
     public int hashCode() {
-        return 31;
+        // see https://vladmihalcea.com/how-to-implement-equals-and-hashcode-using-the-jpa-entity-identifier/
+        return getClass().hashCode();
     }
 
     // prettier-ignore

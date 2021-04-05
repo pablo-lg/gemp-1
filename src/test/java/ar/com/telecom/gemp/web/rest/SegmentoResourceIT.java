@@ -1,46 +1,45 @@
 package ar.com.telecom.gemp.web.rest;
 
-import ar.com.telecom.gemp.GempApp;
-import ar.com.telecom.gemp.domain.Segmento;
-import ar.com.telecom.gemp.repository.SegmentoRepository;
-import ar.com.telecom.gemp.service.SegmentoService;
-
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.http.MediaType;
-import org.springframework.security.test.context.support.WithMockUser;
-import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.transaction.annotation.Transactional;
-import javax.persistence.EntityManager;
-import java.util.List;
-
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
+import ar.com.telecom.gemp.IntegrationTest;
+import ar.com.telecom.gemp.domain.Segmento;
+import ar.com.telecom.gemp.repository.SegmentoRepository;
+import java.util.List;
+import java.util.Random;
+import java.util.concurrent.atomic.AtomicLong;
+import javax.persistence.EntityManager;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.transaction.annotation.Transactional;
+
 /**
  * Integration tests for the {@link SegmentoResource} REST controller.
  */
-@SpringBootTest(classes = GempApp.class)
+@IntegrationTest
 @AutoConfigureMockMvc
 @WithMockUser
-public class SegmentoResourceIT {
+class SegmentoResourceIT {
 
     private static final String DEFAULT_DESCRIPCION = "AAAAAAAAAA";
     private static final String UPDATED_DESCRIPCION = "BBBBBBBBBB";
 
-    private static final String DEFAULT_VALOR = "AAAAAAAAAA";
-    private static final String UPDATED_VALOR = "BBBBBBBBBB";
+    private static final String ENTITY_API_URL = "/api/segmentos";
+    private static final String ENTITY_API_URL_ID = ENTITY_API_URL + "/{id}";
+
+    private static Random random = new Random();
+    private static AtomicLong count = new AtomicLong(random.nextInt() + (2 * Integer.MAX_VALUE));
 
     @Autowired
     private SegmentoRepository segmentoRepository;
-
-    @Autowired
-    private SegmentoService segmentoService;
 
     @Autowired
     private EntityManager em;
@@ -57,11 +56,10 @@ public class SegmentoResourceIT {
      * if they test an entity which requires the current entity.
      */
     public static Segmento createEntity(EntityManager em) {
-        Segmento segmento = new Segmento()
-            .descripcion(DEFAULT_DESCRIPCION)
-            .valor(DEFAULT_VALOR);
+        Segmento segmento = new Segmento().descripcion(DEFAULT_DESCRIPCION);
         return segmento;
     }
+
     /**
      * Create an updated entity for this test.
      *
@@ -69,9 +67,7 @@ public class SegmentoResourceIT {
      * if they test an entity which requires the current entity.
      */
     public static Segmento createUpdatedEntity(EntityManager em) {
-        Segmento segmento = new Segmento()
-            .descripcion(UPDATED_DESCRIPCION)
-            .valor(UPDATED_VALOR);
+        Segmento segmento = new Segmento().descripcion(UPDATED_DESCRIPCION);
         return segmento;
     }
 
@@ -82,12 +78,11 @@ public class SegmentoResourceIT {
 
     @Test
     @Transactional
-    public void createSegmento() throws Exception {
+    void createSegmento() throws Exception {
         int databaseSizeBeforeCreate = segmentoRepository.findAll().size();
         // Create the Segmento
-        restSegmentoMockMvc.perform(post("/api/segmentos")
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(TestUtil.convertObjectToJsonBytes(segmento)))
+        restSegmentoMockMvc
+            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(segmento)))
             .andExpect(status().isCreated());
 
         // Validate the Segmento in the database
@@ -95,21 +90,19 @@ public class SegmentoResourceIT {
         assertThat(segmentoList).hasSize(databaseSizeBeforeCreate + 1);
         Segmento testSegmento = segmentoList.get(segmentoList.size() - 1);
         assertThat(testSegmento.getDescripcion()).isEqualTo(DEFAULT_DESCRIPCION);
-        assertThat(testSegmento.getValor()).isEqualTo(DEFAULT_VALOR);
     }
 
     @Test
     @Transactional
-    public void createSegmentoWithExistingId() throws Exception {
-        int databaseSizeBeforeCreate = segmentoRepository.findAll().size();
-
+    void createSegmentoWithExistingId() throws Exception {
         // Create the Segmento with an existing ID
         segmento.setId(1L);
 
+        int databaseSizeBeforeCreate = segmentoRepository.findAll().size();
+
         // An entity with an existing ID cannot be created, so this API call must fail
-        restSegmentoMockMvc.perform(post("/api/segmentos")
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(TestUtil.convertObjectToJsonBytes(segmento)))
+        restSegmentoMockMvc
+            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(segmento)))
             .andExpect(status().isBadRequest());
 
         // Validate the Segmento in the database
@@ -117,49 +110,48 @@ public class SegmentoResourceIT {
         assertThat(segmentoList).hasSize(databaseSizeBeforeCreate);
     }
 
-
     @Test
     @Transactional
-    public void getAllSegmentos() throws Exception {
+    void getAllSegmentos() throws Exception {
         // Initialize the database
         segmentoRepository.saveAndFlush(segmento);
 
         // Get all the segmentoList
-        restSegmentoMockMvc.perform(get("/api/segmentos?sort=id,desc"))
+        restSegmentoMockMvc
+            .perform(get(ENTITY_API_URL + "?sort=id,desc"))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(segmento.getId().intValue())))
-            .andExpect(jsonPath("$.[*].descripcion").value(hasItem(DEFAULT_DESCRIPCION)))
-            .andExpect(jsonPath("$.[*].valor").value(hasItem(DEFAULT_VALOR)));
+            .andExpect(jsonPath("$.[*].descripcion").value(hasItem(DEFAULT_DESCRIPCION)));
     }
-    
+
     @Test
     @Transactional
-    public void getSegmento() throws Exception {
+    void getSegmento() throws Exception {
         // Initialize the database
         segmentoRepository.saveAndFlush(segmento);
 
         // Get the segmento
-        restSegmentoMockMvc.perform(get("/api/segmentos/{id}", segmento.getId()))
+        restSegmentoMockMvc
+            .perform(get(ENTITY_API_URL_ID, segmento.getId()))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.id").value(segmento.getId().intValue()))
-            .andExpect(jsonPath("$.descripcion").value(DEFAULT_DESCRIPCION))
-            .andExpect(jsonPath("$.valor").value(DEFAULT_VALOR));
-    }
-    @Test
-    @Transactional
-    public void getNonExistingSegmento() throws Exception {
-        // Get the segmento
-        restSegmentoMockMvc.perform(get("/api/segmentos/{id}", Long.MAX_VALUE))
-            .andExpect(status().isNotFound());
+            .andExpect(jsonPath("$.descripcion").value(DEFAULT_DESCRIPCION));
     }
 
     @Test
     @Transactional
-    public void updateSegmento() throws Exception {
+    void getNonExistingSegmento() throws Exception {
+        // Get the segmento
+        restSegmentoMockMvc.perform(get(ENTITY_API_URL_ID, Long.MAX_VALUE)).andExpect(status().isNotFound());
+    }
+
+    @Test
+    @Transactional
+    void putNewSegmento() throws Exception {
         // Initialize the database
-        segmentoService.save(segmento);
+        segmentoRepository.saveAndFlush(segmento);
 
         int databaseSizeBeforeUpdate = segmentoRepository.findAll().size();
 
@@ -167,13 +159,14 @@ public class SegmentoResourceIT {
         Segmento updatedSegmento = segmentoRepository.findById(segmento.getId()).get();
         // Disconnect from session so that the updates on updatedSegmento are not directly saved in db
         em.detach(updatedSegmento);
-        updatedSegmento
-            .descripcion(UPDATED_DESCRIPCION)
-            .valor(UPDATED_VALOR);
+        updatedSegmento.descripcion(UPDATED_DESCRIPCION);
 
-        restSegmentoMockMvc.perform(put("/api/segmentos")
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(TestUtil.convertObjectToJsonBytes(updatedSegmento)))
+        restSegmentoMockMvc
+            .perform(
+                put(ENTITY_API_URL_ID, updatedSegmento.getId())
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(TestUtil.convertObjectToJsonBytes(updatedSegmento))
+            )
             .andExpect(status().isOk());
 
         // Validate the Segmento in the database
@@ -181,18 +174,21 @@ public class SegmentoResourceIT {
         assertThat(segmentoList).hasSize(databaseSizeBeforeUpdate);
         Segmento testSegmento = segmentoList.get(segmentoList.size() - 1);
         assertThat(testSegmento.getDescripcion()).isEqualTo(UPDATED_DESCRIPCION);
-        assertThat(testSegmento.getValor()).isEqualTo(UPDATED_VALOR);
     }
 
     @Test
     @Transactional
-    public void updateNonExistingSegmento() throws Exception {
+    void putNonExistingSegmento() throws Exception {
         int databaseSizeBeforeUpdate = segmentoRepository.findAll().size();
+        segmento.setId(count.incrementAndGet());
 
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
-        restSegmentoMockMvc.perform(put("/api/segmentos")
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(TestUtil.convertObjectToJsonBytes(segmento)))
+        restSegmentoMockMvc
+            .perform(
+                put(ENTITY_API_URL_ID, segmento.getId())
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(TestUtil.convertObjectToJsonBytes(segmento))
+            )
             .andExpect(status().isBadRequest());
 
         // Validate the Segmento in the database
@@ -202,15 +198,163 @@ public class SegmentoResourceIT {
 
     @Test
     @Transactional
-    public void deleteSegmento() throws Exception {
+    void putWithIdMismatchSegmento() throws Exception {
+        int databaseSizeBeforeUpdate = segmentoRepository.findAll().size();
+        segmento.setId(count.incrementAndGet());
+
+        // If url ID doesn't match entity ID, it will throw BadRequestAlertException
+        restSegmentoMockMvc
+            .perform(
+                put(ENTITY_API_URL_ID, count.incrementAndGet())
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(TestUtil.convertObjectToJsonBytes(segmento))
+            )
+            .andExpect(status().isBadRequest());
+
+        // Validate the Segmento in the database
+        List<Segmento> segmentoList = segmentoRepository.findAll();
+        assertThat(segmentoList).hasSize(databaseSizeBeforeUpdate);
+    }
+
+    @Test
+    @Transactional
+    void putWithMissingIdPathParamSegmento() throws Exception {
+        int databaseSizeBeforeUpdate = segmentoRepository.findAll().size();
+        segmento.setId(count.incrementAndGet());
+
+        // If url ID doesn't match entity ID, it will throw BadRequestAlertException
+        restSegmentoMockMvc
+            .perform(put(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(segmento)))
+            .andExpect(status().isMethodNotAllowed());
+
+        // Validate the Segmento in the database
+        List<Segmento> segmentoList = segmentoRepository.findAll();
+        assertThat(segmentoList).hasSize(databaseSizeBeforeUpdate);
+    }
+
+    @Test
+    @Transactional
+    void partialUpdateSegmentoWithPatch() throws Exception {
         // Initialize the database
-        segmentoService.save(segmento);
+        segmentoRepository.saveAndFlush(segmento);
+
+        int databaseSizeBeforeUpdate = segmentoRepository.findAll().size();
+
+        // Update the segmento using partial update
+        Segmento partialUpdatedSegmento = new Segmento();
+        partialUpdatedSegmento.setId(segmento.getId());
+
+        restSegmentoMockMvc
+            .perform(
+                patch(ENTITY_API_URL_ID, partialUpdatedSegmento.getId())
+                    .contentType("application/merge-patch+json")
+                    .content(TestUtil.convertObjectToJsonBytes(partialUpdatedSegmento))
+            )
+            .andExpect(status().isOk());
+
+        // Validate the Segmento in the database
+        List<Segmento> segmentoList = segmentoRepository.findAll();
+        assertThat(segmentoList).hasSize(databaseSizeBeforeUpdate);
+        Segmento testSegmento = segmentoList.get(segmentoList.size() - 1);
+        assertThat(testSegmento.getDescripcion()).isEqualTo(DEFAULT_DESCRIPCION);
+    }
+
+    @Test
+    @Transactional
+    void fullUpdateSegmentoWithPatch() throws Exception {
+        // Initialize the database
+        segmentoRepository.saveAndFlush(segmento);
+
+        int databaseSizeBeforeUpdate = segmentoRepository.findAll().size();
+
+        // Update the segmento using partial update
+        Segmento partialUpdatedSegmento = new Segmento();
+        partialUpdatedSegmento.setId(segmento.getId());
+
+        partialUpdatedSegmento.descripcion(UPDATED_DESCRIPCION);
+
+        restSegmentoMockMvc
+            .perform(
+                patch(ENTITY_API_URL_ID, partialUpdatedSegmento.getId())
+                    .contentType("application/merge-patch+json")
+                    .content(TestUtil.convertObjectToJsonBytes(partialUpdatedSegmento))
+            )
+            .andExpect(status().isOk());
+
+        // Validate the Segmento in the database
+        List<Segmento> segmentoList = segmentoRepository.findAll();
+        assertThat(segmentoList).hasSize(databaseSizeBeforeUpdate);
+        Segmento testSegmento = segmentoList.get(segmentoList.size() - 1);
+        assertThat(testSegmento.getDescripcion()).isEqualTo(UPDATED_DESCRIPCION);
+    }
+
+    @Test
+    @Transactional
+    void patchNonExistingSegmento() throws Exception {
+        int databaseSizeBeforeUpdate = segmentoRepository.findAll().size();
+        segmento.setId(count.incrementAndGet());
+
+        // If the entity doesn't have an ID, it will throw BadRequestAlertException
+        restSegmentoMockMvc
+            .perform(
+                patch(ENTITY_API_URL_ID, segmento.getId())
+                    .contentType("application/merge-patch+json")
+                    .content(TestUtil.convertObjectToJsonBytes(segmento))
+            )
+            .andExpect(status().isBadRequest());
+
+        // Validate the Segmento in the database
+        List<Segmento> segmentoList = segmentoRepository.findAll();
+        assertThat(segmentoList).hasSize(databaseSizeBeforeUpdate);
+    }
+
+    @Test
+    @Transactional
+    void patchWithIdMismatchSegmento() throws Exception {
+        int databaseSizeBeforeUpdate = segmentoRepository.findAll().size();
+        segmento.setId(count.incrementAndGet());
+
+        // If url ID doesn't match entity ID, it will throw BadRequestAlertException
+        restSegmentoMockMvc
+            .perform(
+                patch(ENTITY_API_URL_ID, count.incrementAndGet())
+                    .contentType("application/merge-patch+json")
+                    .content(TestUtil.convertObjectToJsonBytes(segmento))
+            )
+            .andExpect(status().isBadRequest());
+
+        // Validate the Segmento in the database
+        List<Segmento> segmentoList = segmentoRepository.findAll();
+        assertThat(segmentoList).hasSize(databaseSizeBeforeUpdate);
+    }
+
+    @Test
+    @Transactional
+    void patchWithMissingIdPathParamSegmento() throws Exception {
+        int databaseSizeBeforeUpdate = segmentoRepository.findAll().size();
+        segmento.setId(count.incrementAndGet());
+
+        // If url ID doesn't match entity ID, it will throw BadRequestAlertException
+        restSegmentoMockMvc
+            .perform(patch(ENTITY_API_URL).contentType("application/merge-patch+json").content(TestUtil.convertObjectToJsonBytes(segmento)))
+            .andExpect(status().isMethodNotAllowed());
+
+        // Validate the Segmento in the database
+        List<Segmento> segmentoList = segmentoRepository.findAll();
+        assertThat(segmentoList).hasSize(databaseSizeBeforeUpdate);
+    }
+
+    @Test
+    @Transactional
+    void deleteSegmento() throws Exception {
+        // Initialize the database
+        segmentoRepository.saveAndFlush(segmento);
 
         int databaseSizeBeforeDelete = segmentoRepository.findAll().size();
 
         // Delete the segmento
-        restSegmentoMockMvc.perform(delete("/api/segmentos/{id}", segmento.getId())
-            .accept(MediaType.APPLICATION_JSON))
+        restSegmentoMockMvc
+            .perform(delete(ENTITY_API_URL_ID, segmento.getId()).accept(MediaType.APPLICATION_JSON))
             .andExpect(status().isNoContent());
 
         // Validate the database contains one less item

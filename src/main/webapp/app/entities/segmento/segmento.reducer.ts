@@ -11,6 +11,7 @@ export const ACTION_TYPES = {
   FETCH_SEGMENTO: 'segmento/FETCH_SEGMENTO',
   CREATE_SEGMENTO: 'segmento/CREATE_SEGMENTO',
   UPDATE_SEGMENTO: 'segmento/UPDATE_SEGMENTO',
+  PARTIAL_UPDATE_SEGMENTO: 'segmento/PARTIAL_UPDATE_SEGMENTO',
   DELETE_SEGMENTO: 'segmento/DELETE_SEGMENTO',
   RESET: 'segmento/RESET',
 };
@@ -41,6 +42,7 @@ export default (state: SegmentoState = initialState, action): SegmentoState => {
     case REQUEST(ACTION_TYPES.CREATE_SEGMENTO):
     case REQUEST(ACTION_TYPES.UPDATE_SEGMENTO):
     case REQUEST(ACTION_TYPES.DELETE_SEGMENTO):
+    case REQUEST(ACTION_TYPES.PARTIAL_UPDATE_SEGMENTO):
       return {
         ...state,
         errorMessage: null,
@@ -51,6 +53,7 @@ export default (state: SegmentoState = initialState, action): SegmentoState => {
     case FAILURE(ACTION_TYPES.FETCH_SEGMENTO):
     case FAILURE(ACTION_TYPES.CREATE_SEGMENTO):
     case FAILURE(ACTION_TYPES.UPDATE_SEGMENTO):
+    case FAILURE(ACTION_TYPES.PARTIAL_UPDATE_SEGMENTO):
     case FAILURE(ACTION_TYPES.DELETE_SEGMENTO):
       return {
         ...state,
@@ -73,6 +76,7 @@ export default (state: SegmentoState = initialState, action): SegmentoState => {
       };
     case SUCCESS(ACTION_TYPES.CREATE_SEGMENTO):
     case SUCCESS(ACTION_TYPES.UPDATE_SEGMENTO):
+    case SUCCESS(ACTION_TYPES.PARTIAL_UPDATE_SEGMENTO):
       return {
         ...state,
         updating: false,
@@ -124,7 +128,15 @@ export const createEntity: ICrudPutAction<ISegmento> = entity => async dispatch 
 export const updateEntity: ICrudPutAction<ISegmento> = entity => async dispatch => {
   const result = await dispatch({
     type: ACTION_TYPES.UPDATE_SEGMENTO,
-    payload: axios.put(apiUrl, cleanEntity(entity)),
+    payload: axios.put(`${apiUrl}/${entity.id}`, cleanEntity(entity)),
+  });
+  return result;
+};
+
+export const partialUpdate: ICrudPutAction<ISegmento> = entity => async dispatch => {
+  const result = await dispatch({
+    type: ACTION_TYPES.PARTIAL_UPDATE_SEGMENTO,
+    payload: axios.patch(`${apiUrl}/${entity.id}`, cleanEntity(entity)),
   });
   return result;
 };

@@ -1,36 +1,26 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { Link, RouteComponentProps } from 'react-router-dom';
-import {  Row, Col, Label } from 'reactstrap';
-
+import { Button, Row, Col, Label } from 'reactstrap';
 import { AvFeedback, AvForm, AvGroup, AvInput, AvField } from 'availity-reactstrap-validation';
-import { ICrudGetAction, ICrudGetAllAction, ICrudPutAction } from 'react-jhipster';
+import { translate } from 'react-jhipster';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { IRootState } from 'app/shared/reducers';
 
+import { IMasterTipoEmp } from 'app/shared/model/master-tipo-emp.model';
+import { getEntities as getMasterTipoEmps } from 'app/entities/master-tipo-emp/master-tipo-emp.reducer';
 import { getEntity, updateEntity, createEntity, reset } from './tipo-emp.reducer';
 import { ITipoEmp } from 'app/shared/model/tipo-emp.model';
 import { convertDateTimeFromServer, convertDateTimeToServer, displayDefaultDateTime } from 'app/shared/util/date-utils';
 import { mapIdList } from 'app/shared/util/entity-utils';
-import { Form, Input, Button, Checkbox } from 'antd';
+
 export interface ITipoEmpUpdateProps extends StateProps, DispatchProps, RouteComponentProps<{ id: string }> {}
 
-const layout = {
-  labelCol: { span: 8 },
-  wrapperCol: { span: 16 },
-};
-const tailLayout = {
-  wrapperCol: { offset: 8, span: 16 },
-};
+export const TipoEmpUpdate = (props: ITipoEmpUpdateProps) => {
+  const [isNew] = useState(!props.match.params || !props.match.params.id);
 
-export const TipoEmpUpdate = (props) => {
-  const [isNew, setIsNew] = useState(!props.match.params || !props.match.params.id);
+  const { tipoEmpEntity, masterTipoEmps, loading, updating } = props;
 
-  const { tipoEmpEntity, loading, updating } = props;
-
-
-
-  
   const handleClose = () => {
     props.history.push('/tipo-emp');
   };
@@ -41,6 +31,8 @@ export const TipoEmpUpdate = (props) => {
     } else {
       props.getEntity(props.match.params.id);
     }
+
+    props.getMasterTipoEmps();
   }, []);
 
   useEffect(() => {
@@ -49,10 +41,12 @@ export const TipoEmpUpdate = (props) => {
     }
   }, [props.updateSuccess]);
 
-  const saveEntity = (values) => {
+  const saveEntity = (event, errors, values) => {
+    if (errors.length === 0) {
       const entity = {
         ...tipoEmpEntity,
         ...values,
+        masterTipoEmp: masterTipoEmps.find(it => it.id.toString() === values.masterTipoEmpId.toString()),
       };
 
       if (isNew) {
@@ -60,25 +54,16 @@ export const TipoEmpUpdate = (props) => {
       } else {
         props.updateEntity(entity);
       }
+    }
   };
-
-
-  
- 
-  const onFinish = values => {
-    saveEntity(values);
-  };
-
-  const onFinishFailed = errorInfo => {
-    console.error('Failed:', errorInfo);
-  }
 
   return (
     <div>
-
       <Row className="justify-content-center">
         <Col md="8">
-          <h2 id="gempApp.tipoEmp.home.createOrEditLabel">Create or edit a TipoEmp</h2>
+          <h2 id="gempApp.tipoEmp.home.createOrEditLabel" data-cy="TipoEmpCreateUpdateHeading">
+            Create or edit a TipoEmp
+          </h2>
         </Col>
       </Row>
       <Row className="justify-content-center">
@@ -86,35 +71,49 @@ export const TipoEmpUpdate = (props) => {
           {loading ? (
             <p>Loading...</p>
           ) : (
-            <Form
-            {...layout}
-            name="basic"
-            initialValues={isNew ? {} : tipoEmpEntity}
-            onFinish={onFinish}
-            onFinishFailed={onFinishFailed}
-          >
-            <Form.Item
-              label="descripcion"
-              name="descripcion"
-              rules={[{ required: true, message: 'Please input your descripcion!' }]}
-            >
-              <Input />
-            </Form.Item>
-      
-            <Form.Item
-              label="valor"
-              name="valor"
-              rules={[{ required: true, message: 'Please input your valor!' }]}
-            >
-              <Input />
-            </Form.Item>
-      
-            <Form.Item {...tailLayout}>
-              <Button type="primary" htmlType="submit">
-                Submit
+            <AvForm model={isNew ? {} : tipoEmpEntity} onSubmit={saveEntity}>
+              {!isNew ? (
+                <AvGroup>
+                  <Label for="tipo-emp-id">Id</Label>
+                  <AvInput id="tipo-emp-id" type="text" className="form-control" name="id" required readOnly />
+                </AvGroup>
+              ) : null}
+              <AvGroup>
+                <Label id="descripcionLabel" for="tipo-emp-descripcion">
+                  Descripcion
+                </Label>
+                <AvField id="tipo-emp-descripcion" data-cy="descripcion" type="text" name="descripcion" />
+              </AvGroup>
+              <AvGroup>
+                <Label id="valorLabel" for="tipo-emp-valor">
+                  Valor
+                </Label>
+                <AvField id="tipo-emp-valor" data-cy="valor" type="text" name="valor" />
+              </AvGroup>
+              <AvGroup>
+                <Label for="tipo-emp-masterTipoEmp">Master Tipo Emp</Label>
+                <AvInput id="tipo-emp-masterTipoEmp" data-cy="masterTipoEmp" type="select" className="form-control" name="masterTipoEmpId">
+                  <option value="" key="0" />
+                  {masterTipoEmps
+                    ? masterTipoEmps.map(otherEntity => (
+                        <option value={otherEntity.id} key={otherEntity.id}>
+                          {otherEntity.id}
+                        </option>
+                      ))
+                    : null}
+                </AvInput>
+              </AvGroup>
+              <Button tag={Link} id="cancel-save" to="/tipo-emp" replace color="info">
+                <FontAwesomeIcon icon="arrow-left" />
+                &nbsp;
+                <span className="d-none d-md-inline">Back</span>
               </Button>
-            </Form.Item>
-          </Form>
+              &nbsp;
+              <Button color="primary" id="save-entity" data-cy="entityCreateSaveButton" type="submit" disabled={updating}>
+                <FontAwesomeIcon icon="save" />
+                &nbsp; Save
+              </Button>
+            </AvForm>
           )}
         </Col>
       </Row>
@@ -123,6 +122,7 @@ export const TipoEmpUpdate = (props) => {
 };
 
 const mapStateToProps = (storeState: IRootState) => ({
+  masterTipoEmps: storeState.masterTipoEmp.entities,
   tipoEmpEntity: storeState.tipoEmp.entity,
   loading: storeState.tipoEmp.loading,
   updating: storeState.tipoEmp.updating,
@@ -130,6 +130,7 @@ const mapStateToProps = (storeState: IRootState) => ({
 });
 
 const mapDispatchToProps = {
+  getMasterTipoEmps,
   getEntity,
   updateEntity,
   createEntity,
