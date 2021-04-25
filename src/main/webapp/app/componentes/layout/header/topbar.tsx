@@ -1,5 +1,6 @@
 import { Layout, Menu, Breadcrumb } from 'antd';
-import './topbar.css'
+// import './topbar.css'
+
 
 import React, { useState } from 'react';
 
@@ -50,7 +51,7 @@ const Topbar = (props: IHeaderProps) => {
 
   return (
 
-      <Header className="site-layout-background" style={{ padding: 0 }}>
+      <Header style={{ padding: 0 }}>
         <Menu mode="horizontal" defaultSelectedKeys={['2']} >
           <SubMenu key="sub1" icon={<UserOutlined className="menuTopbar" style={{ fontSize: '25px' }} />} style={{ float: 'right', fontSize: '25px' }}>
            

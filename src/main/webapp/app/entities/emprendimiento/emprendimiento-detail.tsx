@@ -121,22 +121,23 @@ export const EmprendimientoDetail = (props) => {
           fechaFirma: props.emprendimientoEntity.fechaFirma ? moment(props.emprendimientoEntity.fechaFirma) : null,
           fecha: props.emprendimientoEntity.fecha ? moment(props.emprendimientoEntity.fecha) : null,
           fechaFinObra: props.emprendimientoEntity.fechaFinObra ? moment(props.emprendimientoEntity.fechaFinObra) : null,
-          segmento: props.emprendimientoEntity.segmento ? props.emprendimientoEntity.segmento.id : null,
-          tipoEmp: props.emprendimientoEntity.tipoEmp ? props.emprendimientoEntity.tipoEmp.id : null,
-          tecnologia: props.emprendimientoEntity.tecnologia ? props.emprendimientoEntity.tecnologia.id : null,
-          tipoObra: props.emprendimientoEntity.tipoObra ? props.emprendimientoEntity.tipoObra.id : null,
-          obra: props.emprendimientoEntity.obra ? props.emprendimientoEntity.obra.id : null,
-          nse: props.emprendimientoEntity.nse ? props.emprendimientoEntity.nse.id : null,
-          estado: props.emprendimientoEntity.estado ? props.emprendimientoEntity.estado.id : null,
-          ejecCuentas: props.emprendimientoEntity.ejecCuentas ? props.emprendimientoEntity.ejecCuentas.id : null,
-          grupoDeEmprendimientos: props.emprendimientoEntity.grupoDeEmprendimientos ? props.emprendimientoEntity.grupoDeEmprendimientos.id : null,
+          despliegue: props.emprendimientoEntity.despliegue?.id,
+          segmento: props.emprendimientoEntity.segmento?.id,
+          tipoEmp: props.emprendimientoEntity.tipoEmp?.id,
+          tecnologia: props.emprendimientoEntity.tecnologia?.id,
+          tipoObra: props.emprendimientoEntity.tipoObra?.id,
+          obra: props.emprendimientoEntity.obra?.id,
+          nse: props.emprendimientoEntity.nse?.id,
+          estado: props.emprendimientoEntity.estado?.id,
+          ejecCuentas: props.emprendimientoEntity.ejecCuentas?.id,
+          grupoEmprendimiento: props.emprendimientoEntity.grupoEmprendimiento?.id,
 
         })
 
     }
   }, [props.emprendimientoEntity.direccion]);
 
-  const [filterSegmento, setFilterSegmento] = useState(props.emprendimientoEntity.segmento ? props.emprendimientoEntity.segmento.id : null);
+  const [filterSegmento, setFilterSegmento] = useState(props.emprendimientoEntity.segmento?.id);
   const changeFilterSegmento = (val, evt) => {
     setFilterSegmento(val);
     // borrar los valores de tipo obra y ejecutivo cuenta
@@ -159,7 +160,7 @@ export const EmprendimientoDetail = (props) => {
     setComponentSize(size);
   }
   const openNotification = (msg = 'test', description = 'test', type = 'success') => {
-    notification.error({
+    notification[type]({
       message:msg,
       description,
       onClick() {
@@ -187,7 +188,7 @@ export const EmprendimientoDetail = (props) => {
       tecnologia: formEmprendimiento.getFieldValue('tecnologia') ? { id: formEmprendimiento.getFieldValue('tecnologia') } : null,
       tipoObra: formEmprendimiento.getFieldValue('tipoObra') ? { id: formEmprendimiento.getFieldValue('tipoObra') } : null,
       tipoEmp: formEmprendimiento.getFieldValue('tipoEmp') ? { id: formEmprendimiento.getFieldValue('tipoEmp') } : null,
-      grupoDeEmprendimientos: formEmprendimiento.getFieldValue('grupoDeEmprendimientos') ? { id: formEmprendimiento.getFieldValue('grupoDeEmprendimientos') } : null,
+      grupoEmprendimiento: formEmprendimiento.getFieldValue('grupoEmprendimiento') ? { id: formEmprendimiento.getFieldValue('grupoEmprendimiento') } : null,
 
     }
     const test = formEmprendimiento.getFieldsValue()
@@ -197,7 +198,7 @@ export const EmprendimientoDetail = (props) => {
 
   const avanzarEmprendimiento =() => {
     formEmprendimiento.validateFields().catch(errorInfo =>{
-      openNotification("Error", "Faltan completar campos obligatorios: "+errorInfo.errorFields.map(e => e.name+" - "), "error")
+      openNotification("Error", "Faltan completar campos obligatorios: "+errorInfo.errorFields.map(e => e.name+" \n"), "error")
     });
   }
 
@@ -542,7 +543,7 @@ export const EmprendimientoDetail = (props) => {
               : null}
           </Select>
         </Form.Item>
-        <Form.Item label="Grupo de Emprendimientos" name="grupoDeEmprendimientos"
+        <Form.Item label="Grupo de Emprendimiento" name="grupoEmprendimiento"
           style={{ display: 'inline-block', width: 'calc(33% - 4px)', margin: '0 4px 0 0' }}>
           <Select allowClear showSearch
             loading={props.loadingNse}

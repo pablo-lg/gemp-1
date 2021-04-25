@@ -1,5 +1,8 @@
 import 'react-toastify/dist/ReactToastify.css';
-import 'antd/dist/antd.css';
+// import 'antd/dist/antd.css';
+// import 'antd/dist/antd.less';
+import './appLess.css';
+
 
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';

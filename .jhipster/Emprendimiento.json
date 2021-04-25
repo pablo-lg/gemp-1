@@ -122,6 +122,10 @@
       "fieldType": "String"
     },
     {
+      "fieldName": "estadoFirma",
+      "fieldType": "String"
+    },
+    {
       "fieldName": "fecha",
       "fieldType": "LocalDate"
     },

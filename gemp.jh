@@ -118,6 +118,7 @@ entity Emprendimiento {
   contratoOpen String,
   negociacion Boolean,
   estadoBC String,
+  estadoFirma String,
   fecha LocalDate,
   codigoDeFirma String,
   fechaFirma LocalDate,

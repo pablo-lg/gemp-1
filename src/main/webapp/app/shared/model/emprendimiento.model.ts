@@ -1,3 +1,4 @@
+import { IGrupoEmprendimiento } from './grupo-emprendimiento.model';
 import { Moment } from 'moment';
 import { IObra } from 'app/shared/model/obra.model';
 import { ITipoObra } from 'app/shared/model/tipo-obra.model';
@@ -43,6 +44,7 @@ export interface IEmprendimiento {
   contratoOpen?: string;
   negociacion?: boolean;
   estadoBC?: string;
+  estadoFirma?: string;
   fecha?: string;
   codigoDeFirma?: string;
   fechaFirma?: string;
@@ -59,6 +61,7 @@ export interface IEmprendimiento {
   tecnologia?: ITecnologia;
   ejecCuentas?: IEjecCuentas;
   direccion?: IDireccion;
+  grupoEmprendimiento?: IGrupoEmprendimiento;
 }
 
 export const defaultValue: Readonly<IEmprendimiento> = {

@@ -1,11 +1,9 @@
 package ar.com.telecom.gemp.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
-import javax.persistence.*;
-
 import java.io.Serializable;
 import java.time.LocalDate;
+import javax.persistence.*;
 
 /**
  * A Emprendimiento.
@@ -13,7 +11,6 @@ import java.time.LocalDate;
 @Entity
 @Table(name = "emprendimiento")
 public class Emprendimiento implements Serializable {
-
     private static final long serialVersionUID = 1L;
 
     @Id
@@ -111,6 +108,9 @@ public class Emprendimiento implements Serializable {
     @Column(name = "estado_bc")
     private String estadoBC;
 
+    @Column(name = "estado_firma")
+    private String estadoFirma;
+
     @Column(name = "fecha")
     private LocalDate fecha;
 
@@ -165,6 +165,10 @@ public class Emprendimiento implements Serializable {
     @ManyToOne
     @JsonIgnoreProperties(value = "emprendimientos", allowSetters = true)
     private EjecCuentas ejecCuentas;
+
+    @ManyToOne
+    @JsonIgnoreProperties(value = "emprendimientos", allowSetters = true)
+    private GrupoEmprendimiento grupoEmprendimiento;
 
     @ManyToOne
     @JsonIgnoreProperties(value = "emprendimientos", allowSetters = true)
@@ -569,6 +573,19 @@ public class Emprendimiento implements Serializable {
         this.estadoBC = estadoBC;
     }
 
+    public String getEstadoFirma() {
+        return estadoFirma;
+    }
+
+    public Emprendimiento estadoFirma(String estadoFirma) {
+        this.estadoFirma = estadoFirma;
+        return this;
+    }
+
+    public void setEstadoFirma(String estadoFirma) {
+        this.estadoFirma = estadoFirma;
+    }
+
     public LocalDate getFecha() {
         return fecha;
     }
@@ -764,6 +781,19 @@ public class Emprendimiento implements Serializable {
         this.ejecCuentas = ejecCuentas;
     }
 
+    public GrupoEmprendimiento getGrupoEmprendimiento() {
+        return grupoEmprendimiento;
+    }
+
+    public Emprendimiento grupoEmprendimiento(GrupoEmprendimiento grupoEmprendimiento) {
+        this.grupoEmprendimiento = grupoEmprendimiento;
+        return this;
+    }
+
+    public void setGrupoEmprendimiento(GrupoEmprendimiento grupoEmprendimiento) {
+        this.grupoEmprendimiento = grupoEmprendimiento;
+    }
+
     public Direccion getDireccion() {
         return direccion;
     }
@@ -776,6 +806,7 @@ public class Emprendimiento implements Serializable {
     public void setDireccion(Direccion direccion) {
         this.direccion = direccion;
     }
+
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
 
     @Override
@@ -829,6 +860,7 @@ public class Emprendimiento implements Serializable {
             ", contratoOpen='" + getContratoOpen() + "'" +
             ", negociacion='" + isNegociacion() + "'" +
             ", estadoBC='" + getEstadoBC() + "'" +
+            ", estadoFirma='" + getEstadoFirma() + "'" +
             ", fecha='" + getFecha() + "'" +
             ", codigoDeFirma='" + getCodigoDeFirma() + "'" +
             ", fechaFirma='" + getFechaFirma() + "'" +

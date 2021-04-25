@@ -140,4 +140,5 @@ mu:
 ## File Storage Properties
 # All files uploaded through the REST API will be stored in this directory
 file:
-  upload-dir: /home/pablo/upload
+  upload-dir: ./upload
+  path-report: /WEB-INF/classes/

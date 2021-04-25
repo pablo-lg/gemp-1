@@ -1,5 +1,5 @@
 import { Layout, Menu, Breadcrumb,  } from 'antd';
-import './layoutPrincipal.css'
+// import './layoutPrincipal.css'
 
 import React, { useState } from 'react';
 import Sidebar from './sidebar/sidebar';

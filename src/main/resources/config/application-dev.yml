@@ -118,3 +118,14 @@ jhipster:
 # ===================================================================
 
 # application:
+
+mu:
+  http: 192.168.216.177
+  geographicport: 9090
+  technicalport: 80
+
+## File Storage Properties
+# All files uploaded through the REST API will be stored in this directory
+file:
+  upload-dir: ./upload
+  path-report: /WEB-INF/classes/

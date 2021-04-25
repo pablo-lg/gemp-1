@@ -46,7 +46,18 @@ module.exports = webpackMerge(commonConfig({ env: ENV }), {
             options: { implementation: sass }
           }
         ]
-      }
+      },
+      {
+        test: /\.less$/,
+        use: [
+            { loader: 'style-loader' },
+            { loader: 'css-loader' },
+            { loader: 'less-loader',
+              options: {
+                javascriptEnable: true
+              } }
+        ]
+    }
     ]
   },
   optimization: {

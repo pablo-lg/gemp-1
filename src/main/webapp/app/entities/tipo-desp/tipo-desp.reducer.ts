@@ -95,7 +95,7 @@ export default (state: TipoDespState = initialState, action): TipoDespState => {
   }
 };
 
-const apiUrl = 'api/tipo-desps';
+const apiUrl = 'api/despliegues';
 
 // Actions
 
