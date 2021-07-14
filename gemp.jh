@@ -1,8 +1,7 @@
 
 entity Despliegue {
   Id  Long required,
-  descripcion  String,
-  valor String
+  descripcion  String
 }
 
 entity Segmento {
@@ -15,15 +14,6 @@ entity Tecnologia {
   descripcion String
 }
 
-entity Competencia {
-  Id  Long required,
-  descripcion String
-}
-
-entity Estado {
-  Id  Long required,
-  descripcion String
-}
 
 entity NSE {
   Id  Long required,
@@ -36,17 +26,10 @@ entity TipoObra {
   descripcion String
 }
 
-entity Obra {
-  Id Long required,
-  descripcion String,
-  habilitada Boolean,
-  fechaFinObra LocalDate,
-}
 
 entity TipoEmp {
   Id  Long required,
   descripcion  String
-  valor String
 }
 
 entity EjecCuentas {
@@ -58,11 +41,10 @@ entity EjecCuentas {
   nombre String,
   repcom1 String,
   repcom2 String,
-
 }
 
 entity Direccion {
-  Id String required,
+  Id Long required,
   identification String unique,
   pais String required,
   provincia String required,
@@ -82,9 +64,7 @@ entity Direccion {
   streetType String,
   latitud String,
   longitud String,
-  elementosDeRed String,
-  
-  
+  elementosDeRed String,   
 }
 
 entity Emprendimiento {
@@ -92,6 +72,7 @@ entity Emprendimiento {
   nombre String,
   contacto String,
   fechaFinObra LocalDate,
+  codigoObra String,
   elementosDeRed String,
   clientesCatv String,
   clientesFibertel String,
@@ -118,19 +99,61 @@ entity Emprendimiento {
   anoPriorizacion LocalDate,
   contratoOpen String,
   negociacion Boolean,
-  estadoBC String,
   fecha LocalDate,
   codigoDeFirma String,
   fechaFirma LocalDate,
   observaciones String,
   comentario String,
-  estadoFirma String,
+  estadoFirma EstadoFirma,
+  estado Estado,
+  estadoBC EstadoBC,
+
+}
+
+enum Estado {
+  SIN_ESTADO ("Sin estado"),
+  PROSPECTO ("Prospecto"),
+  RELEVADO ("Relevado"),
+  REQUERIDO ("Requerido"),
+  EN_OBRA ("En obra"),
+  TERMINADO ("Terminado"),
+  SUSPENDIDO ("Suspendido"),
+  COMPETENCIA ("Competencia"),
+  CANCELADO ("Cancelado"),
+  REEMPLAZADO ("Reemplazado"),
+  EVALUACION_ECONOMICA ("Evaluacion economica"),
+  PROCESO_FIRMA ("Proceso de firma")
+  
+}
+enum EstadoBC {
+  APROBADO ("Aprobado"),
+  NO_APROBADO ("No aprobado")
+}
+enum EstadoFirma {
+  FIRMADO ("Firmado"),
+  NO_APROBADO ("No aprobado"),
+  APROBADO_POR_CIC ("Aprobado por el CIC")
+}
+
+entity HistoricoWF {
+	Id Long required,
+    estadoAnterior Estado,
+    estadoActual Estado,
+}
+
+entity Parametros {
+	Id Long required,
+    clave String,
+    valor String,
 }
 
 entity GrupoAlarma {
   Id Long required,
   nombreGrupo String required,
-  alarmaTiempo Long,
+  alarmaTiempo Long,  createdAt LocalDate,
+  createdBy String,
+  modificatedAt LocalDate,
+  modificateBy String,
   alarmaSva Long,
   alarmaBusinesscase Long,
 }
@@ -159,6 +182,12 @@ entity MasterTipoEmp {
  sobreVivienda String,
 }
 
+entity FiltroReportes {
+  Id  Long required,
+  nombre String,
+  filtro TextBlob
+}
+
 relationship ManyToOne {
 	TipoEmp{masterTipoEmp} to MasterTipoEmp
     Pauta{masterTipoEmp} to MasterTipoEmp
@@ -167,32 +196,25 @@ relationship ManyToOne {
 	TipoObra{Segmento(descripcion)} to Segmento,
 	EjecCuentas{Segmento(descripcion)} to Segmento,
     Emprendimiento{GrupoEmprendimiento(descripcion)} to GrupoEmprendimiento
-    Emprendimiento{Obra(descripcion)} to Obra,
     Emprendimiento{TipoObra(descripcion)} to TipoObra,
     Emprendimiento{TipoEmp(descripcion)} to TipoEmp,
-    Emprendimiento{Estado(descripcion)} to Estado,
-    Emprendimiento{Competencia(descripcion)} to Competencia,
     Emprendimiento{Despliegue(descripcion)} to Despliegue,
     Emprendimiento{NSE(descripcion)} to NSE,
     Emprendimiento{Segmento(descripcion)} to Segmento,
     Emprendimiento{Tecnologia(descripcion)} to Tecnologia,
     Emprendimiento{EjecCuentas(nombre)} to EjecCuentas,
     Emprendimiento{Direccion(calle)} to Direccion,
-
-
-
-    
+    HistoricoWF{Emprendimiento(nombre)} to Emprendimiento   
 }
-
-relationship ManyToOne {
-	Obra{TipoObra(descripcion)} to TipoObra
-}
-
-
-
-
 
 // Set pagination options
+paginate Emprendimiento with pagination
+paginate HistoricoWF with pagination
+paginate MasterTipoEmp with pagination
+paginate Pauta with pagination
+
+filter Emprendimiento
+filter HistoricoWF
 
  
 
